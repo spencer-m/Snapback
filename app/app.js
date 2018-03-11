@@ -1,0 +1,68 @@
+// app
+let express = require('express');
+// path middleware
+let path = require('path');
+// HTTP request logger middleware for formatting
+let logger = require('morgan');
+// middleware for parsing cookies
+let cookieParser = require('cookie-parser');
+// parse incoming bodies in a middleware before your handlers
+let bodyParser = require('body-parser');
+// authentication middleware
+let passport = require('passport');
+// middleware for authenticating with a username and password
+let LocalStrategy = require('passport-local').Strategy;
+// a tool for MongoDB for object modelling
+let mongoose = require('mongoose');
+// import web app routing
+let router = require('./routes.js');
+// get app
+let app = express();
+// ES6 Promises - Promises represents the eventual completion or failure
+// of an asynchronous operation and its resulting value
+mongoose.Promise = global.Promise;
+// connect to the database
+mongoose.connect('mongodb://forappconnect:qwerty123@ds263988.mlab.com:63988/snapback2018')
+    .then(() =>  console.log('connection to database succesful'))
+    .catch((err) => console.error(err));
+// make the app stack
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(require('express-session')({
+    secret: 'seng513 snapback',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+// setup passport
+let db = require('./databaseSchema.js');
+passport.use(new LocalStrategy(db.authenticate()));
+passport.serializeUser(db.serializeUser());
+passport.deserializeUser(db.deserializeUser());
+// set homepage
+app.use('/', router);
+// serve static files
+app.use(express.static(path.join(__dirname, '../public')));
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    let err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.sendFile(path.join(__dirname, '../public/error.html'));
+});
+
+module.exports = app;
