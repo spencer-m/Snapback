@@ -2,11 +2,6 @@ let path = require('path');
 let passport = require('passport');
 let User = require('./databaseSchema.js');
 
-
-function sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-}
-
 let accessController = {};
 
 //accessController.isAuthorized();
@@ -31,6 +26,7 @@ accessController.doRegister = function(req, res) {
         // check if account exists
 
         if (err) {
+            // error thrown when account exists
             return res.sendFile(path.join(__dirname, '../public/error.html'));
         }
 
@@ -42,14 +38,15 @@ accessController.doRegister = function(req, res) {
 
 // Go to login page
 accessController.login = function(req, res) {
-    res.sendFile(path.join(__dirname, '../public/login.html'));
+    res.sendFile(path.join(__dirname, '../public/start.html'));
 };
 
 // Post login
 accessController.doLogin = function(req, res) {
-    passport.authenticate('local')(req, res, function () {
-        res.redirect('/');
-    });
+    passport.authenticate('local')(req, res, 
+        function () {
+            res.redirect('/');
+        });
 };
 
 // logout

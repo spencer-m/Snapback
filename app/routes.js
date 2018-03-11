@@ -8,14 +8,8 @@ router.get('/', auth.home);
 // route to register page
 router.get('/register', auth.register);
 
-// route to register page
-router.get('/reg', auth.register);
-
 // route for register action
 router.post('/register', auth.doRegister);
-
-// route for register action
-router.post('/reg', auth.doRegister);
 
 // route to login page
 router.get('/login', auth.login);

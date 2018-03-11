@@ -10,7 +10,8 @@
  * Module dependencies.
  */
 let app = require('./app.js');
-let debug = require('debug')('alpha:server');
+let ioFunctions = require('./io.js');
+let debug = require('debug')('snapback:server');
 let http = require('http');
 
 /**
@@ -23,6 +24,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 let server = http.createServer(app);
+let io = require('socket.io')(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -30,6 +32,11 @@ let server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+/**
+ * Setup socket.io on connection function
+ */
+io.on('connection', ioFunctions.connection);
 
 /**
  * Normalize a port into a number, string, or false.
