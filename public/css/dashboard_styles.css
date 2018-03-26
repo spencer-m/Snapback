@@ -96,6 +96,15 @@ a, a:hover, a:focus {
     background: #E53935;
 }
 
+#sidebar button {
+    transition: all 0.4s;
+}
+
+/* moves button to the right if sidebar is collapsed */
+#sidebar button.sidebarExpand {
+    margin-right: -40px;
+}
+
 
 a[data-toggle="collapse"] {
     position: relative;
@@ -189,6 +198,7 @@ a.article, a.article:hover {
     #content.active {
         width: calc(100% - 250px);
     }
+
     #sidebarCollapse span {
         display: none;
     }

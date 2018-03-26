@@ -76,9 +76,8 @@
       </ul>
 
       <button type="button" id="sidebarCollapse" class="btn btn-danger navbar-btn pull-right">
-        <i class="glyphicon glyphicon-align-left"></i>
+        <i class="glyphicon glyphicon-menu-left"></i>
       </button>
-
     </nav>
 
     <!-- Page Content -->
@@ -185,6 +184,22 @@
               $('#sidebar, #content').toggleClass('active');
               $('.collapse.in').toggleClass('in');
               $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+
+              $('#sidebar button').toggleClass('sidebarExpand');
+
+              <!-- changes the icon on the button depending state -->
+
+              let icon = "#sidebar button i";
+              let expand_icon = "glyphicon glyphicon-menu-right";
+              let collapse_icon = "glyphicon glyphicon-menu-left";
+
+              if ($(icon).hasClass(collapse_icon)) {
+                  $(icon).attr('class', expand_icon);
+              }
+              else {
+                  $(icon).attr('class', collapse_icon);
+              }
+
           });
       });
   </script>
