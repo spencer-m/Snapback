@@ -171,12 +171,26 @@ a.article, a.article:hover {
 }
 
 .navbar {
-    height: 130%;
+    height: 150%;
+}
+
+.navbar-header {
+    clear: both;
+}
+
+.header-title {
+    float: left;
+}
+
+.dropdown {
+    float:left;
+    line-height:50px;
+    margin-left:25px;
 }
 
 .card {
     background: white;
-    padding: 15px 10px;
+    padding: 15px 15px;
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
