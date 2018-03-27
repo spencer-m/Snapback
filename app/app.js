@@ -49,6 +49,7 @@ app.use(session({
     store: sessionStoreInstance,
     secret: 'seng513 snapback',
     resave: false,
+    unset: 'destroy',
     saveUninitialized: false
 }));
 io.use(passportSocketIo.authorize({

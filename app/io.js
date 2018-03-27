@@ -5,6 +5,8 @@ let io = {};
 io.connection = function(socket) {
         
     
+    /* connection initialiation */
+    
     console.log(':::socketio::: user: ', socket.request.user);
     /*
     if (socket.request.user && socket.request.user.logged_in) {
@@ -20,6 +22,7 @@ io.connection = function(socket) {
             console.log('the document', doc);
         }
     });
+
     let info = {username: socket.request.user.username, isLoggedIn: socket.request.user.logged_in};
     socket.emit('init', info);
 };

@@ -68,6 +68,8 @@ router.post('/login', passport.authenticate('local', {
 router.get('/logout', function(req, res) {
     // remove the req.user property and clear the login session
     req.logout();
+    // delete session data
+    req.session.destroy();
     // redirect to homepage
     res.redirect('/');
 });
