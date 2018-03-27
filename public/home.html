@@ -94,87 +94,84 @@
 
       <hr> <!-- Divider -->
 
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="card card-outline-secondary mb-3">
-            <div class="block">
-              <h3 class="card-title"> Class name here </h3>
-              <p class="card-text"> Course name goes here</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+      <div class="class-cards">
+
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card card-outline-secondary mb-3">
+              <div class="block">
+                <h3 class="card-title"> Class name here </h3>
+                <p class="card-text"> Course name goes here</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card card-outline-secondary mb-3">
+              <div class="block">
+                <h3 class="card-title"> Class name here </h3>
+                <p class="card-text"> Course name goes here</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card card-outline-secondary mb-3">
+              <div class="block">
+                <h3 class="card-title"> Class name here </h3>
+                <p class="card-text"> Course name goes here</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-sm-4">
-          <div class="card card-outline-secondary mb-3">
-            <div class="block">
-              <h3 class="card-title"> Class name here </h3>
-              <p class="card-text"> Course name goes here</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="row top-buffer"></div>
+
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card card-outline-secondary mb-3">
+              <div class="block">
+                <h3 class="card-title"> Class name here </h3>
+                <p class="card-text"> Course name goes here</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card card-outline-secondary mb-3">
+              <div class="block">
+                <h3 class="card-title"> Class name here </h3>
+                <p class="card-text"> Course name goes here</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card card-outline-secondary mb-3">
+              <div class="block">
+                <h3 class="card-title"> Class name here </h3>
+                <p class="card-text"> Course name goes here</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-sm-4">
-          <div class="card card-outline-secondary mb-3">
-            <div class="block">
-              <h3 class="card-title"> Class name here </h3>
-              <p class="card-text"> Course name goes here</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row top-buffer"></div>
-
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="card card-outline-secondary mb-3">
-            <div class="block">
-              <h3 class="card-title"> Class name here </h3>
-              <p class="card-text"> Course name goes here</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="card card-outline-secondary mb-3">
-            <div class="block">
-              <h3 class="card-title"> Class name here </h3>
-              <p class="card-text"> Course name goes here</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="card card-outline-secondary mb-3">
-            <div class="block">
-              <h3 class="card-title"> Class name here </h3>
-              <p class="card-text"> Course name goes here</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-        </div>
       </div>
 
     </div>
   </div>
-
-  <!-- jQuery CDN -->
-  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-  <!-- Bootstrap Js CDN -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <!-- jQuery Custom Scroller CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
   <script type="text/javascript">
       $(document).ready(function () {
@@ -182,10 +179,12 @@
 
           $('#sidebarCollapse').on('click', function () {
               $('#sidebar, #content').toggleClass('active');
+              $('.class-cards').toggleClass('active');
               $('.collapse.in').toggleClass('in');
               $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 
               $('#sidebar button').toggleClass('sidebarExpand');
+
 
               <!-- changes the icon on the button depending state -->
 
@@ -203,6 +202,14 @@
           });
       });
   </script>
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <!-- Bootstrap Js CDN -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
 
 </body>
 </html>
