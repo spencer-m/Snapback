@@ -1,23 +1,75 @@
+let path = require('path');
 let express = require('express');
 let router = express.Router();
-let auth = require('./controller.js');
+let passport = require('passport');
+let User = require('./databaseSchema.js');
 
-// restrict index for logged in user only
-router.get('/', auth.home);
+router.get('/', function(req, res) {
 
-// route to register page
-router.get('/register', auth.register);
+    if (req.isAuthenticated()) {
+        res.sendFile(path.join(__dirname, '../public/home.html'));
+    }
+    else {
+        res.redirect('/login');
+    }
+});
 
-// route for register action
-router.post('/register', auth.doRegister);
+router.get('/register', function(req, res) {
+    
+    res.render('register', {
+        success: req.flash('success'),
+        error: req.flash('error')
+    });
+});
 
-// route to login page
-router.get('/login', auth.login);
+router.post('/register', function(req, res) {
 
-// route for login action
-router.post('/login', auth.doLogin);
+    // check if the username already exists
+    User.findOne({'username': new RegExp('^' + req.body.username + '$', 'i')}, function(err, user) {
+        
+        if (err) throw err;
+        if (user) {
+            req.flash('error', 'Sorry, username already exists.');
+            res.redirect('/register');
+        }
+        // create user
+        else {
+            User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+                    
+                if (err) throw err;  
+                req.flash('success', 'Your account has been created! Please log in.');
+                res.redirect('/');
+            });
+        }
+    });
+});
 
-// route for logout action
-router.get('/logout', auth.logout);
+router.get('/login', function(req, res) {
+
+    if (!req.isAuthenticated()) {
+        res.render('start', {
+            success: req.flash('success'),
+            error: req.flash('error')
+        });
+    }
+    else {
+        res.sendFile(path.join(__dirname, '../public/home.html'));
+    }
+});
+
+// Login
+router.post('/login', passport.authenticate('local', { 
+    successRedirect: '/', 
+    failureRedirect: '/',
+    failureFlash: true
+}));
+
+// Logout
+router.get('/logout', function(req, res) {
+    // remove the req.user property and clear the login session
+    req.logout();
+    // redirect to homepage
+    res.redirect('/');
+});
 
 module.exports = router;

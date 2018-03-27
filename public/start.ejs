@@ -15,7 +15,24 @@
 			<div class="row" style="min-height:5vh; max-height:5vh;"></div>
 			<div class="row" style="min-height:15vh; max-height:15vh;">
 				<div class="col-sm-12">
-					<div class="alert alert-danger" id="statusmessage"></div>
+					<div class="col-sm-12">
+						<% if (error && error.length > 0) { %>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<%= error %>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						<% } %>
+						<% if (success && success.length > 0) { %>
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+							<%= success %>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+						<% } %>
+					</div>
 				</div>
 			</div>
             <div class="row text-center">
@@ -49,7 +66,7 @@
 							<input type="password" name="password" id="password" class="form-control" placeholder="password" required autofocus>
 						</div>
 						<br>
-						<button type="submit" class="btn btn-primary mb-2">Sign In</button>
+						<button type="submit" id="submit" class="btn btn-primary mb-2">Sign In</button>
 					</form>
 				</div>
 				
@@ -62,6 +79,6 @@
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="js/main.js"></script>
+        <script src="js/start.js"></script>
     </body>
 </html>

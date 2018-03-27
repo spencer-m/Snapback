@@ -2,11 +2,11 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 let passportLocalMongoose = require('passport-local-mongoose');
 
-let SnapbackSchema = new Schema({
+let UserSnapback = new Schema({
     username: String,
     password: String
 });
 
-SnapbackSchema.plugin(passportLocalMongoose);
+UserSnapback.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('Snapback', SnapbackSchema);
+module.exports = mongoose.model('UserSnapback', UserSnapback);
