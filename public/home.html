@@ -80,8 +80,9 @@
         </li>
       </ul>
 
-      <button type="button" id="sidebarCollapse" class="btn btn-danger navbar-btn pull-right">
-        <i class="glyphicon glyphicon-menu-left"></i>
+      <button type="button" id="sidebarCollapse" class="btn btn-light navbar-btn pull-right">
+        <!--<i class="glyphicon glyphicon-menu-left"></i>-->
+        <
       </button>
     </nav>
 
@@ -111,7 +112,7 @@
         </div>
       </nav>
 
-      <hr> <!-- Divider -->
+      <hr style="margin-bottom: 35px"> <!-- Divider -->
 
       <div class="class-cards">
 
@@ -121,8 +122,8 @@
               <div class="block">
                 <h3 class="card-title"> Class name here </h3>
                 <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
               </div>
             </div>
           </div>
@@ -132,8 +133,8 @@
               <div class="block">
                 <h3 class="card-title"> Class name here </h3>
                 <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
               </div>
             </div>
           </div>
@@ -143,8 +144,8 @@
               <div class="block">
                 <h3 class="card-title"> Class name here </h3>
                 <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
               </div>
             </div>
           </div>
@@ -158,8 +159,8 @@
               <div class="block">
                 <h3 class="card-title"> Class name here </h3>
                 <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
               </div>
             </div>
           </div>
@@ -169,8 +170,8 @@
               <div class="block">
                 <h3 class="card-title"> Class name here </h3>
                 <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
               </div>
             </div>
           </div>
@@ -179,8 +180,9 @@
             <div class="card card-outline-secondary mb-3">
               <div class="block">
                 <h3 class="card-title"> Class name here </h3>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-primary btn-sm">Go somewhere</a>
+                <p class="card-text"> Course name goes here</p>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
               </div>
             </div>
           </div>
@@ -196,7 +198,7 @@
 
 
           $('#sidebarCollapse').on('click', function () {
-              $('#sidebar, #content').toggleClass('active');
+              $('#sidebar, #content, #sidebarCollapse').toggleClass('active');
               $('.class-cards').toggleClass('active');
               $('.collapse.in').toggleClass('in');
               $('a[aria-expanded=true]').attr('aria-expanded', 'false');
@@ -205,18 +207,6 @@
 
 
               <!-- changes the icon on the button depending state -->
-
-              let icon = "#sidebar button i";
-              let expand_icon = "glyphicon glyphicon-menu-right";
-              let collapse_icon = "glyphicon glyphicon-menu-left";
-
-              if ($(icon).hasClass(collapse_icon)) {
-                  $(icon).attr('class', expand_icon);
-              }
-              else {
-                  $(icon).attr('class', collapse_icon);
-              }
-
           });
       });
   </script>

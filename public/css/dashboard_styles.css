@@ -105,6 +105,17 @@ a, a:hover, a:focus {
     margin-right: -40px;
 }
 
+#sidebarCollapse {
+    margin-left: 215px;
+    line-height: 100px;
+}
+
+#sidebarCollapse.active {
+    margin-left: 250px;
+    background-color: #E53935;
+    color: white;
+}
+
 a[data-toggle="collapse"] {
     position: relative;
 }
@@ -197,7 +208,7 @@ a.article, a.article:hover {
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.top-buffer { margin-top:50px; }
+.top-buffer { margin-top:50px; margin-bottom: 15px;}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
