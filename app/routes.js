@@ -2,7 +2,7 @@ let path = require('path');
 let express = require('express');
 let router = express.Router();
 let passport = require('passport');
-let User = require('./databaseSchema.js');
+let User = require('./userdb.js');
 
 router.get('/', function(req, res) {
 

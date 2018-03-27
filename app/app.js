@@ -51,16 +51,14 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-/*
 io.use(passportSocketIo.authorize({
     store: sessionStoreInstance,
     secret: 'seng513 snapback'
 }));
-*/
 app.use(passport.initialize());
 app.use(passport.session());
 // setup passport
-let db = require('./databaseSchema.js');
+let db = require('./userdb.js');
 passport.use(new LocalStrategy(db.authenticate()));
 passport.serializeUser(db.serializeUser());
 passport.deserializeUser(db.deserializeUser());
