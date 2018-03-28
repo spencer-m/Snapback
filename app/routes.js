@@ -24,17 +24,17 @@ router.get('/register', function(req, res) {
 
 router.post('/register', function(req, res) {
 
-    // check if the username already exists
-    User.findOne({'username': new RegExp('^' + req.body.username + '$', 'i')}, function(err, user) {
+    // check if the email already exists
+    User.findOne({'email': new RegExp('^' + req.body.email + '$', 'i')}, function(err, user) {
         
         if (err) throw err;
         if (user) {
-            req.flash('error', 'Sorry, username already exists.');
+            req.flash('error', 'Sorry, email already exists.');
             res.redirect('/register');
         }
         // create user
         else {
-            User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+            User.register(new User({ email : req.body.email }), req.body.password, function(err, user) {
                     
                 if (err) throw err;  
                 req.flash('success', 'Your account has been created! Please log in.');
@@ -61,7 +61,7 @@ router.get('/login', function(req, res) {
 router.post('/login', passport.authenticate('local', { 
     successRedirect: '/', 
     failureRedirect: '/',
-    failureFlash: true
+    failureFlash: 'Email or password is incorrect'
 }));
 
 // Logout

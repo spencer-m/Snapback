@@ -9,6 +9,7 @@ $(document).ready(function() {
 
     socket.on('init', function(info) {
         console.log(info);
+        $('#name').text(info.email);
     });
 });
 

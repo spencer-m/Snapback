@@ -12,7 +12,7 @@ let bodyParser = require('body-parser');
 let flash = require('connect-flash');
 // authentication middleware
 let passport = require('passport');
-// middleware for authenticating with a username and password
+// middleware for authenticating with a username (were using email) and password
 let LocalStrategy = require('passport-local').Strategy;
 // a tool for MongoDB for object modelling
 let mongoose = require('mongoose');
@@ -60,7 +60,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 // setup passport
 let db = require('./userdb.js');
-passport.use(new LocalStrategy(db.authenticate()));
+passport.use(new LocalStrategy({usernameField: 'email'}, db.authenticate()));
 passport.serializeUser(db.serializeUser());
 passport.deserializeUser(db.deserializeUser());
 // set homepage
