@@ -6,10 +6,15 @@
 
   <title>Snapback Home</title>
 
+  <!--
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 
   <!-- Bootstrap CSS CDN -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
   <!-- JQuery CSS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -75,8 +80,9 @@
         </li>
       </ul>
 
-      <button type="button" id="sidebarCollapse" class="btn btn-danger navbar-btn pull-right">
-        <i class="glyphicon glyphicon-menu-left"></i>
+      <button type="button" id="sidebarCollapse" class="btn btn-light navbar-btn pull-right">
+        <!--<i class="glyphicon glyphicon-menu-left"></i>-->
+        <
       </button>
     </nav>
 
@@ -87,57 +93,71 @@
         <div class="container-fluid">
 
           <div class="navbar-header">
-            <h1>Software Engineering 513: Web-Based Systems</h1>
+            <div class="header-title">
+              <h1>Classes</h1>
+            </div>
+
+            <div class="dropdown">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Small dropdown
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
+
           </div>
         </div>
       </nav>
 
-      <hr> <!-- Divider -->
+      <hr style="margin-bottom: 35px"> <!-- Divider -->
 
       <!-- Tabs -->
       <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#lecture">Lecture</a></li>
-        <li><a data-toggle="tab" href="#questions">Questions</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#lecture">Lecture</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#questions">Questions</a></li>
       </ul>
 
       <div class="tab-content">
-        <div id="lecture" class="tab-pane fade in active">
+        <div id="lecture" class="tab-pane container">
           <!-- Lecture Content -->
-          <div class="panel-group" id="accordion">
-           <div class="panel panel-default">
-             <div class="panel-heading"  data-toggle="collapse" data-parent="#accordion" href="#collapse-lecture">
-               <h4 class="panel-title">
-                 <a>Lecture Notes</a>
-               </h4>
+          <div id="accordion">
+           <div class="card">
+             <div class="card-header">
+             <a class="card-link"  data-toggle="collapse" href="#collapse-lecture">
+                 Lecture Notes
+                 </a>
              </div>
-             <div id="collapse-lecture" class="panel-collapse collapse">
-               <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+             <div id="collapse-lecture" class="collapse" data-parent="#accordion">
+               <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                commodo consequat.</div>
              </div>
            </div>
-           <div class="panel panel-default">
-             <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse-assignment">
-               <h4 class="panel-title">
-                 <a>Assignments</a>
-               </h4>
+           <div class="card">
+             <div class="card-header">
+               <a class="card-link"  data-toggle="collapse" href="#collapse-assignment">
+                 Assignments
+               </a>
              </div>
-             <div id="collapse-assignment" class="panel-collapse collapse">
-               <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+             <div id="collapse-assignment" class="collapse" data-parent="#accordion">
+               <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                commodo consequat.</div>
              </div>
            </div>
-           <div class="panel panel-default">
-             <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse-test">
-               <h4 class="panel-title">
-                 <a>Tests</a>
-               </h4>
+           <div class="card">
+             <div class="card-header">
+               <a class="card-link"  data-toggle="collapse" href="#collapse-test">
+                 Test Material
+               </a>
              </div>
-             <div id="collapse-test" class="panel-collapse collapse">
-               <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+             <div id="collapse-test" class="collapse" data-parent="#accordion">
+               <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                commodo consequat.</div>
@@ -153,8 +173,29 @@
       </div>
 
 
+
+
+
     </div>
   </div>
+
+  <script type="text/javascript">
+      $(document).ready(function () {
+
+
+          $('#sidebarCollapse').on('click', function () {
+              $('#sidebar, #content, #sidebarCollapse').toggleClass('active');
+              $('.class-cards').toggleClass('active');
+              $('.collapse.in').toggleClass('in');
+              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+
+              $('#sidebar button').toggleClass('sidebarExpand');
+
+
+              <!-- changes the icon on the button depending state -->
+          });
+      });
+  </script>
 
   <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -163,33 +204,6 @@
   <!-- jQuery Custom Scroller CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-  <script type="text/javascript">
-      $(document).ready(function () {
-
-
-          $('#sidebarCollapse').on('click', function () {
-              $('#sidebar, #content').toggleClass('active');
-              $('.collapse.in').toggleClass('in');
-              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-
-              $('#sidebar button').toggleClass('sidebarExpand');
-
-              <!-- changes the icon on the button depending state -->
-
-              let icon = "#sidebar button i";
-              let expand_icon = "glyphicon glyphicon-menu-right";
-              let collapse_icon = "glyphicon glyphicon-menu-left";
-
-              if ($(icon).hasClass(collapse_icon)) {
-                  $(icon).attr('class', expand_icon);
-              }
-              else {
-                  $(icon).attr('class', collapse_icon);
-              }
-
-          });
-      });
-  </script>
 
 </body>
 </html>

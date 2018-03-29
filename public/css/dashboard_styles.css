@@ -235,10 +235,10 @@ a.article, a.article:hover {
 /* ---------------------------------------------------
     COLLAPSIBLE PANEL STYLE
 ----------------------------------------------------- */
-.panel-heading {
+.card-header {
   position: relative;
 }
-.panel-heading[data-toggle="collapse"]:after {
+.card-header[data-toggle="collapse"]:after {
   font-family: 'Glyphicons Halflings';
   content: "\e072"; /* "play" icon */
   position: absolute;
@@ -255,11 +255,15 @@ a.article, a.article:hover {
   -o-transform:      rotate(-90deg);
   transform:         rotate(-90deg);
 }
-.panel-heading[data-toggle="collapse"].collapsed:after {
+.card-header[data-toggle="collapse"].collapsed:after {
   /* rotate "play" icon from > (right arrow) to ^ (up arrow) */
   -webkit-transform: rotate(90deg);
   -moz-transform:    rotate(90deg);
   -ms-transform:     rotate(90deg);
   -o-transform:      rotate(90deg);
   transform:         rotate(90deg);
+}
+
+.navbar-collapse.collapse.in {
+  display: block!important;
 }
