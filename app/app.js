@@ -93,3 +93,34 @@ app.set('views', path.join(__dirname, '../public'));
 app.set('view engine', 'ejs');
 
 module.exports = app;
+
+/* initialization */
+
+let toInitialize = 0;
+
+if (toInitialize != 0) {
+
+    let User = require('./userdb.js');
+    let Util = require('./utildb.js');
+    let Class = require('./classdb.js');
+
+    let u1 = new Util.University({
+        name: 'University of Calgary'
+    });
+
+    u1.save();
+
+    let u2 = new Util.University({
+        name: 'University of Alberta'
+    });
+
+    u2.save();
+
+    let k1 = new Util.Key({
+        key: '123456',
+        isUsed: false
+    });
+
+    k1.save();
+}
+

@@ -12,4 +12,3 @@ $(document).ready(function() {
         $('#name').text(info.email);
     });
 });
-

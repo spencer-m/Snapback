@@ -42,6 +42,31 @@
                         <input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
                         <label for="password" class="sr-only">Password</label>
                         <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                        <label for="fname" class="sr-only">First Name</label>
+                        <input type="text" name="fname" id="fname" class="form-control" placeholder="First Name" required>
+                        <label for="lname" class="sr-only">Last Name</label>
+                        <input type="text" name="lname" id="lname" class="form-control" placeholder="Last Name" required>
+                        <label for="id" class="sr-only">ID</label>
+                        <input type="text" name="id" id="id" class="form-control" placeholder="ID" required>
+                        
+                        <label for="university" class="sr-only">University</label>
+                        <select class="form-control" id="university" name="university" placeholder="University" required>
+                            <option value="" selected disabled>Select your university</option>
+                            <% for (let u of uni) { %>
+                                <option value="<%= u %>"><%= u %></option>
+                            <% } %>
+                        </select>
+
+                        <label for="prof" class="sr-only">Are you a...</label>
+                        <select class="form-control" id="prof" name="prof" placeholder="Are you a..." required>
+                            <option value="" selected disabled>Select which type of account</option>
+                            <option value="Student">Student</option>
+                            <option value="Professor">Professor</option>
+                        </select>
+                        <div class="invisible" id="regkeydiv">
+                            <label for="regkey" class="sr-only">Registration Key</label>
+                            <input type="text" name="regkey" id="regkey" class="form-control" placeholder="Registration Key">
+                        </div>
                         <button class="btn btn-lg btn-primary btn-block" id="submit" type="submit">Register</button>
                     </form>
                 </div>
