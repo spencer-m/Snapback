@@ -109,3 +109,6 @@ fabric.properties
 .idea/httpRequests
 
 *.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
