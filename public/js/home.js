@@ -49,6 +49,7 @@ $(function(){
                             $('<p>').addClass('card-text').text(cText))
                         .append(
                             $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("Files"))
+                        .append(' ')
                         .append(
                             $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("QA"))
                     )
@@ -56,7 +57,7 @@ $(function(){
         );
 
         //TODO: trying to erase the previous input after pressing submit
-        $('#course-code-input')[0].reset();
+        $('#course-code-input').val('');
 
         //TODO: it won't scroll down for some reason
         $('#content').scrollTop($('#content')[0].scrollHeight);
@@ -66,6 +67,6 @@ $(function(){
 
     //TODO: trying to erase the previous input after pressing cancel
     $('#class-cancel-button').on('click', function() {
-        $('#course-code-input')[0].reset();
+        $('#course-code-input').val('');
     });
 });
