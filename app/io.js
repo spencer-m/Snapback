@@ -1,3 +1,5 @@
+// server side socketio
+
 let userdb = require('./userdb.js');
 
 let io = {};

@@ -157,3 +157,6 @@ router.get('/logout', function(req, res) {
 module.exports = router;
 
 // TODO: add basic input sanitation
+// TODO: ID must be unique for a university (query university first, then ID)
+// TODO: password confirm field
+// TODO: retain form contents when failure of reg
