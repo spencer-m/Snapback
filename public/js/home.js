@@ -69,4 +69,11 @@ $(function(){
     $('#class-cancel-button').on('click', function() {
         $('#course-code-input').val('');
     });
+
+    let socket = io();
+
+    socket.on('init', function(info) {
+        console.log(info);
+        $('#name').text(info.email);
+    });
 });
