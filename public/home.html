@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <title>Snapback Home</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -80,14 +81,40 @@
         </li>
       </ul>
 
-      <button type="button" id="sidebarCollapse" class="btn btn-light navbar-btn pull-right">
-        <!--<i class="glyphicon glyphicon-menu-left"></i>-->
-        <
-      </button>
+
+      <button type="button" id="sidebar-collapse" class="btn btn-light navbar-btn float-right"><</button>
     </nav>
 
     <!-- Page Content -->
     <div id="content">
+
+      <!-- The Modal -->
+      <div class="modal fade" id="class-card-modal">
+
+        <!-- classes retrieved from:
+        https://stackoverflow.com/questions/41377501/how-to-vertically-align-bootstrap-v4-modal-dialogs
+        -->
+        <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
+
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h3 class="modal-title">Enroll in a Course!</h3>
+            </div>
+
+            <div class="modal-body">
+              <p>Please enter the course code</p>
+              <input id="course-code-input" autocomplete="off" placeholder="eg. 41Q23AB">
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" id="class-submit-button" class="btn btn-danger" data-dismiss="modal">Submit</button>
+              <button type="button" id="class-cancel-button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
       <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -97,14 +124,23 @@
               <h1>Classes</h1>
             </div>
 
-            <div class="dropdown">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Small dropdown
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+            <div class="row header-buttons">
+
+              <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Small dropdown
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </div>
+
+              <div class="class-card-button">
+                <button id="class-card-add-button" class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#class-card-modal">
+                  Add Class
+                </button>
               </div>
             </div>
 
@@ -159,33 +195,12 @@
               <div class="block">
                 <h3 class="card-title"> Class name here </h3>
                 <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
+                <a href="#" class="btn btn-dark btn-sm">Go</a>
+                <a href="#" class="btn btn-dark btn-sm">Go</a>
               </div>
             </div>
           </div>
 
-          <div class="col-sm-4">
-            <div class="card card-outline-secondary mb-3">
-              <div class="block">
-                <h3 class="card-title"> Class name here </h3>
-                <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-4">
-            <div class="card card-outline-secondary mb-3">
-              <div class="block">
-                <h3 class="card-title"> Class name here </h3>
-                <p class="card-text"> Course name goes here</p>
-                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
-                <a href="#" class="btn btn-dark btn-sm">Go somewhere</a>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -193,31 +208,14 @@
     </div>
   </div>
 
-  <script type="text/javascript">
-      $(document).ready(function () {
-
-
-          $('#sidebarCollapse').on('click', function () {
-              $('#sidebar, #content, #sidebarCollapse').toggleClass('active');
-              $('.class-cards').toggleClass('active');
-              $('.collapse.in').toggleClass('in');
-              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-
-              $('#sidebar button').toggleClass('sidebarExpand');
-
-
-              <!-- changes the icon on the button depending state -->
-          });
-      });
-  </script>
-
   <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
   <!-- Bootstrap Js CDN -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <!-- jQuery Custom Scroller CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/home.js"></script>
 
 </body>
 </html>
