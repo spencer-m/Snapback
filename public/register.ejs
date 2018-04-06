@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta author="Spencer Manzon">            
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="icon" href="img/favicon.ico">
+        <title>Snapback</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row" style="min-height:5vh; max-height:5vh;"></div>
+            <div class="row" style="min-height:15vh; max-height:15vh;">
+                <div class="col-sm-12">
+                    <% if (error && error.length > 0) { %>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <%= error %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <% } %>
+                    <% if (success && success.length > 0) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= success %>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <form class="form-signin" method="post">
+                        <h2 class="form-signin-heading">Register</h2>
+                        <label for="username" class="sr-only">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                        <button class="btn btn-lg btn-primary btn-block" id="submit" type="submit">Register</button>
+                    </form>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </div> <!-- /container -->
+        <!-- Scripts -->
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/register.js"></script>
+    </body>
+</html>
