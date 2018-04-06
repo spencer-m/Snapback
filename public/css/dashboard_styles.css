@@ -101,16 +101,16 @@ a, a:hover, a:focus {
 }
 
 /* moves button to the right if sidebar is collapsed */
-#sidebar button.sidebarExpand {
-    margin-right: -40px;
+#sidebar button.sidebar-expand {
+    margin-right: -30px;
 }
 
-#sidebarCollapse {
+#sidebar-collapse {
     margin-left: 215px;
     line-height: 100px;
 }
 
-#sidebarCollapse.active {
+#sidebar-collapse.active {
     margin-left: 250px;
     background-color: #E53935;
     color: white;
@@ -187,10 +187,17 @@ a.article, a.article:hover {
 
 .navbar-header {
     clear: both;
+    width: 100%;
 }
 
 .header-title {
     float: left;
+}
+
+.header-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .dropdown {
@@ -198,6 +205,12 @@ a.article, a.article:hover {
     line-height:50px;
     margin-left:25px;
 }
+
+#class-card-add-button button{
+    float: right;
+
+}
+
 
 .card {
     background: white;
@@ -209,6 +222,19 @@ a.article, a.article:hover {
 }
 
 .top-buffer { margin-top:50px; margin-bottom: 15px;}
+
+/* ---------------------------------------------------
+    MODAL STYLE
+----------------------------------------------------- */
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+}
+
+#course-code-input {
+    align-self: center;
+}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -227,7 +253,7 @@ a.article, a.article:hover {
         width: calc(100% - 250px);
     }
 
-    #sidebarCollapse span {
+    #sidebar-collapse span {
         display: none;
     }
 }

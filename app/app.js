@@ -12,7 +12,7 @@ let bodyParser = require('body-parser');
 let flash = require('connect-flash');
 // authentication middleware
 let passport = require('passport');
-// middleware for authenticating with a username and password
+// middleware for authenticating with a username (were using email) and password
 let LocalStrategy = require('passport-local').Strategy;
 // a tool for MongoDB for object modelling
 let mongoose = require('mongoose');
@@ -49,19 +49,18 @@ app.use(session({
     store: sessionStoreInstance,
     secret: 'seng513 snapback',
     resave: false,
+    unset: 'destroy',
     saveUninitialized: false
 }));
-/*
 io.use(passportSocketIo.authorize({
     store: sessionStoreInstance,
     secret: 'seng513 snapback'
 }));
-*/
 app.use(passport.initialize());
 app.use(passport.session());
 // setup passport
-let db = require('./databaseSchema.js');
-passport.use(new LocalStrategy(db.authenticate()));
+let db = require('./userdb.js');
+passport.use(new LocalStrategy({usernameField: 'email'}, db.authenticate()));
 passport.serializeUser(db.serializeUser());
 passport.deserializeUser(db.deserializeUser());
 // set homepage
@@ -94,3 +93,34 @@ app.set('views', path.join(__dirname, '../public'));
 app.set('view engine', 'ejs');
 
 module.exports = app;
+
+/* initialization */
+
+let toInitialize = 0;
+
+if (toInitialize != 0) {
+
+    let User = require('./userdb.js');
+    let Util = require('./utildb.js');
+    let Class = require('./classdb.js');
+
+    let u1 = new Util.University({
+        name: 'University of Calgary'
+    });
+
+    u1.save();
+
+    let u2 = new Util.University({
+        name: 'University of Alberta'
+    });
+
+    u2.save();
+
+    let k1 = new Util.Key({
+        key: '123456',
+        isUsed: false
+    });
+
+    k1.save();
+}
+
