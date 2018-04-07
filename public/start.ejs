@@ -6,13 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/start_styles.css">
         <link rel="icon" href="img/favicon.ico">
         <title>Snapback</title>
     </head>
     <!-- Add fonts!! -->
-    <body style="background: url(img/bg.jpg) no-repeat center center fixed; background-size:cover;">
+    <body style="background: url(img/bg2.jpg) no-repeat center center fixed; background-size:cover;">
         <div class="container">
-			<div class="row" style="min-height:5vh; max-height:5vh;"></div>
+			<!--<div class="row" style="min-height:5vh; max-height:5vh;"></div>--> <!-- why is this here? -->
 			<div class="row" style="min-height:15vh; max-height:15vh;">
 				<div class="col-sm-12">
 					<div class="col-sm-12">
@@ -35,29 +36,29 @@
 					</div>
 				</div>
 			</div>
+
             <div class="row text-center">
+
+				<!--<div class="col-sm-1"></div>-->
 				
-				<div class="col-sm-1"></div>
-				
-				<div class="col-sm-5" style="color:#ffffff; padding-bottom: 3em">
-					<h2 style="font-family: 'Satisfy', cursive; padding-bottom: 1em;">Welcome to Snapback</h2>
-					<h5 class="text-justify">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-						Eget felis eget nunc lobortis mattis aliquam faucibus. Adipiscing tristique risus nec feugiat. Arcu non odio euismod lacinia at quis. 
-						Adipiscing vitae proin sagittis nisl rhoncus mattis. Sed nisi lacus sed viverra. Viverra aliquet eget sit amet tellus cras adipiscing enim. 
-						Orci dapibus ultrices in iaculis nunc. Maecenas sed enim ut sem viverra aliquet eget sit amet. Nisl vel pretium lectus quam. 
-						Quam quisque id diam vel quam elementum pulvinar. Ultrices dui sapien eget mi proin sed libero enim. Non nisi est sit amet facilisis magna etiam.
+				<div id="infoBox" class="col-sm-5" style="padding-bottom: 3em">
+					<img src="img/logo_blue.png" style="width: 70%; height: 350px;">
+					<!--<h2 style="padding-bottom: 1em;">Welcome to Snapback</h2>-->
+					<h5 class="text-justify" style="opacity: 0.9">
+						Snapback is a user-friendly interface that allows students to connect with one another and their
+						professors in and outside of the classroom. With utilities such as accessing lecture files and
+						a Q&A section, students will feel as if they've never left class at all.
 					</h5>
 					<br>
-					<a href="register"><button class="btn btn-primary">Register</button></a>
+					<a href="register"><button class="btn btn-outline-light">Register</button></a>
 				</div>
 				
 				<div class="col-sm-1"></div>
 				
-				<div class="col-sm-1 border-left"></div>
+				<div class="col-sm-1 border-left" style="height: 600px; opacity: 0.3;"></div>
 				
-				<div class="col-sm-4 align-self-center">
-					<h2 style="font-family: 'Satisfy', cursive; color:#ffffff; padding-bottom: 1em;">Login</h2>
+				<div id="loginBox" class="col-sm-5 align-self-center">
+					<h2 style="font-size: 26px; letter-spacing: -1px; padding-bottom: 1em;">L o g i n</h2>
 					<form style="color:#ffffff;" method="post">
 						<div class="form-group">
 							<input type="email" name="email" id="email" class="form-control" placeholder="email" required autofocus>
@@ -66,12 +67,12 @@
 							<input type="password" name="password" id="password" class="form-control" placeholder="password" required autofocus>
 						</div>
 						<br>
-						<button type="submit" id="submit" class="btn btn-primary mb-2">Sign In</button>
+						<button type="submit" id="submit" class="btn btn-outline-light mb-2">Sign In</button>
 					</form>
 				</div>
 				
             </div>
-            <div class="row" style="min-height:20vh; max-height:20vh;"></div>
+            <!--<div class="row" style="min-height:20vh; max-height:20vh;"></div>--> <!-- why is this also here :O -->
         </div>
 
         <!-- Scripts -->

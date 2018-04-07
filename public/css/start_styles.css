@@ -1,0 +1,25 @@
+@import "https://fonts.googleapis.com/css?family=Nunito:300,400,500,600,700";
+
+/*
+* {
+    border: 1px solid black;
+}*/
+
+body {
+    color: white;
+    font-family: 'Nunito', sans-serif;
+}
+
+#infoBox {
+    -moz-border-radius:10px;  /* for Firefox */
+    -webkit-border-radius:10px; /* for Webkit-Browsers */
+    border-radius:10px; /* regular */
+}
+
+#loginBox {
+    -moz-border-radius:10px;  /* for Firefox */
+    -webkit-border-radius:10px; /* for Webkit-Browsers */
+    border-radius:10px; /* regular */
+    background-color: rgba(255,255,255,0.3);
+    padding: 25px;
+}
