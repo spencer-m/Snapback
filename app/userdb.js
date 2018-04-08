@@ -33,7 +33,7 @@ let User = new Schema({
         type: Boolean,
         required: true
     },
-    classes: [{type: Schema.ObjectId, ref: 'Class'}]
+    courses: [{type: Schema.ObjectId, ref: 'Course'}]
 });
 
 User.plugin(passportLocalMongoose, {usernameField: 'email'});

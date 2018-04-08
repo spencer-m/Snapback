@@ -81,8 +81,8 @@ let SectionSchema = new Schema({
     }
 });
 
-let ClassSchema = new Schema({
-    classinfo: {
+let CourseSchema = new Schema({
+    courseinfo: {
         // i.e. SENG 513
         code: {
             type: String,
@@ -120,7 +120,7 @@ let ClassSchema = new Schema({
 });
 
 module.exports = {
-    Class: mongoose.model('Class', ClassSchema),
+    Course: mongoose.model('Course', CourseSchema),
     Session: mongoose.model('SessionQ', SessionSchema),
     Question: mongoose.model('Question', QuestionSchema),
     Comment: mongoose.model('Comments', CommentsSchema),

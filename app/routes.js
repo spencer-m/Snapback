@@ -44,23 +44,23 @@ router.post('/register', function(req, res) {
             req.flash('error', 'Sorry, email already exists.');
             res.redirect('/register');
         }
-        // next step: check if the id already exists
+        // next step: get objectID of university
         else {
-            User.findOne({id: req.body.id}, function(err, id) {
+            Util.University.findOne({name: req.body.university}, function(err, uni) {  
                 if (err) throw err;
-                // error when id exists
-                if (id) {
-                    req.flash('error', 'Sorry, ID already exists.');
-                    res.redirect('/register');
-                }
-                // next step: get objecID of university
-                else {
-                    Util.University.findOne({name: req.body.university}, function(err, uni) {  
+        
+                if (uni) {
+                    // next step: check if the id already taken in unversity
+                    User.findOne({id: req.body.id, university: uni._id}, function(err, id) {
                         if (err) throw err;
-                        // next step: check if prof and execute accordingly
-                        if (uni) {
+                        // error when id exists
+                        if (id) {
+                            req.flash('error', 'Sorry, ID already exists.');
+                            res.redirect('/register');
+                        }
+                        else {
                             // check regkey and register
-                            if (req.body.prof == 'Professor') {
+                            if (req.body.prof === 'Professor') {
                                 Util.Key.findOne({key: req.body.regkey, isUsed: false}, function(err, key) {
                                     if (err) throw err;
                                     // if key exists
@@ -90,7 +90,7 @@ router.post('/register', function(req, res) {
                                 });
                             }
                             // proceed with account creation
-                            else if (req.body.prof == 'Student') {
+                            else if (req.body.prof === 'Student') {
                                 // create user
                                 let newUser = new User({
                                     email: req.body.email,
@@ -104,7 +104,6 @@ router.post('/register', function(req, res) {
                                     req.flash('success', 'Your account has been created! Please log in.');
                                     res.redirect('/');
                                 });
-        
                             }
                             // catch all statement
                             else {
@@ -112,12 +111,12 @@ router.post('/register', function(req, res) {
                                 res.redirect('/register');
                             }
                         }
-                        // error when university does not exists
-                        else {
-                            req.flash('error', 'Sorry, university does not exist.');
-                            res.redirect('/register');
-                        }
                     });
+                }
+                // error when university does not exists
+                else {
+                    req.flash('error', 'Sorry, university does not exist.');
+                    res.redirect('/register');
                 }
             });
         }
@@ -133,7 +132,7 @@ router.get('/login', function(req, res) {
         });
     }
     else {
-        res.sendFile(path.join(__dirname, '../public/home.html'));
+        res.redirect('/');
     }
 });
 
@@ -157,6 +156,5 @@ router.get('/logout', function(req, res) {
 module.exports = router;
 
 // TODO: add basic input sanitation
-// TODO: ID must be unique for a university (query university first, then ID)
 // TODO: password confirm field
 // TODO: retain form contents when failure of reg

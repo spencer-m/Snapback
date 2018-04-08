@@ -102,7 +102,7 @@ if (toInitialize != 0) {
 
     let User = require('./userdb.js');
     let Util = require('./utildb.js');
-    let Class = require('./classdb.js');
+    let Course = require('./coursedb.js');
 
     let u1 = new Util.University({
         name: 'University of Calgary'
