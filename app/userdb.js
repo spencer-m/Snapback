@@ -32,7 +32,8 @@ let User = new Schema({
     isProfessor: {
         type: Boolean,
         required: true
-    }
+    },
+    courses: [{type: Schema.ObjectId, ref: 'Course'}]
 });
 
 User.plugin(passportLocalMongoose, {usernameField: 'email'});

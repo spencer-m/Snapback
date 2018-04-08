@@ -5,7 +5,7 @@
 $(document).ready(function() {
     
     $('#prof').on('change', function() { 
-        if ($(this).val() == 'Professor') {
+        if ($(this).val() === 'Professor') {
             $('#regkeydiv').removeClass('invisible');
             $('#regkey').prop('required', true);
         }

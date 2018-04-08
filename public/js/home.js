@@ -74,6 +74,20 @@ $(function(){
 
     socket.on('init', function(info) {
         console.log(info);
-        $('#name').text(info.email);
+    });
+
+    $('#addClass').click(function() {
+        let code = $('#classcode').val(); 
+      
+        socket.emit('entrollToClass', code, function(response) {
+            if (response === 'success')
+                console.log('successfully enrolled');
+            else if (response == 'already_enrolled')
+                console.log('already_enrolled');
+            else if (response == 'invalid')
+                console.log('invalid class code');
+            else
+                console.log('unknown error');
+        });
     });
 });

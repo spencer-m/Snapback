@@ -13,7 +13,7 @@ let UniSchema = new Schema({
 let KeySchema = new Schema({
     key: {
         type: String,
-        required:  true,
+        required: true,
         unique: true
     },
     isUsed: {
@@ -22,10 +22,7 @@ let KeySchema = new Schema({
     }
 });
 
-let University = mongoose.model('University', UniSchema);
-let Key = mongoose.model('Key', KeySchema);
-
 module.exports = {
-    University: University,
-    Key: Key
+    University: mongoose.model('University', UniSchema),
+    Key: mongoose.model('Key', KeySchema)
 };
