@@ -66,49 +66,68 @@ router.get('/', function(req, res) {
 router.get('/register', function(req, res) {
 
     res.render('register', {
-        success: req.flash('success'),
-        error: req.flash('error'),
+        success: req.flash('success')[0],
+        error: req.flash('error')[0],
+        form: req.flash('form')[0],
         uni: universities
     });
 });
 
 router.post('/register', function(req, res) {
 
-    // form validation
+    // form validation - server side
 
     // only detection, not sanitation
     for (let x in req.body) {
         if (x === 'password' || x === 'confirm_password' || isEscapedHtml(req.body[x]))
             continue;
         else {
-            req.flash('error', 'Invalid characters detected.');
+            req.flash('error', 'Invalid characters detected. Form cleared.');
             return res.redirect('/register');
         }
     }
 
     // validate email address
     if (!validateEmail(req.body.email)) {
+        let formdata = {};
+        for (let x in req.body)
+            formdata[x] = req.body[x];
+        req.flash('form', formdata);
         req.flash('error', 'Invalid email address.');
         return res.redirect('/register');
     }
 
     // check if email is typed correctly
     if (req.body.email !== req.body.confirm_email) {
+        let formdata = {};
+        for (let x in req.body)
+            formdata[x] = req.body[x];
+        req.flash('form', formdata);
         req.flash('error', 'Emails do not match.');
         return res.redirect('/register');
     }
 
     // check if password is typed correctly
     if (req.body.password !== req.body.confirm_password) {
+        let formdata = {};
+        for (let x in req.body)
+            formdata[x] = req.body[x];
+        req.flash('form', formdata);
         req.flash('error', 'Passwords do not match.');
         return res.redirect('/register');
     }
+
+    // form validated. now process input
 
     // check if the email already exists
     User.findOne({email: new RegExp('^' + req.body.email + '$', 'i')}, function(err, user) {
         if (err) throw err;
         // error when email exists
         if (user) {
+            let formdata = {};
+            for (let x in req.body)
+                formdata[x] = req.body[x];
+            req.flash('form', formdata);
             req.flash('error', 'Sorry, email already exists.');
             res.redirect('/register');
         }
@@ -123,6 +142,10 @@ router.post('/register', function(req, res) {
                         if (err) throw err;
                         // error when id exists
                         if (id) {
+                            let formdata = {};
+                            for (let x in req.body)
+                                formdata[x] = req.body[x];
+                            req.flash('form', formdata);
                             req.flash('error', 'Sorry, ID already exists.');
                             res.redirect('/register');
                         }
@@ -152,6 +175,10 @@ router.post('/register', function(req, res) {
                                     }
                                     // if key does not exists
                                     else {
+                                        let formdata = {};
+                                        for (let x in req.body)
+                                            formdata[x] = req.body[x];
+                                        req.flash('form', formdata);
                                         req.flash('error', 'Sorry, invalid registration key.');
                                         res.redirect('/register');
                                     }
@@ -175,6 +202,10 @@ router.post('/register', function(req, res) {
                             }
                             // catch all statement
                             else {
+                                let formdata = {};
+                                for (let x in req.body)
+                                    formdata[x] = req.body[x];
+                                req.flash('form', formdata);
                                 req.flash('error', 'Sorry, type does not exists.');
                                 res.redirect('/register');
                             }
@@ -183,6 +214,10 @@ router.post('/register', function(req, res) {
                 }
                 // error when university does not exists
                 else {
+                    let formdata = {};
+                    for (let x in req.body)
+                        formdata[x] = req.body[x];
+                    req.flash('form', formdata);
                     req.flash('error', 'Sorry, university does not exist.');
                     res.redirect('/register');
                 }
@@ -223,5 +258,4 @@ router.get('/logout', function(req, res) {
 
 module.exports = router;
 
-// TODO: perserve form data on error
 // TODO: deal with checkbox

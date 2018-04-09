@@ -41,9 +41,9 @@
                         <div class="form-group">
                             Email
                             <label for="email" class="sr-only">Email</label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
+                            <input <% if (form && form.email) { %> value="<%= form.email %>" <% } %> type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
                             <label for="confirm_email" class="sr-only">Confirm Email</label>
-                            <input type="email" name="confirm_email" id="confirm_email" class="form-control" placeholder="Confirm Email" required>
+                            <input <% if (form && form.confirm_email) { %> value="<%= form.confirm_email %>" <% } %> type="email" name="confirm_email" id="confirm_email" class="form-control" placeholder="Confirm Email" required>
                             <small id="emailMsg" class="form-text text-muted">Enter your email address.</small>
                         </div>
                         <div class="form-group">
@@ -55,22 +55,28 @@
                         <div class="form-group">
                             Name
                             <label for="fname" class="sr-only">First Name</label>
-                            <input type="text" name="fname" id="fname" class="form-control" placeholder="First Name" required>
+                            <input <% if (form && form.fname) { %> value="<%= form.fname %>" <% } %> type="text" name="fname" id="fname" class="form-control" placeholder="First Name" required>
                             <label for="lname" class="sr-only">Last Name</label>
-                            <input type="text" name="lname" id="lname" class="form-control" placeholder="Last Name" required>
+                            <input <% if (form && form.lname) { %> value="<%= form.lname %>" <% } %> type="text" name="lname" id="lname" class="form-control" placeholder="Last Name" required>
                         </div>
                         <div class="form-group">
                             Institution
                             <label for="id" class="sr-only">ID</label>
-                            <input type="text" name="id" id="id" class="form-control" placeholder="ID" required>
+                            <input <% if (form && form.id) { %> value="<%= form.id %>" <% } %> type="text" name="id" id="id" class="form-control" placeholder="ID" required>
                             <label for="university" class="sr-only">University</label>
                             <select class="form-control" id="university" name="university" placeholder="University" required>
-                                <option value="" selected disabled>Select your university</option>
-                                <% for (let u of uni) { %>
-                                    <option value="<%= u %>"><%= u %></option>
+                                <% if (form && form.university) { %> 
+                                    <option value="" disabled>Select your university</option>
+                                    <% for (let u of uni) { %>
+                                        <option value="<%= u %>" <% if (form.university === u) { %> selected <% } %>><%= u %></option>
+                                    <% } %>
+                                <% } else { %>
+                                    <option value="" selected disabled>Select your university</option>
+                                    <% for (let u of uni) { %>
+                                        <option value="<%= u %>"><%= u %></option>
+                                    <% } %>
                                 <% } %>
                             </select>
-
                             <label for="prof" class="sr-only">Are you a...</label>
                             <select class="form-control" id="prof" name="prof" placeholder="Are you a..." required>
                                 <option value="" selected disabled>Select which type of account</option>

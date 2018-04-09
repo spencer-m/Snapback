@@ -104,6 +104,15 @@ let CourseSchema = new Schema({
         required: true,
         unique: true
     },
+    professors: {
+        type: [{type: Schema.ObjectId, ref: 'User'}],
+        default: [], //required: true,
+        ref: 'User'
+    },
+    ta: {
+        type: [{type: Schema.ObjectId, ref: 'User'}],
+        default: []
+    },
     // array of users
     classlist: {
         type: [{type: Schema.ObjectId, ref: 'User'}],

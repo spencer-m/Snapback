@@ -3,16 +3,17 @@
  * When web app is loaded
  */
 $(document).ready(function() {
-    
-    $('#prof').on('change', function() { 
-        if ($(this).val() === 'Professor') {
-            $('#regkeydiv').removeClass('invisible');
-            $('#regkey').prop('required', true);
+
+    $('#email, #confirm_email').on('keyup', function () {
+        
+        if (validateEmail($('#email').val())) {
+            if ($('#email').val() === $('#confirm_email').val())
+                $('#emailMsg').text('Emails match.');
+            else
+                $('#emailMsg').text('Emails do not match.');
         }
         else {
-            $('#regkeydiv').addClass('invisible');
-            $('#regkey').prop('required', false);
-            $('#regkey').val('');
+            $('#emailMsg').text('Enter your email address.');
         }
     });
 
@@ -30,19 +31,17 @@ $(document).ready(function() {
             $('#passwordMsg').text('Passwords must be 8-20 characters long.');
     });
 
-    $('#email, #confirm_email').on('keyup', function () {
-        
-        if (validateEmail($('#email').val())) {
-            if ($('#email').val() === $('#confirm_email').val())
-                $('#emailMsg').text('Emails match.');
-            else
-                $('#emailMsg').text('Emails do not match.');
+    $('#prof').on('change', function() { 
+        if ($(this).val() === 'Professor') {
+            $('#regkeydiv').removeClass('invisible');
+            $('#regkey').prop('required', true);
         }
         else {
-            $('#emailMsg').text('Enter your email address.');
+            $('#regkeydiv').addClass('invisible');
+            $('#regkey').prop('required', false);
+            $('#regkey').val('');
         }
     });
-    
 });
 
 //https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
@@ -51,22 +50,26 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
+// client side valildation
 function validateForm() {
 
     $('#dynamic_alert').empty();
 
+    // validate email
     if (!validateEmail($('#email').val())) {
         let emailerr = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Invalid email address.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
         $('#dynamic_alert').append(emailerr);
         return false;
     }
 
+    // confirm email
     if ($('#email').val() !== $('#confirm_email').val()) {
         let emailerr = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Emails do not match.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
         $('#dynamic_alert').append(emailerr);
         return false;
     }
 
+    // confirm password
     if ($('#password').val() !== $('#confirm_password').val()) {
         let passworderr = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Passwords do not match.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
         $('#dynamic_alert').append(passworderr);
