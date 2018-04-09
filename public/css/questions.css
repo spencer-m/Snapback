@@ -15,3 +15,22 @@
     border-radius: 0;
     box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
 }
+
+.comments-list .comment p{
+    margin: 0;
+    padding: 0;
+}
+
+#up , #down{
+    margin: 0 20px;
+}
+
+
+
+
+
+
+
+
+
+
