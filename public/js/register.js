@@ -21,21 +21,25 @@ $(document).ready(function() {
         if ((($('#password').val().length >= 8) || ($('#confirm_password').val().length >= 8)) &&
             (($('#password').val().length <= 20) || ($('#confirm_password').val().length <= 20))) {
 
-            if ($('#password').val() === $('#confirm_password').val()) {
+            if ($('#password').val() === $('#confirm_password').val())
                 $('#passwordMsg').text('Passwords match.');
-                $('#password').removeClass('danger');
-                $('#password').addClass('success');
-            }
-            else {
+            else
                 $('#passwordMsg').text('Passwords do not match.');
-                $('#password').removeClass('success');
-                $('#password').addClass('danger');
-            }
+        }
+        else
+            $('#passwordMsg').text('Passwords must be 8-20 characters long.');
+    });
+
+    $('#email, #confirm_email').on('keyup', function () {
+        
+        if (validateEmail($('#email').val())) {
+            if ($('#email').val() === $('#confirm_email').val())
+                $('#emailMsg').text('Emails match.');
+            else
+                $('#emailMsg').text('Emails do not match.');
         }
         else {
-            $('#passwordMsg').text('Passwords must be 8-20 characters long.');
-            $('#password').removeClass('success');
-            $('#password').removeClass('danger');
+            $('#emailMsg').text('Enter your email address.');
         }
     });
     
@@ -57,8 +61,14 @@ function validateForm() {
         return false;
     }
 
+    if ($('#email').val() !== $('#confirm_email').val()) {
+        let emailerr = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Emails do not match.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        $('#dynamic_alert').append(emailerr);
+        return false;
+    }
+
     if ($('#password').val() !== $('#confirm_password').val()) {
-        let passworderr = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Passwords does not match.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        let passworderr = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Passwords do not match.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
         $('#dynamic_alert').append(passworderr);
         return false;
     }

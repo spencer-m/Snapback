@@ -76,6 +76,7 @@ router.post('/register', function(req, res) {
 
     // form validation
 
+    // only detection, not sanitation
     for (let x in req.body) {
         if (x === 'password' || x === 'confirm_password' || isEscapedHtml(req.body[x]))
             continue;
@@ -85,13 +86,21 @@ router.post('/register', function(req, res) {
         }
     }
 
+    // validate email address
     if (!validateEmail(req.body.email)) {
         req.flash('error', 'Invalid email address.');
         return res.redirect('/register');
     }
 
+    // check if email is typed correctly
+    if (req.body.email !== req.body.confirm_email) {
+        req.flash('error', 'Emails do not match.');
+        return res.redirect('/register');
+    }
+
+    // check if password is typed correctly
     if (req.body.password !== req.body.confirm_password) {
-        req.flash('error', 'Passwords does not match.');
+        req.flash('error', 'Passwords do not match.');
         return res.redirect('/register');
     }
 
@@ -213,3 +222,6 @@ router.get('/logout', function(req, res) {
 });
 
 module.exports = router;
+
+// TODO: perserve form data on error
+// TODO: deal with checkbox

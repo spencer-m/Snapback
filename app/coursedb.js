@@ -101,7 +101,8 @@ let CourseSchema = new Schema({
     },
     regcode: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     // array of users
     classlist: {

@@ -122,5 +122,16 @@ if (toInitialize != 0) {
     });
 
     k1.save();
+
+    let c1 = new Course({
+        courseinfo: {
+            code: 'SENG 513',
+            name: 'Web-based Systems',
+            year: '2018'
+        },
+        regcode: 'SENG-W2018'
+
+    });
+    c1.save();
 }
 
