@@ -112,12 +112,127 @@ body {
     border-top: 4px solid #9ae7f4;
 }
 
+/** LOGIN BOX STUFF **/
+
 #loginBox {
     -moz-border-radius:10px;  /* for Firefox */
     -webkit-border-radius:10px; /* for Webkit-Browsers */
     border-radius:10px; /* regular */
-    background-color: rgba(255,255,255,0.3);
     padding: 25px;
+}
+
+#loginBox h2 {
+    text-align: left;
+    color: #358bbe;
+    padding-bottom: 10px;
+}
+
+#loginBox input {
+    border-color: #358bbe;
+}
+
+#loginBox form button {
+    transition: background-color .5s, color .5s;
+
+    border-radius: 10%;
+    border: solid 2px #358bbe;
+    color: white;
+    background: #358bbe;
+    padding: 5px 10px;
+}
+
+#loginBox form button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #358bbe;
+
+}
+
+#loginBox input::placeholder {
+    color: lightgray;
+}
+
+#loginBox form {
+    padding-bottom: 15px;
+}
+
+#loginBox form label {
+    font-size: 14px;
+    color: black;
+    align-self: start;
+    cursor: pointer;
+    padding-bottom: 2px;
+
+    padding-left: 10px;
+
+    display: block;
+    position: relative;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#loginBox form label input {
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkBox-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+
+    background-color: white;
+    border-color: gray;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 15%;
+}
+
+/** SOME RETRIEVED FROM https://www.w3schools.com/howto/howto_css_custom_checkbox.asp **/
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkBox-mark:after {
+    content: "";
+    position: absolute;
+    display: none;
+
+    background-color: white;
+    transition: background-color .5ms;
+}
+
+/* Show the checkmark when checked */
+#checkBox-label input:checked ~ .checkBox-mark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+#checkBox-label .checkBox-mark:after {
+
+    background-color: #358bbe;
+
+    top: 1.5px;
+    left: 1.5px;
+
+    width: 15px;
+    height: 15px;
+    border-radius: 15%;
+}
+
+/** END RETRIEVED DATA **/
+
+#register-area {
+    font-size: 13px;
+    color: black;
+    text-align: left;
+}
+
+#register-area a {
+    color: #9ae7f4;
 }
 
 
