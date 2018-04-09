@@ -5,6 +5,44 @@ let passport = require('passport');
 let User = require('./userdb.js');
 let Util = require('./utildb.js');
 
+/**
+ * Invalidate HTML tags.
+ * Source:
+ * https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery
+ * @param {String} string 
+ */
+var entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;'
+};
+
+function escapeHtml (string) {
+    return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+        return entityMap[s];
+    });
+}
+
+/**
+ * Checks if string is unescaped.
+ * @param {String} string 
+ */
+function isEscapedHtml (string) {
+    let string2 = escapeHtml(string);
+    return (string2 === string);
+}
+
+//https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 /* registration values initalize */
 
 let universities = [];
@@ -35,6 +73,27 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res) {
+
+    // form validation
+
+    for (let x in req.body) {
+        if (x === 'password' || x === 'confirm_password' || isEscapedHtml(req.body[x]))
+            continue;
+        else {
+            req.flash('error', 'Invalid characters detected.');
+            return res.redirect('/register');
+        }
+    }
+
+    if (!validateEmail(req.body.email)) {
+        req.flash('error', 'Invalid email address.');
+        return res.redirect('/register');
+    }
+
+    if (req.body.password !== req.body.confirm_password) {
+        req.flash('error', 'Passwords does not match.');
+        return res.redirect('/register');
+    }
 
     // check if the email already exists
     User.findOne({email: new RegExp('^' + req.body.email + '$', 'i')}, function(err, user) {
@@ -154,7 +213,3 @@ router.get('/logout', function(req, res) {
 });
 
 module.exports = router;
-
-// TODO: add basic input sanitation
-// TODO: password confirm field
-// TODO: retain form contents when failure of reg
