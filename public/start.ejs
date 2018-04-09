@@ -11,10 +11,10 @@
         <title>Snapback</title>
     </head>
     <!-- Add fonts!! -->
-    <body style="background: url(img/bg2.jpg) no-repeat center center fixed; background-size:cover;">
-        <div class="container">
-			<!--<div class="row" style="min-height:5vh; max-height:5vh;"></div>--> <!-- why is this here? -->
-			<div class="row" style="min-height:15vh; max-height:15vh;">
+    <body> <!-- style="background: url(img/bg2.jpg) no-repeat center center fixed; background-size:cover;"> -->
+        <div class="container-fluid">
+			<!--<div class="row" style="min-height:5vh; max-height:5vh;"></div>--> <!-- why is this here?
+			<div id="alarm-area">
 				<div class="col-sm-12">
 					<div class="col-sm-12">
 						<% if (error && error.length > 0) { %>
@@ -35,43 +35,58 @@
 						<% } %>
 					</div>
 				</div>
-			</div>
+			</div>-->
 
-            <div class="row text-center">
+
+            <div class="divider-sm divider-color divider-left"></div>
+            <div class="divider-md divider-color divider-left"></div>
+            <div class="divider-rightmost divider-color"></div>
+
+            <div id="box-container" class="row text-center">
 
 				<!--<div class="col-sm-1"></div>-->
 				
-				<div id="infoBox" class="col-sm-5" style="padding-bottom: 3em">
-					<img src="img/logo_blue.png" style="width: 80%; height: 350px;">
-					<!--<h2 style="padding-bottom: 1em;">Welcome to Snapback</h2>-->
-					<h5 class="text-justify" style="font-size:16px; opacity: 0.9">
-						Snapback is a user-friendly interface that allows students to connect with one another and their
-						professors in and outside of the classroom. With utilities such as accessing lecture files and
-						a Q&A section, students will feel as if they've never left class at all.
-					</h5>
-					<br>
-					<a href="register"><button class="btn btn-outline-light btn-lg">Register</button></a>
+				<div id="infoBox" class="col-sm-5">
+                    <img class="align-self-center" src="img/logo_blue.png">
+                    <hr/>
+                    <p class="text-center text-white">
+                        Welcome to Snapback! <br> Whether you're a student or an instructor, we'll ensure that you can keep
+                        track of your classes and stay connected!
+                    </p>
+                    <hr id="bottom-hr"/>
 				</div>
-				
-				<div class="col-sm-1"></div>
-				
-				<div id="divider" class="col-sm-1 border-left" style="height: 600px; opacity: 0.3;"></div>
-				
-				<div id="loginBox" class="col-sm-5 align-self-center">
-					<h2 style="font-size: 24px; letter-spacing: 1px; padding-bottom: 1em;">Login</h2>
-					<form style="color:#ffffff;" method="post">
+
+                <!-- DIVIDER -->
+                <div class="col-sm-1 div-smaller"></div>
+                <div class="divider col-sm-1 border-left div-smaller"></div>
+
+				<div id="loginBox" class="col-sm-5">
+                    <h2>Sign In</h2>
+					<form method="post" class="d-flex align-content-start flex-column">
 						<div class="form-group">
-							<input type="email" name="email" id="email" class="form-control" placeholder="email" required autofocus>
+							<input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
 						</div>
 						<div class="form-group">
-							<input type="password" name="password" id="password" class="form-control" placeholder="password" required autofocus>
+							<input type="password" name="password" id="password" class="form-control" placeholder="Password" required autofocus>
 						</div>
-						<br>
-						<button type="submit" id="submit" class="btn btn-outline-light mb-2">Sign In</button>
+
+                        <label id="checkBox-label"><input id="checkBox" type="checkbox"> <span class="checkBox-mark"></span>   Remember me</label>
+
+                        <button type="submit" id="submit" class="align-self-center">Let's go!</button>
 					</form>
+
+                    <div id="register-area">
+                        Don't have an account? Get started! Join us <a href="register">here</a> if you're a student
+                        or <a href="register">here</a> if you're an instructor.
+                    </div>
 				</div>
 				
             </div>
+
+            <div class="divider-leftmost divider-color"></div>
+            <div class="divider-md divider-color divider-right"></div>
+            <div class="divider-sm divider-color divider-right"></div>
+
             <!--<div class="row" style="min-height:20vh; max-height:20vh;"></div>--> <!-- why is this also here :O -->
         </div>
 

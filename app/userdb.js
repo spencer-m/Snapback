@@ -22,7 +22,6 @@ let User = new Schema({
     id: {
         type: String,
         required: true,
-        unique: true
     },
     university: {
         type: Schema.ObjectId,
@@ -32,8 +31,11 @@ let User = new Schema({
     isProfessor: {
         type: Boolean,
         required: true
-    }
+    },
+    courses: [{type: Schema.ObjectId, ref: 'Course'}]
 });
+
+User.index({id: 1, university: 1}, {unique: true});
 
 User.plugin(passportLocalMongoose, {usernameField: 'email'});
 

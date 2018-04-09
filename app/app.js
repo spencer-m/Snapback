@@ -102,7 +102,7 @@ if (toInitialize != 0) {
 
     let User = require('./userdb.js');
     let Util = require('./utildb.js');
-    let Class = require('./classdb.js');
+    let Course = require('./coursedb.js');
 
     let u1 = new Util.University({
         name: 'University of Calgary'
@@ -122,5 +122,15 @@ if (toInitialize != 0) {
     });
 
     k1.save();
+
+    let c1 = new Course.Course({
+        courseinfo: {
+            code: 'SENG 513',
+            name: 'Web-based Systems',
+            year: '2018'
+        },
+        regcode: 'SENG-W2018'
+    });
+    c1.save();
 }
 
