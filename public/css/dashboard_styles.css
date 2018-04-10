@@ -56,9 +56,9 @@ a, a:hover, a:focus {
     left: 0;
     height: 100vh;
     z-index: 999;
-    background: #F44336;
+    background: #72d4e5;
     color: #fff;
-    border-right: 2px solid gray;
+    border-right: 1px solid #358bbe;
     transition: all 0.3s;
 }
 
@@ -68,12 +68,12 @@ a, a:hover, a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #E53935;
+    background: #72d4e5;
 }
 
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid #E53935;
+    border-bottom: 1px solid #72d4e5;
 }
 
 #sidebar ul p {
@@ -87,13 +87,13 @@ a, a:hover, a:focus {
     display: block;
 }
 #sidebar ul li a:hover {
-    color: #E53935;
+    color: #72d4e5;
     background: #fff;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
     color: #fff;
-    background: #E53935;
+    background: #9ae7f4;
 }
 
 #sidebar button {
@@ -112,7 +112,7 @@ a, a:hover, a:focus {
 
 #sidebar-collapse.active {
     margin-left: 250px;
-    background-color: #E53935;
+    background-color: #72d4e5;
     color: white;
 }
 
