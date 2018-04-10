@@ -99,13 +99,12 @@ io.connection = function(socket) {
         if (socket.request.user.logged_in && socket.request.user.isProfessor) {
             console.log('prof add');
             /*
-            info: {
+            info : {
                 courseinfo: {
-                    code:
-                    name:
-                    year:
+                code: SENG 513
+                name: Web based sysems
+                year: 2018
                 },
-                regcode: generated or entered?,
                 professor: socket.request.user._id
             }
             */

@@ -1,5 +1,7 @@
 $(function(){
 
+    let socket = io();
+
     /**
      *  handles sidebar expansion and collapse
      **/
@@ -70,7 +72,6 @@ $(function(){
         $('#course-code-input').val('');
     });
 
-    let socket = io();
 
     socket.on('init', function(info) {
         console.log(info);
@@ -82,12 +83,22 @@ $(function(){
         socket.emit('entrollToClass', code, function(response) {
             if (response === 'success')
                 console.log('successfully enrolled');
-            else if (response == 'already_enrolled')
+            else if (response === 'already_enrolled')
                 console.log('already_enrolled');
-            else if (response == 'invalid')
+            else if (response === 'invalid')
                 console.log('invalid class code');
             else
-                console.log('unknown error');
+                consoles.log('unknown error');
+        });
+    });
+
+    $('#createClass').click(function() {
+        /*
+        info = need code, name and year
+         */
+
+        socket.emit('addNewClass', info,  function(response) {
+           // callback function
         });
     });
 });
