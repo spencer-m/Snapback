@@ -6,21 +6,28 @@ $(function(){
      *  handles sidebar expansion and collapse
      **/
     $('#sidebar-collapse').on('click', function () {
-        $('#sidebar, #content, #sidebar-collapse').toggleClass('active');
+        $('#sidebar, #content, .icon-bar').toggleClass('active');
         $('.class-cards').toggleClass('active');
         $('.collapse.in').toggleClass('in');
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 
-        let sidebarButton = "#sidebar button";
+        /*
+        let sidebarButton = "#sidebarBtn";
 
-        $(sidebarButton).toggleClass('sidebar-expand');
+        $(sidebarButton).toggleClass('.active');
+
 
         if ($(sidebarButton).hasClass('sidebar-expand')){
             $(sidebarButton).text(">");
         }
         else {
             $(sidebarButton).text("<");
-        }
+        }*/
+    });
+
+    $('#sidebarBtn').on('click', function () {
+       $('.icon-bar.active').removeClass('active');
+       $('#sidebar, #content').toggleClass('active');
     });
 
     /**

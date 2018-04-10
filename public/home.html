@@ -16,7 +16,6 @@
   <!-- Bootstrap CSS CDN -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-
   <!-- JQuery CSS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -25,6 +24,9 @@
 
   <!-- Scrollbar Custom CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+  <!-- Icon Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 <body>
@@ -66,6 +68,9 @@
   <div class="wrapper container-fluid">
     <!-- Sidebar -->
     <nav id="sidebar">
+
+      <a id="sidebar-collapse" class="active" href="#" style="font-size: 24px; display: block; text-align: right; padding: 16px; color: white;"><i class="fa fa-arrow-left"></i></a>
+
       <div class="sidebar-header">
         <h3> Username Here</h3>
       </div>
@@ -83,10 +88,17 @@
           <a href="logout">Logout</a>
         </li>
       </ul>
-
-
+      <!--
       <button type="button" id="sidebar-collapse" class="btn btn-light navbar-btn float-right"><</button>
+      -->
     </nav>
+
+
+    <div class="icon-bar">
+      <a id="sidebarBtn" class="active" href="#"><i class="fa fa-arrow-right"></i></a>
+      <a href="#"><i class="fa fa-home"></i></a>
+      <a href="#" style="margin-top: 75vh;"><i class="fa fa-sign-out"></i></a>
+    </div>
 
     <!-- Page Content -->
     <div id="content">

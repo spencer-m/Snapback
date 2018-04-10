@@ -4,7 +4,6 @@
 */
 @import "https://fonts.googleapis.com/css?family=Nunito:300,400,500,600,700";
 
-
 body {
     font-family: 'Nunito', sans-serif;
     background: #fafafa;
@@ -103,15 +102,17 @@ a, a:hover, a:focus {
 /* moves button to the right if sidebar is collapsed */
 #sidebar button.sidebar-expand {
     margin-right: -30px;
+    display: none;
 }
 
 #sidebar-collapse {
     margin-left: 215px;
-    line-height: 100px;
+    line-height: 15px;
 }
 
 #sidebar-collapse.active {
-    margin-left: 250px;
+    display: none;
+    margin-left: 0px;
     background-color: #72d4e5;
     color: white;
 }
@@ -174,7 +175,7 @@ a.article, a.article:hover {
 }
 
 #content.active {
-    width: 100%;
+    width: 95%;
 }
 
 .class-cards.active {
@@ -293,3 +294,39 @@ a.article, a.article:hover {
 .navbar-collapse.collapse.in {
   display: block!important;
 }
+
+/* ---------------------------------------------------
+    ICON BAR STYLE
+----------------------------------------------------- */
+
+.icon-bar {
+    width: 70px;
+    background-color: #72d4e5;
+    height: 100vh;
+    margin-left: -85px;
+}
+
+.icon-bar.active {
+    width: 70px;
+    background-color: #72d4e5;
+    height: 100vh;
+    margin-left: -15px;
+}
+
+.icon-bar a {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 24px;
+}
+
+.icon-bar a:hover {
+    background-color: #9ae7f4;
+}
+
+/*
+.active {
+    background-color: #358bbe !important;
+}*/
