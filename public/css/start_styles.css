@@ -131,6 +131,10 @@ body {
     border-color: #358bbe;
 }
 
+#loginBox input.wrong {
+    border-color: red;
+}
+
 #loginBox form button {
     transition: background-color .5s, color .5s;
 
@@ -187,7 +191,7 @@ body {
     height: 20px;
 
     background-color: white;
-    border-color: gray;
+    border-color: #358bbe;
     border-width: 1px;
     border-style: solid;
     border-radius: 15%;
