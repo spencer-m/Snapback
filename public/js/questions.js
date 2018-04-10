@@ -1,4 +1,9 @@
-console.log("Hello world");
+user = "Kourosh"
+course = "Seng 513"
+
+sessions = null;
+
+
 function session(id,isLive,duration,questions){
     this.id = id;
     this.isLive = isLive;
@@ -6,75 +11,193 @@ function session(id,isLive,duration,questions){
     this.questions = questions;
 }
 
-function question(question,user,date,upvotes,downvotes,comments){
+function question(question,author,date,upvotes,downvotes,comments){
     this.question = question;
-    this.user = user;
+    this.author = author;
     this.date = date;
     this.upvotes = upvotes;
     this.downvotes = downvotes;
     this.comments = comments;
 
-    this.view = function view(){
-        var card = document.createElement("div")
-        card.className ="card";
+    var question = this;
+    var replyMessage;
+    var upArrow;
+    var downArrow;
 
-        var table = document.createElement("table");
+    this.upArrowClick = function(){
+        if(upvotes.indexOf(user) < 0){
+            upvotes.push(user);
+            if(downvotes.indexOf(user) >=0 ){
+                downvotes.splice(downvotes.indexOf(user),1);
+            }
+        }else{
+            upvotes.splice(upvotes.indexOf(user) ,1);
+        }
+        console.log(question);
+        resetView();
         
-        var row = document.createElement("tr");
-        row.innerHTML = `
-        <td><img id="up" src="img/upArrow.svg" height="50px"></td>
-        <td><h4>` + question +`</h4></td>`
-        ;
+    }
+
+    this.downArrowClick = function(){
+        if(downvotes.indexOf(user) < 0){
+            downvotes.push(user);
+            if(upvotes.indexOf(user) >=0 ){
+                upvotes.splice(upvotes.indexOf(user),1);
+            }
+        }else{
+            downvotes.splice(downvotes.indexOf(user,1));
+        }
+        console.log(question);
+        resetView();
+    }
+
+
+
+    this.reply = function(){
+    
+        if(replyMessage.val().trim() != ""){
+            question.comments.push(new comment(user,replyMessage.val().trim()));
+        }
+        resetView();
+        return false;
+    }
+
+    this.score = function(){
+        return(upvotes.length - downvotes.length);
+    }
+
+    this.view = function view(){
+        var card = $("<div>")
+        card.attr("class","card");
+
+        var table = $("<table>");
+        
+        var row = $("<tr>");
+        upArrow = $(`<img id="down" height="50px">`);
+        upArrow.attr("src",(upvotes.includes(user)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        upArrow.click(this.upArrowClick);
+        row.append(upArrow);
+        row.append($(`<td><h4>` + this.question +`</h4></td>`));
+        
 
         table.append(row);
 
-        var row = document.createElement("tr");
-        row.innerHTML = `   <td><img id="down" src="img/downArrow.svg" height="50px"></td>
-                            <td><div class="row">
-                                <div class="col-md-12 col-lg-4"><p>User: ` + user +`</p></div>
-                                <div class="col-md-12 col-lg-4"><p>Score: `+ (upvotes.length - downvotes.length) +`</p></div> 
-                                <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>    
-                            </div></td>`;
+        var row = $("<tr>");
+        downArrow = $(`<img id="down" height="50px">`);
+    
+        downArrow.attr("src",(downvotes.includes(user)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        downArrow.click(this.downArrowClick);
+        row.append(downArrow);
+        row.append($(`<td><div class="row">
+                        <div class="col-md-12 col-lg-4"><p>User: ` + author +`</p></div>
+                        <div class="col-md-12 col-lg-4"><p>Score: `+ this.score() +`</p></div> 
+                        <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>    
+                        </div></td>`));
+                            
 
         table.append(row);
         card.append(table);
 
-        var commentList = document.createElement("div");
-        commentList.className = "comments-list"
+        var commentList = $("<div>");
+        commentList.attr("class","comments-list");
 
         comments.forEach(comment => {
             commentList.append(comment.view())
         });
         card.append(commentList);
+
+
+        var replyForm = $("<form>").attr("action","");
+        
+        replyMessage = $("<input>");    
+        replyForm.append(replyMessage);
+        replyForm.append($(`<button class="btn btn-dark btn-sm">Reply</button>`));
+        replyForm.submit(this.reply);
+        
+
+        $(card).append(replyForm);
         return(card);
     }
+
 }
 
-function comment(user,msg){
-    this.user = user;
+function comment(author,msg){
+    this.author = author;
     this.msg = msg;
 
     this.view = function view(){
-        rowComment = document.createElement("div");
-        rowComment.className = "row comment"
+        rowComment = $("<div>");
+        rowComment.attr("class","row comment");
 
-        rowComment.innerHTML = `<div class="col-md-12 col-lg-2"><p>User: `+user+`</p></div>
-                                <div class="col-md-12 col-lg-10"><p>`+msg+`</p></div>`
+        rowComment.html(`<div class="col-md-12 col-lg-2"><p>User: `+author+`</p></div>
+                                <div class="col-md-12 col-lg-10"><p>`+msg+`</p></div>`);
         return(rowComment);
     }
 }
 
 
-var question = new question("What is life?","Kouroshb26","April 16th 2017",["Kouroshb26"],[],
+questions = [new question("What is life?","Kouroshb26","April 16th 2017",["Jake"],[user],
     [new comment("Hello123","I like you. Don't hurt me"),
     new comment("Jerry","I like you."),
     new comment("Swagmaster","Swag is All i care about"),
-    ]
-);
+    ]),
+    new question("This is another question I AM FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
+    [new comment("Jerry","I don't like you."),
+    new comment("Jebrone","Wow such nice comments."),
+    ]),
+    new question("asfdhadfjhkanothdskjfdoaijfoewjrfoejrdsafdsa FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
+    [new comment("Jerry","I don't like you."),
+    new comment("Jebrone","Wow such nice comments."),
+    ]),
+];
 
-console.log(questions);
+function formatDate(time){
+    let year = time.getFullYear();
+    let month = time.getMonth();
+    let day = time.getDate();
+    let h = time.getHours();
+    let m = time.getMinutes();
+    
+    // These lines the seconds are two digits
+    if (h < 10) {h = "0"+h;};
+    if (m < 10) {m = "0"+m;};
+    // This formats your string to Year/Month/Day hh:mm
+    return(year+"/"+month+"/"+day+" "+h+":"+m);
+}
 
-$(".questions-list").append(question.view());
+function resetView(){
+    questions.sort(function(question1,question2){
+        return(question2.score() - question1.score());
+    })
+    $(".questions-list").empty();
+
+   
+    var questionForm = $("<form>").attr("action","");
+    var replyQuestion = $("<input>");    
+    questionForm.append(replyQuestion);
+    questionForm.append($(`<button class="btn btn-dark btn-sm">New Question</button>`));
+    
+    
+    questionForm.submit(function(){
+        if(replyQuestion.val().trim() != ""){
+            questions.push(new question(replyQuestion.val().trim(),user,formatDate(new Date()),[],[],[]));
+        }
+        resetView();
+        return false;
+    });
+    
+    $(".questions-list").append(questionForm);
+    
+    questions.forEach(question => {
+        $(".questions-list").append(question.view());
+    });
+    
+}
+
+$( document ).ready(function(){
+    resetView();
+
+});
 
 
 

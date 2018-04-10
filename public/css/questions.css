@@ -23,8 +23,35 @@
 
 #up , #down{
     margin: 0 20px;
+    cursor: pointer; 
 }
 
+
+td {
+    vertical-align: middle;
+}
+td p,  td h4{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.questions-list form{
+    margin: 5px;
+    display: flex;
+}
+.questions-list input{
+    flex-grow: 10;
+}
+.questions-list button{
+    flex:1;
+}
+
+#addQuestion {
+    position: fixed;
+    bottom: 100px;
+    right: 100px; 
+}
 
 
 
