@@ -8,250 +8,288 @@
 
   <!--
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
-  <!-- Bootstrap CSS CDN -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Bootstrap CSS CDN -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-  <!-- JQuery CSS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- JQuery CSS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-  <!-- Dashboard CSS -->
-  <link rel="stylesheet" type="text/css" href="css/dashboard_styles.css">
+<!-- Dashboard CSS -->
+<link rel="stylesheet" type="text/css" href="css/dashboard_styles.css">
 
-  <!-- Scrollbar Custom CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<!-- Scrollbar Custom CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
 
-  <!-- Questions Custom CSS -->
-  <link rel="stylesheet" href="css/questions.css">
+<!-- Questions Custom CSS -->
+<link rel="stylesheet" href="css/questions.css">
 
 </head>
 <body>
 
-<!--
-<div class="container-fluid text-center h-100">
+  <!--
+  <div class="container-fluid text-center h-100">
   <div class="row content">
-    <nav class="col-sm-2 sidenav">
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
-      <div class="row content" style="display: inline;">
-        <img src="img/placeholder_avatar.jpg" class="img-responsive">
-        <span>User Name Here</span>
-      </div>
-    </nav>
+  <nav class="col-sm-2 sidenav">
+  <p><a href="#">Link</a></p>
+  <p><a href="#">Link</a></p>
+  <div class="row content" style="display: inline;">
+  <img src="img/placeholder_avatar.jpg" class="img-responsive">
+  <span>User Name Here</span>
+</div>
+</nav>
 
-    <div class="col-sm-10 text-left box">
-      <h1>Classes</h1>
-      <hr>
-      <h3>Test</h3>
-      <p>Lorem ipsum...</p>
-    </div>
-    <div class="col-sm-2 sidenav">
-      <div class="well">
-        <a href="logout">LOGOUT</a>
-      </div>
-      <div class="well">
-        <p>ADS</p>
-      </div>
-    </div>
-  </div>
+<div class="col-sm-10 text-left box">
+<h1>Classes</h1>
+<hr>
+<h3>Test</h3>
+<p>Lorem ipsum...</p>
+</div>
+<div class="col-sm-2 sidenav">
+<div class="well">
+<a href="logout">LOGOUT</a>
+</div>
+<div class="well">
+<p>ADS</p>
+</div>
+</div>
+</div>
 </div>
 
 <footer class="container-fluid text-center">
-  <p>Footer Text</p>
+<p>Footer Text</p>
 </footer>
 -->
 
-  <div class="wrapper container-fluid">
-    <!-- Sidebar -->
-    <nav id="sidebar">
-      <div class="sidebar-header">
-        <h3> Username Here</h3>
+<div class="wrapper container-fluid">
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <h3> Username Here</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+      <p>Dummy Heading</p>
+      <li class="active">
+        <a href="#menu" >Button 1</a>
+
+      </li>
+      <li>
+        <a href="#menu">Button 2</a>
+      </li>
+    </ul>
+
+    <button type="button" id="sidebarCollapse" class="btn btn-light navbar-btn pull-right">
+      <!--<i class="glyphicon glyphicon-menu-left"></i>-->
+      <
+    </button>
+  </nav>
+
+  <!-- Page Content -->
+  <div id="content">
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+
+        <div class="navbar-header">
+          <div class="header-title">
+            <h1>Classes</h1>
+          </div>
+
+          <div class="dropdown">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Small dropdown
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+
+          <button type="button" style="float: right;" class="btn btn-outline-primary"  data-toggle="modal" data-target="#uploadModal" >Upload</button>
+          <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="uploadModalLabel">Upload File</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <label for="file-upload" class="custom-file-upload">
+                    <i class="fa fa-cloud-upload"></i> Click here to upload a file
+                  </label>
+                  <input id="file-upload" type="file"/>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <ul class="list-unstyled components">
-        <p>Dummy Heading</p>
-        <li class="active">
-          <a href="#menu" >Button 1</a>
-
-        </li>
-        <li>
-          <a href="#menu">Button 2</a>
-        </li>
-      </ul>
-
-      <button type="button" id="sidebarCollapse" class="btn btn-light navbar-btn pull-right">
-        <!--<i class="glyphicon glyphicon-menu-left"></i>-->
-        <
-      </button>
     </nav>
 
-    <!-- Page Content -->
-    <div id="content">
+    <hr style="margin-bottom: 35px"> <!-- Divider -->
 
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs nav-justified">
+      <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#lecture">Lecture</a></li>
+      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#questions">Questions</a></li>
+    </ul>
 
-          <div class="navbar-header">
-            <div class="header-title">
-              <h1>Classes</h1>
-            </div>
-
-            <div class="dropdown">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Small dropdown
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </nav>
-
-      <hr style="margin-bottom: 35px"> <!-- Divider -->
-
-      <!-- Tabs -->
-      <ul class="nav nav-tabs nav-justified">
-        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#lecture">Lecture</a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#questions">Questions</a></li>
-      </ul>
-
-      <div class="tab-content">
-        <div id="lecture" class="tab-pane fade show active">
-          <!-- Lecture Content -->
-          <div id="accordion">
-           <div class="card">
-             <div class="card-header">
-             <a class="card-link"  data-toggle="collapse" href="#collapse-lecture">
-                 Lecture Notes
-                 </a>
-             </div>
-             <div id="collapse-lecture" class="collapse" data-parent="#accordion">
-               <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-               sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-               minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-               commodo consequat.</div>
-             </div>
-           </div>
-           <div class="card">
-             <div class="card-header">
-               <a class="card-link"  data-toggle="collapse" href="#collapse-assignment">
-                 Assignments
-               </a>
-             </div>
-             <div id="collapse-assignment" class="collapse" data-parent="#accordion">
-               <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-               sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-               minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-               commodo consequat.</div>
-             </div>
-           </div>
-           <div class="card">
-             <div class="card-header">
-               <a class="card-link"  data-toggle="collapse" href="#collapse-test">
-                 Test Material
-               </a>
-             </div>
-             <div id="collapse-test" class="collapse" data-parent="#accordion">
-               <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-               sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-               minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-               commodo consequat.</div>
-             </div>
-           </div>
-         </div>
-        </div>
-        <!-- Questions -->
-        <div id="questions" class="tab-pane fade">
-        
-        <div class="questions-list">
+    <div class="tab-content">
+      <div id="lecture" class="tab-pane fade show active">
+        <!-- Lecture Content -->
+        <div id="accordion">
           <div class="card">
- 
-              <table>
-                <tr> 
-                  <td><img id="up" src="img/upArrow.svg" height="50px"></td>
-                  <td> <h4> My question is to get this done before school. BUT SWAGER AINT STOPPING ME NOW?</h4></td>
-
-                </tr>
-                <tr>
-                  <td><img id="down" src="img/downArrow.svg" height="50px"></td>
-                  <td>
-                      <div class="row">
-                        <div class="col-md-12 col-lg-4"><p>ID: 10149436</p></div>
-                        <div class="col-md-12 col-lg-4"><p>Score: 56</p></div> 
-                        <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>    
-                      </div>
-                  </td>
-                </tr>
-              </table>
-              <div class="comments-list">
-
-                  <div class="row comment">
-                      <div class="col-md-12 col-lg-2"><p>ID: 5498498463</p></div>
-                      <div class="col-md-12 col-lg-10"><p>You are doing it wrong</p></div>    
-                  </div>
-
-                  <div class="row comment">
-                      <div class="col-md-12 col-lg-2"><p>ID: 10149436</p></div>
-                      <div class="col-md-12 col-lg-10"><p>Oh that makes sense now</p></div>     
-                  </div>
-
-              </div>
-
+            <div class="card-header">
+              <a class="card-link"  data-toggle="collapse" href="#collapse-lecture">
+                Lecture Notes
+              </a>
+            </div>
+            <div id="collapse-lecture" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Cras justo odio</li>
+                  <li class="list-group-item">Dapibus ac facilisis in</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
               </div>
             </div>
           </div>
-        
-        </div>
-    
-    </div>
-  </div>
+            <div class="card">
+              <div class="card-header">
+                <a class="card-link"  data-toggle="collapse" href="#collapse-assignment">
+                  Assignments
+                </a>
+              </div>
+              <div id="collapse-assignment" class="collapse" data-parent="#accordion">
+                <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                  commodo consequat.</div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="card-link"  data-toggle="collapse" href="#collapse-test">
+                    Test Material
+                  </a>
+                </div>
+                <div id="collapse-test" class="collapse" data-parent="#accordion">
+                  <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                    commodo consequat.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Questions -->
+            <div id="questions" class="tab-pane fade">
 
-  <script type="text/javascript">
+              <div class="questions-list">
+                <div class="card">
+
+                  <table>
+                    <tr>
+                      <td><img id="up" src="img/upArrow.svg" height="50px"></td>
+                      <td> <h4> My question is to get this done before school. BUT SWAGER AINT STOPPING ME NOW?</h4></td>
+
+                    </tr>
+                    <tr>
+                      <td><img id="down" src="img/downArrow.svg" height="50px"></td>
+                      <td>
+                        <div class="row">
+                          <div class="col-md-12 col-lg-4"><p>ID: 10149436</p></div>
+                          <div class="col-md-12 col-lg-4"><p>Score: 56</p></div>
+                          <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <div class="comments-list">
+
+                    <div class="row comment">
+                      <div class="col-md-12 col-lg-2"><p>ID: 5498498463</p></div>
+                      <div class="col-md-12 col-lg-10"><p>You are doing it wrong</p></div>
+                    </div>
+
+                    <div class="row comment">
+                      <div class="col-md-12 col-lg-2"><p>ID: 10149436</p></div>
+                      <div class="col-md-12 col-lg-10"><p>Oh that makes sense now</p></div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <script type="text/javascript">
       $(document).ready(function () {
 
 
-          $('#sidebarCollapse').on('click', function () {
-              $('#sidebar, #content, #sidebarCollapse').toggleClass('active');
-              $('.class-cards').toggleClass('active');
-              $('.collapse.in').toggleClass('in');
-              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        $('#sidebarCollapse').on('click', function () {
+          $('#sidebar, #content, #sidebarCollapse').toggleClass('active');
+          $('.class-cards').toggleClass('active');
+          $('.collapse.in').toggleClass('in');
+          $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 
-              $('#sidebar button').toggleClass('sidebarExpand');
+          $('#sidebar button').toggleClass('sidebarExpand');
 
 
-              <!-- changes the icon on the button depending state -->
-          });
+          <!-- changes the icon on the button depending state -->
+        });
+
+        $('#uploadButton').on('click', fuction() {
+
+
+        });
       });
-  </script>
-  
 
-  
+      function fileUp() {
+        var x = document.createElement("INPUT");
+        x.setAttribute("type", "file");
+document.body.appendChild(x);
 
-
-  <!-- jQuery CDN -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  
-  <!-- Popper CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  
-  <!-- Bootstrap Js CDN -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
- <!-- jQuery Custom Scroller CDN -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-  <!-- Questions.js -->
-  <script src="js/questions.js"></script>
+      }
+      </script>
 
 
-</body>
-</html>
+
+
+
+      <!-- jQuery CDN -->
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+      <!-- Popper CDN -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+      <!-- Bootstrap Js CDN -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+      <!-- jQuery Custom Scroller CDN -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+      <!-- Questions.js -->
+      <script src="js/questions.js"></script>
+
+
+    </body>
+    </html>
