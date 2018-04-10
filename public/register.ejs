@@ -77,16 +77,10 @@
                                     <% } %>
                                 <% } %>
                             </select>
-                            <label for="prof" class="sr-only">Are you a...</label>
-                            <select class="form-control" id="prof" name="prof" placeholder="Are you a..." required>
-                                <option value="" selected disabled>Select which type of account</option>
-                                <option value="Student">Student</option>
-                                <option value="Professor">Professor</option>
-                            </select>
-                            <div class="invisible" id="regkeydiv">
+                            <% if (isProf) { %>
                                 <label for="regkey" class="sr-only">Registration Key</label>
-                                <input type="text" name="regkey" id="regkey" class="form-control" placeholder="Registration Key">
-                            </div>
+                                <input <% if (form && form.regkey) { %> value="<%= form.regkey %>" <% } %> type="text" name="regkey" id="regkey" class="form-control" placeholder="Registration Key">
+                            <% } %>
                         </div>
                             <button class="btn btn-lg btn-primary btn-block" id="submit" type="submit">Register</button>
                     </form>

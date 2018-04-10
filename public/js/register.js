@@ -30,18 +30,6 @@ $(document).ready(function() {
         else
             $('#passwordMsg').text('Passwords must be 8-20 characters long.');
     });
-
-    $('#prof').on('change', function() { 
-        if ($(this).val() === 'Professor') {
-            $('#regkeydiv').removeClass('invisible');
-            $('#regkey').prop('required', true);
-        }
-        else {
-            $('#regkeydiv').addClass('invisible');
-            $('#regkey').prop('required', false);
-            $('#regkey').val('');
-        }
-    });
 });
 
 //https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript

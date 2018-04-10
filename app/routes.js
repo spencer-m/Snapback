@@ -48,9 +48,9 @@ function validateEmail(email) {
 let universities = [];
 
 Util.University.find({}, function(err, uni) {
-    for (let u of uni) {
+    for (let u of uni)
         universities.push(u.name);
-    }
+    universities.sort();
 });
 
 router.get('/', function(req, res) {
@@ -65,16 +65,31 @@ router.get('/', function(req, res) {
 
 router.get('/register', function(req, res) {
 
-    res.render('register', {
-        success: req.flash('success')[0],
-        error: req.flash('error')[0],
-        form: req.flash('form')[0],
-        uni: universities
-    });
+    if (req.query.isprof) {
+        res.render('register', {
+            success: req.flash('success')[0],
+            error: req.flash('error')[0],
+            form: req.flash('form')[0],
+            isProf: true,
+            uni: universities
+        });
+    }
+    else {
+        res.render('register', {
+            success: req.flash('success')[0],
+            error: req.flash('error')[0],
+            form: req.flash('form')[0],
+            isProf: false,
+            uni: universities
+        });
+    }
 });
 
 router.post('/register', function(req, res) {
 
+    let redirectLink = '/register';
+    if (req.query.isprof)
+        redirectLink = 'register?isprof=true';
     // form validation - server side
 
     // only detection, not sanitation
@@ -83,7 +98,7 @@ router.post('/register', function(req, res) {
             continue;
         else {
             req.flash('error', 'Invalid characters detected. Form cleared.');
-            return res.redirect('/register');
+            return res.redirect(redirectLink);
         }
     }
 
@@ -94,7 +109,7 @@ router.post('/register', function(req, res) {
             formdata[x] = req.body[x];
         req.flash('form', formdata);
         req.flash('error', 'Invalid email address.');
-        return res.redirect('/register');
+        return res.redirect(redirectLink);
     }
 
     // check if email is typed correctly
@@ -104,7 +119,7 @@ router.post('/register', function(req, res) {
             formdata[x] = req.body[x];
         req.flash('form', formdata);
         req.flash('error', 'Emails do not match.');
-        return res.redirect('/register');
+        return res.redirect(redirectLink);
     }
 
     // check if password is typed correctly
@@ -114,7 +129,7 @@ router.post('/register', function(req, res) {
             formdata[x] = req.body[x];
         req.flash('form', formdata);
         req.flash('error', 'Passwords do not match.');
-        return res.redirect('/register');
+        return res.redirect(redirectLink);
     }
 
     // form validated. now process input
@@ -129,7 +144,7 @@ router.post('/register', function(req, res) {
                 formdata[x] = req.body[x];
             req.flash('form', formdata);
             req.flash('error', 'Sorry, email already exists.');
-            res.redirect('/register');
+            res.redirect(redirectLink);
         }
         // next step: get objectID of university
         else {
@@ -147,11 +162,12 @@ router.post('/register', function(req, res) {
                                 formdata[x] = req.body[x];
                             req.flash('form', formdata);
                             req.flash('error', 'Sorry, ID already exists.');
-                            res.redirect('/register');
+                            res.redirect(redirectLink);
                         }
                         else {
-                            // check regkey and register
-                            if (req.body.prof === 'Professor') {
+                            // check if regkey exists
+                            console.log('this is a test: ', req.body.regkey);
+                            if (req.body.regkey) {
                                 Util.Key.findOne({key: req.body.regkey, isUsed: false}, function(err, key) {
                                     if (err) throw err;
                                     // if key exists
@@ -180,12 +196,11 @@ router.post('/register', function(req, res) {
                                             formdata[x] = req.body[x];
                                         req.flash('form', formdata);
                                         req.flash('error', 'Sorry, invalid registration key.');
-                                        res.redirect('/register');
+                                        res.redirect(redirectLink);
                                     }
                                 });
                             }
-                            // proceed with account creation
-                            else if (req.body.prof === 'Student') {
+                            else {
                                 // create user
                                 let newUser = new User({
                                     email: req.body.email,
@@ -200,15 +215,6 @@ router.post('/register', function(req, res) {
                                     res.redirect('/');
                                 });
                             }
-                            // catch all statement
-                            else {
-                                let formdata = {};
-                                for (let x in req.body)
-                                    formdata[x] = req.body[x];
-                                req.flash('form', formdata);
-                                req.flash('error', 'Sorry, type does not exists.');
-                                res.redirect('/register');
-                            }
                         }
                     });
                 }
@@ -219,7 +225,7 @@ router.post('/register', function(req, res) {
                         formdata[x] = req.body[x];
                     req.flash('form', formdata);
                     req.flash('error', 'Sorry, university does not exist.');
-                    res.redirect('/register');
+                    res.redirect(redirectLink);
                 }
             });
         }
