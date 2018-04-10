@@ -152,46 +152,43 @@
         <!-- Lecture Content -->
         <div id="accordion">
           <div class="card">
-            <div class="card-header">
-              <a class="card-link"  data-toggle="collapse" href="#collapse-lecture">
+            <div class="card-header" data-toggle="collapse" href="#collapse-lecture">
+              <a class="card-link">
                 Lecture Notes
               </a>
             </div>
             <div id="collapse-lecture" class="collapse" data-parent="#accordion">
-              <div class="card-body">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Cras justo odio</li>
-                  <li class="list-group-item">Dapibus ac facilisis in</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
+              <div class="card-body" id="body-lecture">
+                <ul class="list-group list-group-flush" id="list-lecture">
                 </ul>
               </div>
             </div>
           </div>
             <div class="card">
-              <div class="card-header">
-                <a class="card-link"  data-toggle="collapse" href="#collapse-assignment">
+              <div class="card-header" data-toggle="collapse" href="#collapse-assignment">
+                <a class="card-link">
                   Assignments
                 </a>
               </div>
               <div id="collapse-assignment" class="collapse" data-parent="#accordion">
-                <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat.</div>
+                <div class="card-body" id="body-assignment">
+					<ul class="list-group list-group-flush" id="list-assignment">
+					</ul>
+				  </div>
                 </div>
               </div>
               <div class="card">
-                <div class="card-header">
-                  <a class="card-link"  data-toggle="collapse" href="#collapse-test">
+                <div class="card-header" data-toggle="collapse" href="#collapse-test">
+                  <a class="card-link">
                     Test Material
                   </a>
                 </div>
                 <div id="collapse-test" class="collapse" data-parent="#accordion">
-                  <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                    commodo consequat.</div>
-                  </div>
+                  <div class="card-body" id="body-test">
+					<ul class="list-group list-group-flush" id="list-lecture">
+					</ul>
+				  </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -256,19 +253,17 @@
 
           <!-- changes the icon on the button depending state -->
         });
-
-        $('#uploadButton').on('click', fuction() {
+		
+		/*
+        $('#uploadButton').on('click', fuction () {
 
 
         });
+		*/
+		
       });
 
-      function fileUp() {
-        var x = document.createElement("INPUT");
-        x.setAttribute("type", "file");
-document.body.appendChild(x);
 
-      }
       </script>
 
 
@@ -289,6 +284,9 @@ document.body.appendChild(x);
 
       <!-- Questions.js -->
       <script src="js/questions.js"></script>
+	  
+	  <!-- Lectures.js -->
+	  <script src="js/lecture.js"></script>
 
 
     </body>
