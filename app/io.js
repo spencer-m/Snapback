@@ -99,42 +99,14 @@ io.connection = function(socket) {
         if (socket.request.user.logged_in && socket.request.user.isProfessor) {
             console.log('prof add');
             /*
-            info = {
+            info: {
                 courseinfo: {
-                    // i.e. SENG 513
-                    code: {
-                        type: String,
-                        required: true
-                    },
-                    // i.e. Web-based Systems
-                    name: {
-                        type: String,
-                        required: true
-                    },
-                    // i.e. 2018
-                    year: {
-                        type: String,
-                        required: true
-                    }
+                    code:
+                    name:
+                    year:
                 },
-                regcode: {
-                    type: String,
-                    required: true
-                },
-                // array of users
-                classlist: {
-                    type: [{type: Schema.ObjectId, ref: 'User'}],
-                    default: []
-                },
-                // array of sessions
-                sessions: {
-                    type: [{type: Schema.ObjectId, ref: 'SessionQ'}],
-                    default: []
-                },
-                lectures: {
-                    type: [{type: Schema.ObjectId, ref: 'Section'}],
-                    default: []
-                }
+                regcode: generated or entered?,
+                professor: socket.request.user._id
             }
             */
 
