@@ -33,6 +33,10 @@ let createClassCard = function(cName, cText){
     );
 };
 
+let populateCourses = function(courses){
+    for (let i = 0; i < courses.length; i++)
+        createClassCard(courses[i].code + " " + courses[i].year, courses[i].name);
+};
 
 $(function(){
 
@@ -43,7 +47,16 @@ $(function(){
     socket.on('init', function(info) {
         console.log(info);
         userInfo = info;
+
+        $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
+        populateCourses(info.courses);
     });
+
+    /*
+    socket.emit('getinfo', function(info) {
+       userInfo = info;
+    });
+    */
 
     /**
      *  handles sidebar expansion and collapse
@@ -116,12 +129,15 @@ $(function(){
             });
         }
 
-        if (success){
-            $('#course-code-input').val('');
+        socket.emit('getinfo', function(info) {
+            userInfo = info;
+        });
+
+
+        $('#course-code-input').val('');
 
             //TODO: it won't scroll down for some reason
-            $('#content').scrollTop($('#content')[0].scrollHeight);
-        }
+        $('#content').scrollTop($('#content')[0].scrollHeight);
 
     });
 
