@@ -22,48 +22,39 @@ io.connection = function(socket) {
     /* connection initialiation */
 
     console.log(':::socketio::: user: ', socket.request.user);
-    /*
-    :::socketio::: user:  { 
-        name: { first: 'lorem', last: 'ipsum' },
-        courses: [],
-        _id: 5ac9cc7f6bde4642140c7cfd,
-        email: 'lorem@lorem.com',
-        id: '1234',
-        university: 5ac9c9d73bc0b11930c8edad,
-        isProfessor: false,
-        __v: 0 }
 
-        to get university name:
+    socket.emit('init');
 
-    */
-
-    if (socket.request.user.logged_in) {
-
-        User.
-            findById(socket.request.user._id).
-            populate('courses').
-            populate('university').
-            exec(function(err, user) {
-
-                if (err) throw err;
-
-                let info = {
-                    name: user.name,
-                    email: user.email,
-                    id: user.id,
-                    isProfessor: user.isProfessor,
-                    university: user.university.name,
-                    courses: [],
-                    date: Date()
-                };
-                for (let c in user.courses) {
-                    if (c.courseinfo)
-                        info.courses.push(c.courseinfo);
-                }
-
-                socket.emit('init', info);
-            });
-    }
+    socket.on('getInfo', function(cb){
+        if (socket.request.user.logged_in) {
+            User.
+                findById(socket.request.user._id).
+                populate('courses').
+                populate('university').
+                exec(function(err, user) {
+            
+                    if (err) throw err;
+            
+                    let d = new Date();
+            
+                    let info = {
+                        name: user.name,
+                        email: user.email,
+                        id: user.id,
+                        isProfessor: user.isProfessor,
+                        university: user.university.name,
+                        courses: [],
+                        date: d.getMonth() + ' ' + d.getFullYear() 
+                    };
+                    for (let c in user.courses) {
+                        if (c.courseinfo)
+                            info.courses.push(c.courseinfo);
+                    }
+            
+                    cb(info);
+                });
+        }
+    });
 
     /* enrolling to course */
 

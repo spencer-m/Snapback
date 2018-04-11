@@ -74,20 +74,16 @@ $(function(){
     let userInfo = {};
 
     /** has all info of dude **/
-    socket.on('init', function(info) {
-        console.log(info);
-        userInfo = info;
+    socket.on('init', function() {
+        
+        socket.emit('getInfo', function (info) {
+            userInfo = info;
+        });
 
         $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
         populateCourses(info.courses);
 
         setUpModal(userInfo.isProfessor);
-    });
-
-    /** has all info of dude **/
-    socket.on('gotInfo', function(info) {
-        console.log(info);
-        userInfo = info;
     });
 
     /**
