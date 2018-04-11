@@ -5,6 +5,7 @@
     border: 1px solid black;
 }*/
 
+
 body {
     font-family: 'Nunito', sans-serif;
     color: #358bbe;
@@ -47,6 +48,10 @@ img {
 
 .forms input {
     width: 100%;
+}
+
+#backBtn {
+    margin-top: 20px;
 }
 
 /* get rid of the divider for mobile views -> looks nicer! */
