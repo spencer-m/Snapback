@@ -83,13 +83,13 @@ io.connection = function(socket) {
                         if (err) throw err;
 
                         if (course._id in user.courses)
-                            cb('already_enrolled')
+                            cb({status: 'already_enrolled'});
                         else {
                             course.classlist.push(user._id);
                             course.save();
                             user.courses.push(course._id);
                             user.save();
-                            cb('success');
+                            cb({status: 'success'});
                         }
                     });
                 }
@@ -97,7 +97,7 @@ io.connection = function(socket) {
                 else {
                     for (let i = 0; i < 10000; i ++)
                         continue;
-                    cb('invalid');
+                    cb({status: 'invalid'});
                 }
             });
         }
@@ -143,20 +143,26 @@ io.connection = function(socket) {
                     name: info.name,
                     year: info.year
                 },
-                regcod: genRegCode,
+                regcode: genRegCode,
                 professor: socket.request.user._id
             });
+            
+            c.save();
 
             User.findById(socket.request.user._id, function(err, user) {
 
                 user.courses.push(c._id);
                 user.save();
             });
-            c.save();
-            cb('success');
+
+            let response = {
+                status: 'success',
+                regcode: genRegCode
+            };
+            cb(response);
         }
         else
-            cb('failure');
+            cb({status: 'failure'});
     });
 
 };
