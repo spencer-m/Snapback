@@ -38,6 +38,36 @@ let populateCourses = function(courses){
         createClassCard(courses[i].code + " " + courses[i].year, courses[i].name);
 };
 
+let setUpModal = function(isProf) {
+    let modalTitle = "";
+    if (isProf) {
+        modalTitle = "Create a Course!";
+        (((($('.modal-body')
+            .append($('<p>').text('Please enter the course code')))
+            .append($('<input>')
+                .attr('id',"course-code-input")
+                .attr('placeholder',"eg. ANTH413")))
+            .append($('<p>').text('Please enter the course name')))
+            .append($('<input>')
+                .attr('id',"course-name-input")
+                .attr('placeholder',"eg. History of Western Countries")))
+            .append($('<p>').text('Please enter the semester of the course'));
+    }
+    else {
+        modalTitle = 'Enroll in a Course!';
+        ($('.modal-body')
+            .append($('<p>').text('Please enter the course code')))
+            .append($('<input>')
+                .attr('id',"course-id-input")
+                .attr('placeholder',"eg. 41Q23AB")
+                .attr('autocomplete',"off")
+        );
+    }
+
+    $('.modal-title').text(modalTitle);
+};
+
+// on ready()
 $(function(){
 
     let socket = io();
@@ -50,13 +80,15 @@ $(function(){
 
         $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
         populateCourses(info.courses);
+
+        setUpModal(userInfo.isProfessor);
     });
 
-    /*
-    socket.emit('getinfo', function(info) {
-       userInfo = info;
+    /** has all info of dude **/
+    socket.on('gotInfo', function(info) {
+        console.log(info);
+        userInfo = info;
     });
-    */
 
     /**
      *  handles sidebar expansion and collapse
@@ -103,9 +135,10 @@ $(function(){
             info.name = $('course-name-input').val();
 
             socket.emit('addNewClass', info, function (response) {
-                if (response === 'success') {
+                if (response.status === 'success') {
                     console.log('class creation success');
                     success = true;
+                    response.regcode = dusplayme
                 }
                 else
                     console.log("class creation error");
@@ -113,7 +146,7 @@ $(function(){
         }
         /** if student **/
         if (! userInfo.isProfessor) {
-            let code = $('#course-code-input').val();
+            let code = $('#course-id-input').val();
 
             socket.emit('enrollToClass', code, function (response) {
                 if (response === 'success') {
@@ -129,12 +162,19 @@ $(function(){
             });
         }
 
-        socket.emit('getinfo', function(info) {
-            userInfo = info;
-        });
+        if (success) {
+            socket.emit('getInfo', function (info) {
+                userInfo = info;
+            });
 
+            let lastCourse = userInfo.courses[userInfo.courses.length - 1];
+            let courseName = lastCourse.name + " " + lastCourse.year;
+            let courseCode = lastCourse.code;
 
-        $('#course-code-input').val('');
+            createClassCard(courseName, courseCode);
+        }
+
+        $('#course-id-input').val('');
 
             //TODO: it won't scroll down for some reason
         $('#content').scrollTop($('#content')[0].scrollHeight);
