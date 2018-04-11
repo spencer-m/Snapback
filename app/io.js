@@ -6,6 +6,16 @@ let Course = require('./coursedb.js');
 
 let io = {};
 
+function generateRandomString() {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  
+    for (var i = 0; i < 6; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return text;
+}
+
 io.connection = function(socket) {
         
     
@@ -97,19 +107,49 @@ io.connection = function(socket) {
     socket.on('addNewClass', function(info, cb) {
 
         if (socket.request.user.logged_in && socket.request.user.isProfessor) {
-            console.log('prof add');
-            /*
-            info : {
-                courseinfo: {
-                code: SENG 513
-                name: Web based sysems
-                year: 2018
-                },
-                professor: socket.request.user._id
-            }
-            */
 
+            // generate regcode
+            let genRegCode = generateRandomString();
+            let toBreak = false;
+
+            while (true) {
+
+                try {
+                    Course.Course.findOne({regcode: genRegCode}, function(err, course) {
+                        if (err) throw err;
+                        if  (course)
+                            throw new Error('found');
+                        else
+                            throw new Error('notfound');
+                    });
+                }
+                catch (err) {
+                    if (err.message === 'found')
+                        toBreak = false;
+                    else if (err.message === 'notfound')
+                        toBreak = true;
+                    else
+                        throw err;
+                }
+
+                if (toBreak)
+                    break;
+            }
+
+            let c = new Course.Course({
+                courseinfo: {
+                    code: info.code,
+                    name: info.name,
+                    year: info.year
+                },
+                regcod: genRegCode,
+                professor: socket.request.user._id
+            });
+
+            c.save();
         }
+        else
+            cb('failure');
     });
 
 };
