@@ -1,0 +1,35 @@
+@import "https://fonts.googleapis.com/css?family=Nunito:300,400,500,600,700";
+
+body {
+    font-family: 'Nunito', sans-serif;
+    color: #358bbe;
+}
+
+#regBox input {
+    border-color: #358bbe;
+}
+
+#regBox select {
+    border-color: #358bbe;
+    color: lightgray;
+}
+
+#regBox input::placeholder {
+    color: lightgray;
+}
+
+.forms {
+    display: inline-block;
+    width: 49.6%;
+}
+
+.forms input {
+    width: 100%;
+}
+
+/* get rid of the divider for mobile views -> looks nicer! */
+@media only screen and (max-width: 1200px) {
+    .forms {
+        width: 100%;
+    }
+}
