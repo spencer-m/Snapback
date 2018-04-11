@@ -128,17 +128,20 @@ $(function(){
         /*info = need code, name and year*/
         let success = false;
         let info = {'code':"", 'name':""};
+        let registrationCode = "";
 
         /** if professor **/
         if (userInfo.isProfessor) {
             info.code = $('#course-code-input').val();
-            info.name = $('course-name-input').val();
+            info.name = $('#course-name-input').val();
+            info.year = "" + userInfo.date.getMonth() + " " + userInfo.date.getFullYear();
 
             socket.emit('addNewClass', info, function (response) {
                 if (response.status === 'success') {
                     console.log('class creation success');
                     success = true;
-                    response.regcode = dusplayme
+
+                    registrationCode = response.regcode;
                 }
                 else
                     console.log("class creation error");
@@ -166,6 +169,18 @@ $(function(){
             socket.emit('getInfo', function (info) {
                 userInfo = info;
             });
+
+            let modal = $('.modal-body');
+
+            modal.empty();
+            modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
+
+            if (userInfo.isProfessor){
+                (modal
+                    .append($('<p>').text("Give your students the join code below")))
+                    .append($('<p>').addClass('join-code-text').text(registrationCode));
+            }
+
 
             let lastCourse = userInfo.courses[userInfo.courses.length - 1];
             let courseName = lastCourse.name + " " + lastCourse.year;
