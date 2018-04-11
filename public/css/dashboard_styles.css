@@ -65,6 +65,10 @@ a, a:hover, a:focus {
     margin-left: -250px;
 }
 
+#sidebar.active .fa {
+    transform: rotate(180deg);
+}
+
 #sidebar .sidebar-header {
     padding: 20px;
     background: #72d4e5;
@@ -160,6 +164,10 @@ a.article, a.article:hover {
     color: #fff !important;
 }
 
+#sidebar-collapse:hover {
+    background: #9ae7f4;
+
+}
 
 /* ---------------------------------------------------
     CONTENT STYLE
