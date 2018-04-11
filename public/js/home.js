@@ -1,6 +1,49 @@
+let createClassCard = function(cName, cText){
+
+    // temporary variables
+    cName = "Class Name";
+    cText = "Blabla class description";
+
+
+    let classCards = $(".class-cards");
+
+    // once you reach 3 items in the last row, make a new row
+    if (classCards.children('.row').last().children('.col-sm-4').length >= 3) {
+        // add buffer between rows
+        classCards.append($('<div>').addClass("row top-buffer"));
+        // create a new row
+        classCards.append($('<div>').addClass('row'));
+    }
+
+    (classCards.children('.row').last()).append(
+        ($('<div>').addClass('col-sm-4'))
+            .append(($('<div>').addClass("card card-outline-secondary mb-3"))
+                .append(($('<div>').addClass('block'))
+                    .append(
+                        $('<h3>').addClass('card-title').text(cName))
+                    .append(
+                        $('<p>').addClass('card-text').text(cText))
+                    .append(
+                        $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("Files"))
+                    .append(' ')
+                    .append(
+                        $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("QA"))
+                )
+            )
+    );
+};
+
+
 $(function(){
 
     let socket = io();
+    let userInfo = {};
+
+    /** has all info of dude **/
+    socket.on('init', function(info) {
+        console.log(info);
+        userInfo = info;
+    });
 
     /**
      *  handles sidebar expansion and collapse
@@ -36,76 +79,54 @@ $(function(){
      * TODO: There is no space between the two buttons in the newly appended card
      * **/
     $('#class-submit-button').on('click', function(){
-        let cName = "Class Name";
-        let cText = "Blabla class description";
-        let classCards = $(".class-cards");
 
-        // once you reach 3 items in the last row, make a new row
-        if (classCards.children('.row').last().children('.col-sm-4').length >= 3) {
-            // add buffer between rows
-            classCards.append($('<div>').addClass("row top-buffer"));
-            // create a new row
-            classCards.append($('<div>').addClass('row'));
+        /*info = need code, name and year*/
+        let success = false;
+        let info = {'code':"", 'name':""};
+
+        /** if professor **/
+        if (userInfo.isProfessor) {
+            info.code = $('#course-code-input').val();
+            info.name = $('course-name-input').val();
+
+            socket.emit('addNewClass', info, function (response) {
+                if (response === 'success') {
+                    console.log('class creation success');
+                    success = true;
+                }
+                else
+                    console.log("class creation error");
+            });
+        }
+        /** if student **/
+        if (! userInfo.isProfessor) {
+            let code = $('#course-code-input').val();
+
+            socket.emit('enrollToClass', code, function (response) {
+                if (response === 'success') {
+                    console.log('successfully enrolled');
+                    success = true;
+                }
+                else if (response === 'already_enrolled')
+                    console.log('already_enrolled');
+                else if (response === 'invalid')
+                    console.log('invalid class code');
+                else
+                    console.log('unknown error');
+            });
         }
 
-        (classCards.children('.row').last()).append(
-            ($('<div>').addClass('col-sm-4'))
-                .append(($('<div>').addClass("card card-outline-secondary mb-3"))
-                    .append(($('<div>').addClass('block'))
-                        .append(
-                            $('<h3>').addClass('card-title').text(cName))
-                        .append(
-                            $('<p>').addClass('card-text').text(cText))
-                        .append(
-                            $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("Files"))
-                        .append(' ')
-                        .append(
-                            $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("QA"))
-                    )
-                )
-        );
+        if (success){
+            $('#course-code-input').val('');
 
-        //TODO: trying to erase the previous input after pressing submit
-        $('#course-code-input').val('');
-
-        //TODO: it won't scroll down for some reason
-        $('#content').scrollTop($('#content')[0].scrollHeight);
-
+            //TODO: it won't scroll down for some reason
+            $('#content').scrollTop($('#content')[0].scrollHeight);
+        }
 
     });
 
-    //TODO: trying to erase the previous input after pressing cancel
     $('#class-cancel-button').on('click', function() {
         $('#course-code-input').val('');
     });
 
-
-    socket.on('init', function(info) {
-        console.log(info);
-    });
-
-    $('#addClass').click(function() {
-        let code = $('#classcode').val(); 
-      
-        socket.emit('entrollToClass', code, function(response) {
-            if (response === 'success')
-                console.log('successfully enrolled');
-            else if (response === 'already_enrolled')
-                console.log('already_enrolled');
-            else if (response === 'invalid')
-                console.log('invalid class code');
-            else
-                consoles.log('unknown error');
-        });
-    });
-
-    $('#createClass').click(function() {
-        /*
-        info = need code, name and year
-         */
-
-        socket.emit('addNewClass', info,  function(response) {
-           // callback function
-        });
-    });
 });

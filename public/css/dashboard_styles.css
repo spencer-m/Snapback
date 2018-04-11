@@ -233,6 +233,20 @@ a.article, a.article:hover {
     flex-direction: column;
 }
 
+.btn-blue {
+    transition-timing-function: ease-in-out;
+    transition: background-color .5s, color .5s;
+
+    background-color: #72d4e5;
+    color: white;
+    border: 1px #72d4e5 solid;
+}
+
+.btn-blue:hover {
+    background-color: white;
+    color: #72d4e5;
+}
+
 #course-code-input {
     align-self: center;
 }

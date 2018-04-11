@@ -56,7 +56,7 @@ io.connection = function(socket) {
 
     /* enrolling to course */
 
-    socket.on('entrollToClass', function(code, cb) {
+    socket.on('enrollToClass', function(code, cb) {
         if (socket.request.user.logged_in) {
 
             Course.findOne({regcode: code}, function(err, course) {
