@@ -53,7 +53,8 @@ io.connection = function(socket) {
                     id: user.id,
                     isProfessor: user.isProfessor,
                     university: user.university.name,
-                    courses: []
+                    courses: [],
+                    date: Date()
                 };
                 for (let c in user.courses) {
                     if (c.courseinfo)
@@ -146,7 +147,13 @@ io.connection = function(socket) {
                 professor: socket.request.user._id
             });
 
+            User.findById(socket.request.user._id, function(err, user) {
+
+                user.courses.push(c._id);
+                user.save();
+            });
             c.save();
+            cb('success');
         }
         else
             cb('failure');
