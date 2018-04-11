@@ -39,6 +39,9 @@ let populateCourses = function(courses){
 };
 
 let setUpModal = function(isProf) {
+
+    $('.modal-body').empty();
+
     let modalTitle = "";
     if (isProf) {
         modalTitle = "Create a Course!";
@@ -82,7 +85,6 @@ $(function(){
 
         $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
         populateCourses(info.courses);
-
         setUpModal(userInfo.isProfessor);
     });
 
@@ -123,16 +125,18 @@ $(function(){
 
         /*info = need code, name and year*/
         let success = false;
-        let info = {'code':"", 'name':""};
+        let info = {'code':"", 'name':"", 'year':""};
         let registrationCode = "";
 
         /** if professor **/
         if (userInfo.isProfessor) {
             info.code = $('#course-code-input').val();
             info.name = $('#course-name-input').val();
-            info.year = "" + userInfo.date.getMonth() + " " + userInfo.date.getFullYear();
+            info.year = userInfo.date;
 
             socket.emit('addNewClass', info, function (response) {
+                console.log('creating a class...');
+
                 if (response.status === 'success') {
                     console.log('class creation success');
                     success = true;
