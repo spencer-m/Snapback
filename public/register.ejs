@@ -12,7 +12,7 @@
         <title>Snapback</title>
     </head>
     <body>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row" style="min-height:5vh; max-height:5vh;"></div>
             <div class="row" style="min-height:10vh; max-height:10vh; overflow-y:auto;">
                 <div class="col-sm-12" id="dynamic_alert">
@@ -34,14 +34,26 @@
                     <% } %>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-3"></div>
+
+            <div class="row" style="display: flex">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-4" style="padding-top: 5%;">
+                    <img src="img/logo_blue.png">
+                </div>
                 <div id="regBox" class="col-sm-6">
                     <form class="form-signin" onsubmit="return validateForm()" method="post">
                         <h2 class="form-signin-heading" style="color:#358bbe;">Register</h2>
+                        <% if (isProf) { %>
                         <div class="form-group">
-                            Email
-                            <br>
+                            Registration Key <br>
+                            <div class="forms" style="width:    100%;">
+                                <label for="regkey" class="sr-only">Registration Key</label>
+                                <input <% if (form && form.regkey) { %> value="<%= form.regkey %>" <% } %> type="text" name="regkey" id="regkey" class="form-control" placeholder="Registration Key">
+                            </div>
+                        </div>
+                        <% } %>
+                        <div class="form-group">
+                            Email <br>
                             <div class="forms">
                                 <label for="email" class="sr-only">Email</label>
                                 <input <% if (form && form.email) { %> value="<%= form.email %>" <% } %> type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
@@ -53,8 +65,8 @@
                             <small id="emailMsg" class="form-text text-muted">Enter your email address.</small>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <br>
+                            <!--<label for="password">Password</label>-->
+                            Password <br>
                             <div class="forms">
                                 <input type="password" name="password" id="password" class="form-control" placeholder="Password" pattern=".{8,20}" title="Password must be 8 to 20 characters long." style="margin-bottom: 5px;" required>
                             </div>
@@ -64,8 +76,7 @@
                             <small id="passwordMsg" class="form-text text-muted">Passwords must be 8-20 characters long.</small>
                         </div>
                         <div class="form-group">
-                            Name
-                            <br>
+                            Name <br>
                             <div class="forms">
                                 <label for="fname" class="sr-only">First Name</label>
                                 <input <% if (form && form.fname) { %> value="<%= form.fname %>" <% } %> type="text" name="fname" id="fname" class="form-control" placeholder="First Name" style="margin-bottom: 5px;" required>
@@ -76,8 +87,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            Institution
-                            <br>
+                            Institution <br>
                             <div class="forms">
                                 <label for="id" class="sr-only">ID</label>
                                 <input <% if (form && form.id) { %> value="<%= form.id %>" <% } %> type="text" name="id" id="id" class="form-control" placeholder="ID" style="margin-bottom: 5px;" required>
@@ -86,29 +96,23 @@
                                 <label for="university" class="sr-only">University</label>
                                 <select class="form-control" id="university" name="university" placeholder="University" required>
                                     <% if (form && form.university) { %>
-                                    <option value="" disabled>Select your university</option>
+                                    <option value="" disabled>Select Your University</option>
                                     <% for (let u of uni) { %>
                                     <option value="<%= u %>" <% if (form.university === u) { %> selected <% } %>><%= u %></option>
                                     <% } %>
                                     <% } else { %>
-                                    <option value="" selected disabled>Select your university</option>
+                                    <option value="" selected disabled>Select Your University</option>
                                     <% for (let u of uni) { %>
                                     <option value="<%= u %>"><%= u %></option>
                                     <% } %>
                                     <% } %>
                                 </select>
                             </div>
-                            <div class="forms" style="width: 100%;">
-                                <% if (isProf) { %>
-                                <label for="regkey" class="sr-only">Registration Key</label>
-                                <input <% if (form && form.regkey) { %> value="<%= form.regkey %>" <% } %> type="text" name="regkey" id="regkey" class="form-control" placeholder="Registration Key">
-                                <% } %>
-                            </div>
                         </div>
-                            <button class="btn btn-lg btn-outline-info btn-block" id="submit" type="submit">Register</button>
+                            <button class="btn btn-lg btn-outline-info btn-block" id="submit" type="submit">Get Started!</button>
                     </form>
                 </div>
-                <div class="col-sm-3"></div>
+                <!--<div class="col-sm-3"></div>-->
             </div>
         </div> <!-- /container -->
         <!-- Scripts -->

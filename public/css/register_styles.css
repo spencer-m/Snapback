@@ -1,8 +1,30 @@
 @import "https://fonts.googleapis.com/css?family=Nunito:300,400,500,600,700";
 
+/*
+* {
+    border: 1px solid black;
+}*/
+
 body {
     font-family: 'Nunito', sans-serif;
     color: #358bbe;
+}
+
+.container-fluid {
+    justify-content: center;
+}
+
+img {
+    display: block;
+    width: 300px;
+    height: 300px;
+    align-self: start;
+    margin: auto;
+
+    border: dashed #9ae7f4;
+    border-radius: 50%;
+
+    padding: 20px;
 }
 
 #regBox input {
@@ -20,7 +42,7 @@ body {
 
 .forms {
     display: inline-block;
-    width: 49.6%;
+    width: 49.7%;
 }
 
 .forms input {
