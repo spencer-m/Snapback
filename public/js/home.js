@@ -81,11 +81,12 @@ $(function(){
         
         socket.emit('getInfo', function (info) {
             userInfo = info;
+
+            $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
+            populateCourses(info.courses);
+            setUpModal(userInfo.isProfessor);
         });
 
-        $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
-        populateCourses(info.courses);
-        setUpModal(userInfo.isProfessor);
     });
 
     /**
