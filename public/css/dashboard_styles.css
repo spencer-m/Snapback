@@ -3,6 +3,10 @@
   DEMO STYLE
 */
 @import "https://fonts.googleapis.com/css?family=Nunito:300,400,500,600,700";
+/*
+* {
+    border: 1px solid black;
+}*/
 
 body {
     font-family: 'Nunito', sans-serif;
@@ -192,11 +196,15 @@ a.article, a.article:hover {
 
 .navbar {
     height: 150%;
+    /*
+    box-shadow: 3px 3px 3px rgba(114,212,229,0.3);*/
+    background-color: #72d4e5;
 }
 
-.navbar-header {
+.navbar-brand {
+    font-size: 32px;
     clear: both;
-    width: 100%;
+    color: white;
 }
 
 .header-title {
@@ -241,7 +249,7 @@ a.article, a.article:hover {
     flex-direction: column;
 }
 
-.btn-blue {
+.btn-blue:hover {
     transition-timing-function: ease-in-out;
     transition: background-color .5s, color .5s;
 
@@ -250,7 +258,7 @@ a.article, a.article:hover {
     border: 1px #72d4e5 solid;
 }
 
-.btn-blue:hover {
+.btn-blue {
     background-color: white;
     color: #72d4e5;
 }
