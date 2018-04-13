@@ -6,16 +6,6 @@ let Course = require('./coursedb.js');
 
 let io = {};
 
-function generateRandomString() {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  
-    for (var i = 0; i < 6; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-  
-    return text;
-}
-
 io.connection = function(socket) {
         
     
@@ -61,7 +51,7 @@ io.connection = function(socket) {
     socket.on('enrollToClass', function(code, cb) {
         if (socket.request.user.logged_in) {
 
-            Course.findOne({regcode: code}, function(err, course) {
+            Course.Course.findOne({regcode: code}, function(err, course) {
 
                 if (err) throw err;
 
@@ -100,57 +90,58 @@ io.connection = function(socket) {
 
         if (socket.request.user.logged_in && socket.request.user.isProfessor) {
 
-            // generate regcode
-            let genRegCode = generateRandomString();
-            let toBreak = false;
-
-            while (true) {
-
-                try {
-                    Course.Course.findOne({regcode: genRegCode}, function(err, course) {
-                        if (err) throw err;
-                        if  (course)
-                            throw new Error('found');
-                        else
-                            throw new Error('notfound');
-                    });
-                }
-                catch (err) {
-                    if (err.message === 'found')
-                        toBreak = false;
-                    else if (err.message === 'notfound')
-                        toBreak = true;
-                    else
-                        throw err;
-                }
-
-                if (toBreak)
-                    break;
-            }
-
-            let c = new Course.Course({
-                courseinfo: {
-                    code: info.code,
-                    name: info.name,
-                    year: info.year
-                },
-                regcode: genRegCode,
-                professor: socket.request.user._id
-            });
-            
-            c.save();
-
-            User.findById(socket.request.user._id, function(err, user) {
-
-                user.courses.push(c._id);
-                user.save();
-            });
-
-            let response = {
-                status: 'success',
-                regcode: genRegCode
+            let generateRandomString = function() {
+                
+                let text = '';
+                let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                      
+                for (var i = 0; i < 6; i++)
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+                      
+                return text;
             };
-            cb(response);
+
+            let createAndSaveClass = function casc() {
+
+                let generatedCode = generateRandomString();
+
+                Course.Course.findOne({regcode: generatedCode}, function(err, course) {
+                    if (err) throw err;
+                
+                    if (course) {
+                        // redo createAndSaveClass with new random registration code
+                        console.log('collision');
+                        casc();
+                    }
+                    else {
+                        console.log('create course object');
+                        let c = new Course.Course({
+                            courseinfo: {
+                                code: info.code,
+                                name: info.name,
+                                year: info.year
+                            },
+                            regcode: generatedCode,
+                            professor: socket.request.user._id
+                        });
+                    
+                        c.save();
+                        console.log('saved course');
+
+                        User.findById(socket.request.user._id, function(err, user) {
+                        
+                            user.courses.push(c._id);
+                            user.save();
+                        });
+
+                        let response = {
+                            status: 'success',
+                            regcode: c.regcode
+                        };
+                        cb(response);
+                    }
+                });
+            }();
         }
         else
             cb({status: 'failure'});
