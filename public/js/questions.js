@@ -1,7 +1,6 @@
 user = "Kourosh"
 course = "Seng 513"
-isProf = false;
-
+isProf = true;
 sessions = null;
 
 
@@ -10,6 +9,29 @@ function session(id,isLive,name,questions){
     this.isLive = isLive;
     this.name = name;
     this.questions = questions;
+
+    var session = this;
+
+    this.expand = function(){
+        clientSession = session;
+        clientQuestions = questions;
+        questionsView();
+    }
+
+    this.view = function(){
+        var card = $("<div>").attr("class","card")
+
+        card.append($("<h3>").text(this.name));
+
+        card.click(this.expand);
+        return (card);
+    }
+
+
+
+
+
+
 }
 
 function question(question,author,date,upvotes,downvotes,comments){
@@ -37,7 +59,7 @@ function question(question,author,date,upvotes,downvotes,comments){
             upvotes.splice(upvotes.indexOf(user) ,1);
         }
         console.log(question);
-        resetView();
+        questionsView();
         
     }
 
@@ -51,12 +73,12 @@ function question(question,author,date,upvotes,downvotes,comments){
             downvotes.splice(downvotes.indexOf(user,1));
         }
         console.log(question);
-        resetView();
+        questionsView();
     }
 
     this.deleteQuestion = function(){
-        questions.splice(questions.indexOf(question),1);
-        resetView();
+        clientQuestions.splice(clientQuestions.indexOf(question),1);
+        questionsView();
     }
 
     this.toggleComments = function(){
@@ -69,7 +91,7 @@ function question(question,author,date,upvotes,downvotes,comments){
         if(replyMessage.val().trim() != ""){
             question.comments.push(new comment(user,replyMessage.val().trim()));
         }
-        resetView();
+        questionsView();
         return false;
     }
 
@@ -94,7 +116,7 @@ function question(question,author,date,upvotes,downvotes,comments){
         upArrow = $(`<img id="down" height="50px">`);
         upArrow.attr("src",(upvotes.includes(user)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         upArrow.click(this.upArrowClick);
-        row.append(upArrow);
+        row.append($("<td>").attr("width","70px").append(upArrow));
         row.append($(`<td><h4>` + this.question +`</h4></td>`));
         
 
@@ -105,11 +127,11 @@ function question(question,author,date,upvotes,downvotes,comments){
     
         downArrow.attr("src",(downvotes.includes(user)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         downArrow.click(this.downArrowClick);
-        row.append(downArrow);
+        row.append($("<td>").attr("width","70px").append(downArrow));
         row.append($("<td>").append($(`<div class="row">`).append($(`
                         <div class="col-md-12 col-lg-3">User: ` + author +`</div>
-                        <div class="col-md-12 col-lg-3">Score: `+ this.score() +`</div> 
-                        <div class="col-md-12 col-lg-3">Posted: `+ this.date + `</div>`))
+                        <div class="col-md-12 col-lg-2">Score: `+ this.score() +`</div> 
+                        <div class="col-md-12 col-lg-4">Posted: `+ this.date + `</div>`))
                         .append($("<div>").attr("class","col-md-12 col-lg-3").append($(`<span class="commentCollapse">`).text("Comments").click(this.toggleComments)))));   
                         
                             
@@ -126,7 +148,7 @@ function question(question,author,date,upvotes,downvotes,comments){
 
             this.deleteComment = function(){
                 comments.splice(comments.indexOf(comment),1);
-                resetView();
+                questionsView();
             }
         
             
@@ -162,23 +184,10 @@ function question(question,author,date,upvotes,downvotes,comments){
 function comment(author,msg){
     this.author = author;
     this.msg = msg;
-
-    // this.view = function view(){
-    //     var rowComment = $("<div>");
-    //     rowComment.attr("class","row comment");
-
-    //     rowComment
-    //         .append($("<div>").attr("class","col-md-12 col-lg-1 author").text(author))
-    //         .append($("<div>").attr("class","col-md-12 col-lg-11").text(msg)
-    //         .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`)));
-                
-    
-    //     return(rowComment);
-    // }
 }
 
 
-questions = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[user],
+question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[user],
     [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
     new comment("Jerry","I like you."),
     new comment("Swagmaster","Swag is All i care about"),
@@ -192,6 +201,21 @@ questions = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[
     new comment("Jebrone","Wow such nice comments."),
     ]),
 ];
+
+
+question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[user],
+[new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
+new comment("Jerry","I like you."),
+new comment("Swagmaster","Swag is All i care about"),
+])]
+
+sessions = [new session(123,true,"Session1",question1),new session(123,true,"Session5",question2)]
+clientQuestions = null;
+clientSession = null;
+
+
+
+
 
 function formatDate(time){
     let year = time.getFullYear();
@@ -207,13 +231,40 @@ function formatDate(time){
     return(year+"/"+month+"/"+day+" "+h+":"+m);
 }
 
-function resetView(){
-    questions.sort(function(question1,question2){
-        return(question2.score() - question1.score());
-    })
+function questionsView(){
+    $(".sessions-list").empty();
     $(".questions-list").empty();
 
-   
+    clientQuestions.sort(function(question1,question2){
+        return(question2.score() - question1.score());
+    })
+
+
+
+    var checkBox;
+    checkBox = $("<input>");
+    checkBox.attr("type","checkbox");
+    
+    //checkBox.is(":checked") = clientSession.isLive;
+    
+
+    toggleLive = function(){
+        clientSession.isLive = this.checked;
+       // console.log( clientSession.isLive);
+    }
+
+    checkBox.click(toggleLive);
+    $(".questions-list").append($("<div>").attr("class","row")
+        .append($(`<div class="col-6">`)
+            .append($(`<button class="btn btn-dark btn-sm">Back</button>`).click(sessionsView)))
+        .append($(`<div class="col-6">`)
+            .append($("<label>").attr("class","switch").append(checkBox)
+                .append($("<span>").attr("class", "slider round"))
+            )
+        )
+    );
+
+
     var questionForm = $("<form>").attr("action","");
     var replyQuestion = $("<input>");
     replyQuestion.attr("placeholder","Ask a new question!");
@@ -223,26 +274,38 @@ function resetView(){
     
     questionForm.submit(function(){
         if(replyQuestion.val().trim() != ""){
-            questions.push(new question(replyQuestion.val().trim(),user,formatDate(new Date()),[],[],[]));
+            clientQuestions.push(new question(replyQuestion.val().trim(),user,formatDate(new Date()),[],[],[]));
         }
-        resetView();
+        questionsView();
         return false;
     });
     
     $(".questions-list").append(
-        $("<div>").attr("class","card").append(
-            questionForm
-        )
+        $("<div>").attr("class","card")
+            .append(questionForm)
+            
     );
     
-    questions.forEach(question => {
+    clientQuestions.forEach(question => {
         $(".questions-list").append(question.view());
     });
     
 }
 
+
+function sessionsView(){
+    $(".questions-list").empty();
+    $(".sessions-list").empty();
+
+
+    sessions.forEach(session =>{
+        $(".sessions-list").append($(`<div class="col-md-12 col-lg-4">`).append(session.view()));
+    })
+
+}
+
 $( document ).ready(function(){
-    resetView();
+    sessionsView();
 });
 
 
