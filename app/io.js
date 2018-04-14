@@ -37,9 +37,9 @@ io.connection = function(socket) {
                         courses: [],
                         date: d.getMonth() + ' ' + d.getFullYear() 
                     };
-                    for (let c in user.courses) {
-                        if (c.courseinfo)
-                            info.courses.push(c.courseinfo);
+
+                    for (let i = 0; i < user.courses.length; i++) {
+                        info.courses.push(user.courses[i].courseinfo);
                     }
             
                     cb(info);

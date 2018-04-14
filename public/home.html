@@ -42,14 +42,22 @@
       </div>
 
       <ul class="list-unstyled components">
-        <p>Dummy Heading</p>
+        <p>Menu</p>
         <li class="active">
           <a href="home.html">Dashboard</a>
+        </li>
 
-        </li>
         <li>
-          <a href="#menu">Button 2</a>
+          <div class="navbar-dropdown">
+            <a class="dropbtn">Classes</a>
+            <div class="dropdown-content">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+            </div>
+          </div>
         </li>
+
         <li>
           <a href="logout">Logout</a>
         </li>
@@ -99,7 +107,7 @@
         </div>
       </div>
 
-      <nav class="navbar navbar-default rounded" style="margin-bottom: -5px;">
+      <nav class="navbar navbar-default rounded" style="margin-bottom: -3px;">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Classes</a>
 
@@ -117,8 +125,6 @@
 
       <div class="class-cards">
         <div class="row">
-          <div class="col-sm-4">
-          </div>
         </div>
       </div>
 
@@ -133,6 +139,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/home.js"></script>
+
+  <script>createClassCard("SENG513","Web Development", "#")</script>
+  <script>createClassCard("SENG513","Web Development", "#")</script>
+  <script>createClassCard("SENG513","Web Development", "#")</script>
+
 
 
 </body>
