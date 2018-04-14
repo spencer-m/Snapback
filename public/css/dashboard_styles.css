@@ -270,13 +270,16 @@ a.article, a.article:hover {
     border-radius: 5px;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(114, 212, 229, 0.4);
+    color: #72d4e5;
 }
 
 .card:hover {
-    background: rgba(114, 212, 229, 0.2);
+    background: rgba(114, 212, 229, 0.5);
+    color: white;
 }
 
 .top-buffer { margin-top:1px; margin-bottom: 1px;}
+
 
 /* ---------------------------------------------------
     MODAL STYLE
@@ -317,6 +320,13 @@ a.article, a.article:hover {
 
 #course-id-input {
     align-self: center;
+}
+
+.modal-input {
+    margin-top: -15px;
+    margin-bottom: 15px;
+    border-color: #358bbe;
+    color: #358bbe;
 }
 
 /* ---------------------------------------------------

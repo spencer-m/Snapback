@@ -87,7 +87,7 @@ let setUpModal = function(isProf, sems) {
         return $('<div>')
             .append($('<p>').text(textInput))
             .append($('<input>')
-                .addClass('form-control')
+                .addClass('form-control modal-input')
                 .attr('id', id)
                 .attr('placeholder', placeholder))
     };
@@ -95,7 +95,7 @@ let setUpModal = function(isProf, sems) {
 
     let semesterDropdown = function(availableSemesters) {
 
-        let sDropdown = $('<select>').addClass('form-control').attr("id", "course-date-input").attr("name", "semesters").attr("form","semesterForm");
+        let sDropdown = $('<select>').addClass('form-control modal-input').attr("id", "course-date-input").attr("name", "semesters").attr("form","semesterForm");
 
 
         availableSemesters.forEach(function(sem) {
