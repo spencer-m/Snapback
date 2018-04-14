@@ -51,12 +51,7 @@ let getAvailableSemester = function(date){
     return availableSemesters;
 };
 
-let createClassCard = function(cName, cText){
-
-    // temporary variables
-    cName = "Class Name";
-    cText = "Blabla class description";
-
+let createClassCard = function(cName, cText, cLink){
 
     let classCards = $(".class-cards");
 
@@ -69,18 +64,13 @@ let createClassCard = function(cName, cText){
     }
 
     (classCards.children('.row').last()).append(
-        ($('<div>').addClass('col-sm-4'))
+        ($('<a>').addClass('col-sm-4').attr('href',cLink))
             .append(($('<div>').addClass("card card-outline-secondary mb-3"))
                 .append(($('<div>').addClass('block'))
                     .append(
                         $('<h3>').addClass('card-title').text(cName))
                     .append(
                         $('<p>').addClass('card-text').text(cText))
-                    .append(
-                        $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("Files"))
-                    .append(' ')
-                    .append(
-                        $('<a>').attr('href','#').addClass('btn btn-dark btn-sm').text("QA"))
                 )
             )
     );
@@ -267,7 +257,7 @@ $(function(){
             let courseName = lastCourse.name + " " + lastCourse.year;
             let courseCode = lastCourse.code;
 
-            createClassCard(courseName, courseCode);
+            createClassCard(courseName, courseCode, "#");
         }
 
         $('#course-id-input').val('');

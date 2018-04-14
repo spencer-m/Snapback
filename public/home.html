@@ -42,7 +42,7 @@
       </div>
 
       <ul class="list-unstyled components">
-        <p>Dummy Heading</p>
+        <p>Menu</p>
         <li class="active">
           <a href="home.html">Dashboard</a>
 
@@ -99,43 +99,24 @@
         </div>
       </div>
 
-      <nav class="navbar navbar-default">
+      <nav class="navbar navbar-default rounded" style="margin-bottom: -3px;">
         <div class="container-fluid">
+          <a class="navbar-brand" href="#">Classes</a>
 
-          <div class="navbar-header">
-            <div class="header-title">
-              <h1>Classes</h1>
+          <ul class="nav navbar-nav ml-auto">
+            <div class="class-card-button">
+              <button id="class-card-add-button" class="btn btn-blue my-2" type="button" data-toggle="modal" data-target="#class-card-modal">
+                Add Class
+              </button>
             </div>
-
-            <div class="row header-buttons">
-
-              <div class="dropdown">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Small dropdown
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </div>
-
-              <div class="class-card-button">
-                <button id="class-card-add-button" class="btn btn-blue" type="button" data-toggle="modal" data-target="#class-card-modal">
-                  Add Class
-                </button>
-              </div>
-            </div>
-
-          </div>
+          </ul>
         </div>
       </nav>
 
-      <hr style="margin-bottom: 35px"> <!-- Divider -->
+      <hr> <!-- Divider -->
 
       <div class="class-cards">
         <div class="row">
-          <div class="col-sm-4">
           </div>
         </div>
       </div>
@@ -151,6 +132,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/home.js"></script>
+
+  <script>createClassCard("SENG513","Web Development", "#")</script>
+
+
 
 
 </body>
