@@ -255,7 +255,7 @@ $(function(){
                     modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
 
                     let lastCourse = userInfo.courses[userInfo.courses.length - 1];
-                    let courseName = lastCourse.name + " " + lastCourse.year;
+                    let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
                     createClassCard(courseName, courseCode, "#");
