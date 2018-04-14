@@ -112,7 +112,7 @@ let setUpModal = function(isProf, sems) {
         return $('<div>')
             .append($('<p>').text(textInput))
             .append($('<input>')
-                .addClass('form-control')
+                .addClass('form-control modal-input')
                 .attr('id', id)
                 .attr('placeholder', placeholder))
     };
@@ -120,7 +120,7 @@ let setUpModal = function(isProf, sems) {
 
     let semesterDropdown = function(availableSemesters) {
 
-        let sDropdown = $('<select>').addClass('form-control').attr("id", "course-date-input").attr("name", "semesters").attr("form","semesterForm");
+        let sDropdown = $('<select>').addClass('form-control modal-input').attr("id", "course-date-input").attr("name", "semesters").attr("form","semesterForm");
 
         availableSemesters.forEach(function(sem) {
             sDropdown.append($('<option>', {value: sem, text: sem}));
@@ -181,7 +181,8 @@ $(function(){
             $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
             populateCourses(info.courses, currSemester);
             setUpModal(userInfo.isProfessor, getAvailableSemester(info.date));
-            setupAllCourseModal(info.courses, info.date);
+            setupAllCourseModal(info.courses);
+            dropdownClasses(info.courses);
         });
 
     });
@@ -321,8 +322,16 @@ $(function(){
 
 });
 
-let setupAllCourseModal = function (c, date){
+let setupAllCourseModal = function (c) {
+    $('#allclass-card-modal .modal-body').empty();
     for(let i = 0; i < c.length; i++){
         $('#allclass-card-modal .modal-body').append($('<p>').text(c[i].code + ": " + c[i].name));
+    }
+};
+
+let dropdownClasses = function (c) {
+    $('#dropdown-content').empty();
+    for(let i = 0; i < c.length; i++){
+        $('#dropdown-content').append($('<a>').text(c[i].code).attr('href', "#"));
     }
 };

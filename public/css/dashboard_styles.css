@@ -51,6 +51,16 @@ a, a:hover, a:focus {
     margin: 40px 0;
 }
 
+#logo-bg {
+    height: 50%;
+    opacity: 0.2;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    z-index: -999;
+}
+
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -178,13 +188,28 @@ a.article, a.article:hover {
     position: relative;
 }
 
-.dropdown-content {
+#dropdown-content {
     display: none;
     z-index: 1;
+    text-indent: 15px;
 }
 
-.navbar-dropdown:hover .dropdown-content {
+.navbar-dropdown:hover #dropdown-content {
     display: block;
+}
+
+#mobile-nav {
+    display: none;
+    color: white;
+    background: #72d4e5;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    font-size: 1.1em;
+}
+
+#mobile-nav a:hover {
+    background: white;
+    color: #72d4e5;
 }
 
 /* ---------------------------------------------------
@@ -245,9 +270,16 @@ a.article, a.article:hover {
     border-radius: 5px;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(114, 212, 229, 0.4);
+    color: #72d4e5;
+}
+
+.card:hover {
+    background: rgba(114, 212, 229, 0.5);
+    color: white;
 }
 
 .top-buffer { margin-top:1px; margin-bottom: 1px;}
+
 
 /* ---------------------------------------------------
     MODAL STYLE
@@ -290,6 +322,13 @@ a.article, a.article:hover {
     align-self: center;
 }
 
+.modal-input {
+    margin-top: -15px;
+    margin-bottom: 15px;
+    border-color: #358bbe;
+    color: #358bbe;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -306,9 +345,14 @@ a.article, a.article:hover {
     #content.active {
         width: calc(100% - 250px);
     }
-
     #sidebar-collapse span {
         display: none;
+    }
+    #hamburger-menu {
+        display: block;
+    }
+    #mobile-nav {
+        display: block;
     }
 }
 
