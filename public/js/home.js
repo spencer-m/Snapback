@@ -168,19 +168,6 @@ $(function(){
         $('.class-cards').toggleClass('active');
         $('.collapse.in').toggleClass('in');
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-
-        /*
-        let sidebarButton = "#sidebarBtn";
-
-        $(sidebarButton).toggleClass('.active');
-
-
-        if ($(sidebarButton).hasClass('sidebar-expand')){
-            $(sidebarButton).text(">");
-        }
-        else {
-            $(sidebarButton).text("<");
-        }*/
     });
 
     $('#sidebarBtn').on('click', function () {
