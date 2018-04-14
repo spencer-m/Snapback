@@ -78,7 +78,7 @@ let createClassCard = function(cName, cText, cLink){
 
 let populateCourses = function(courses){
     for (let i = 0; i < courses.length; i++)
-        createClassCard(courses[i].code + " " + courses[i].year, courses[i].name);
+        createClassCard(courses[i].code, courses[i].name, "#");
 };
 
 let setUpModal = function(isProf, sems) {
@@ -112,6 +112,8 @@ let setUpModal = function(isProf, sems) {
     };
 
     let modalTitle = "";
+    $('#class-submit-button').show();
+
     if (isProf) {
         modalTitle = "Create a Course!";
         (($('.modal-body')
@@ -217,6 +219,8 @@ $(function(){
                     let modal = $('.modal-body');
 
                     modal.empty();
+                    $('#class-submit-button').hide();
+
                     modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
 
                     (modal.append($('<p>').text("Give your students the join code below")))
@@ -225,7 +229,7 @@ $(function(){
                     console.log(userInfo);
 
                     let lastCourse = userInfo.courses[userInfo.courses.length - 1];
-                    let courseName = lastCourse.name + " " + lastCourse.year;
+                    let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
                     createClassCard(courseName, courseCode, "#");
@@ -252,9 +256,13 @@ $(function(){
                     let modal = $('.modal-body');
 
                     modal.empty();
+                    $('#class-submit-button').hide();
                     modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
 
                     let lastCourse = userInfo.courses[userInfo.courses.length - 1];
+
+                    console.log(lastCourse);
+
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
