@@ -32,36 +32,30 @@
 <body>
 
   <div class="wrapper container-fluid">
+
     <!-- Sidebar -->
     <nav id="sidebar">
 
       <a id="sidebar-collapse" class="active" href="#" style="font-size: 24px; display: block; text-align: right; padding: 16px; color: white;"><i class="fa fa-arrow-left"></i></a>
 
       <div class="sidebar-header">
-        <h3></h3>
+        <h3 style="text-align: center"></h3>
       </div>
 
       <ul class="list-unstyled components">
-        <p>Menu</p>
+        <p style="line-height: 0em;"><b><i>Menu</i></b></p>
         <li class="active">
-          <a href="home.html">Dashboard</a>
+          <a href="home.html"><i class="fa fa-home"></i> Dashboard</a>
         </li>
-
         <li>
           <div class="navbar-dropdown">
-            <a class="dropbtn">Classes</a>
-            <div id="dropdown-content">
-              <!--
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
-              -->
-            </div>
+            <a class="dropbtn"><i class="fa fa-book"></i> Classes</a>
+            <div id="dropdown-content"></div>
           </div>
         </li>
 
         <li>
-          <a href="logout">Logout</a>
+          <a href="logout"><i class="fa fa-sign-out"></i> Logout</a>
         </li>
       </ul>
       <!--
@@ -73,11 +67,20 @@
     <div class="icon-bar">
       <a id="sidebarBtn" class="active" href="#"><i class="fa fa-arrow-right"></i></a>
       <a href="#"><i class="fa fa-home"></i></a>
-      <a href="#" style="margin-top: 75vh;"><i class="fa fa-sign-out"></i></a>
+      <a href="#"><i class="fa fa-sign-out"></i></a>
     </div>
 
     <!-- Page Content -->
     <div id="content">
+
+      <ul id="mobile-nav" class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#"> <i class="fa fa-home"></i> Dashboard </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"> <i class="fa fa-book"></i> Logout </a>
+        </li>
+      </ul>
 
       <!-- The Add Class Modal -->
       <div class="modal fade" id="class-card-modal">
@@ -136,6 +139,7 @@
 
       <nav class="navbar navbar-default rounded" style="margin-bottom: -3px;">
         <div class="container-fluid">
+
           <a class="navbar-brand" href="#">Classes</a>
 
           <ul class="nav navbar-nav ml-auto">
@@ -171,6 +175,9 @@
   <script src="js/home.js"></script>
 
   <script>createClassCard("SENG513","Web Development", "#")</script>
+
+  <img id="logo-bg" src="img/logo_blue.png"/>
+
 
 </body>
 </html>

@@ -51,6 +51,16 @@ a, a:hover, a:focus {
     margin: 40px 0;
 }
 
+#logo-bg {
+    height: 50%;
+    opacity: 0.2;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    z-index: 999;
+}
+
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -188,6 +198,20 @@ a.article, a.article:hover {
     display: block;
 }
 
+#mobile-nav {
+    display: none;
+    color: white;
+    background: #72d4e5;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    font-size: 1.1em;
+}
+
+#mobile-nav a:hover {
+    background: white;
+    color: #72d4e5;
+}
+
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -246,6 +270,10 @@ a.article, a.article:hover {
     border-radius: 5px;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(114, 212, 229, 0.4);
+}
+
+.card:hover {
+    background: rgba(114, 212, 229, 0.2);
 }
 
 .top-buffer { margin-top:1px; margin-bottom: 1px;}
@@ -307,9 +335,14 @@ a.article, a.article:hover {
     #content.active {
         width: calc(100% - 250px);
     }
-
     #sidebar-collapse span {
         display: none;
+    }
+    #hamburger-menu {
+        display: block;
+    }
+    #mobile-nav {
+        display: block;
     }
 }
 
