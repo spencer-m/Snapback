@@ -245,12 +245,14 @@ function questionsView(){
     checkBox = $("<input>");
     checkBox.attr("type","checkbox");
     
-    //checkBox.is(":checked") = clientSession.isLive;
+
+    if(clientSession.isLive){
+        checkBox.prop('checked', true);
+    }
     
 
     toggleLive = function(){
         clientSession.isLive = this.checked;
-       // console.log( clientSession.isLive);
     }
 
     checkBox.click(toggleLive);
