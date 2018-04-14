@@ -10,7 +10,8 @@
 
 body {
     font-family: 'Nunito', sans-serif;
-    background: #fafafa;
+    /*background: #fafafa;*/
+    background: white;
 }
 
 p {
@@ -61,7 +62,7 @@ a, a:hover, a:focus {
     z-index: 999;
     background: #72d4e5;
     color: #fff;
-    border-right: 1px solid #358bbe;
+    border-right: 1px solid white;
     transition: all 0.3s;
 }
 
@@ -228,14 +229,13 @@ a.article, a.article:hover {
 
 }
 
-
 .card {
     background: white;
-    padding: 15px 15px;
-    border: none;
-    border-radius: 0;
+    padding: 30px 20px;
+    /*border: 1px solid #358bbe;*/
+    border-radius: 5px;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 3px rgba(53, 139, 190, 0.4);
 }
 
 .top-buffer { margin-top:50px; margin-bottom: 15px;}
@@ -261,6 +261,20 @@ a.article, a.article:hover {
 .btn-blue {
     background-color: white;
     color: #72d4e5;
+}
+
+.btn-inverted-blue:hover {
+    transition-timing-function: ease-in-out;
+    transition: background-color .5s, color .5s;
+
+    background-color: white;
+    color: #72d4e5;
+    border: 1px #72d4e5 solid;
+}
+
+.btn-inverted-blue {
+    background-color: #72d4e5;
+    color: white;
 }
 
 #course-id-input {
