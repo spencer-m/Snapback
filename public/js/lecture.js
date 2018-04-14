@@ -71,7 +71,7 @@ function course(lectureName) {
     var qstLink = document.createElement("a");
     qstLink.className = "nav-link";
     qstLink.setAttribute("data-toggle", "tab");
-    qstLink.setAttribute("href", "#question");
+    qstLink.setAttribute("href", "#questions");
     qstLink.innerHTML = "Questions"
     qstTab.append(qstLink);
 
@@ -176,6 +176,7 @@ function course(lectureName) {
 
     testSection.append(testHeader);
     testSection.append(testCollapse);
+
 
     accordion.append(lecSection);
     accordion.append(assignSection);
