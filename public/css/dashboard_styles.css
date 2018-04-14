@@ -178,13 +178,13 @@ a.article, a.article:hover {
     position: relative;
 }
 
-.dropdown-content {
+#dropdown-content {
     display: none;
     z-index: 1;
     text-indent: 15px;
 }
 
-.navbar-dropdown:hover .dropdown-content {
+.navbar-dropdown:hover #dropdown-content {
     display: block;
 }
 

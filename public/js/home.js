@@ -155,7 +155,7 @@ $(function(){
             $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
             populateCourses(info.courses);
             setUpModal(userInfo.isProfessor, getAvailableSemester(info.date));
-            setupAllCourseModal(info.courses, info.date);
+            setupAllCourseModal(info.courses);
             dropdownClasses(info.courses);
         });
 
@@ -288,14 +288,16 @@ userinfo.courses.date -> check if not the current date
 userinfo.courses -> ALL courses incl. current
  */
 
-let setupAllCourseModal = function (c, date) {
+let setupAllCourseModal = function (c) {
+    $('#allclass-card-modal .modal-body').empty();
     for(let i = 0; i < c.length; i++){
         $('#allclass-card-modal .modal-body').append($('<p>').text(c[i].code + ": " + c[i].name));
     }
 };
 
 let dropdownClasses = function (c) {
+    $('#dropdown-content').empty();
     for(let i = 0; i < c.length; i++){
-        $('.dropdown-content').append($('<a>').text(c[i].code).attr('href', "#"));
+        $('#dropdown-content').append($('<a>').text(c[i].code).attr('href', "#"));
     }
 }
