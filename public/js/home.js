@@ -195,9 +195,7 @@ $(function(){
     $('#class-submit-button').on('click', function(){
 
         /*info = need code, name and year*/
-        let success = false;
         let info = {'code':"", 'name':"", 'year':""};
-        let registrationCode = "";
 
         /** if professor **/
         if (userInfo.isProfessor) {
@@ -209,10 +207,31 @@ $(function(){
                 console.log('creating a class...');
 
                 if (response.status === 'success') {
-                    console.log('class creation success');
-                    success = true;
+                    let registrationCode = response.regcode;
 
-                    registrationCode = response.regcode;
+                    socket.emit('getinfo', function (newInfo) {
+                        userInfo = newInfo;
+                        console.log('textinfront ', newInfo);
+                    });
+
+                    let modal = $('.modal-body');
+
+                    modal.empty();
+                    modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
+
+                    (modal.append($('<p>').text("Give your students the join code below")))
+                        .append($('<p>').addClass('join-code-text').text(registrationCode));
+
+                    console.log(userInfo);
+
+                    let lastCourse = userInfo.courses[userInfo.courses.length - 1];
+                    let courseName = lastCourse.name + " " + lastCourse.year;
+                    let courseCode = lastCourse.code;
+
+                    createClassCard(courseName, courseCode, "#");
+                    setUpModal(true, getAvailableSemester(userInfo.date));
+
+                    console.log('class creation success');
                 }
                 else
                     console.log("class creation error");
@@ -225,7 +244,22 @@ $(function(){
             socket.emit('enrollToClass', code, function (response) {
                 if (response === 'success') {
                     console.log('successfully enrolled');
-                    success = true;
+
+                    socket.emit('getInfo', function (info) {
+                        userInfo = info;
+                    });
+
+                    let modal = $('.modal-body');
+
+                    modal.empty();
+                    modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
+
+                    let lastCourse = userInfo.courses[userInfo.courses.length - 1];
+                    let courseName = lastCourse.name + " " + lastCourse.year;
+                    let courseCode = lastCourse.code;
+
+                    createClassCard(courseName, courseCode, "#");
+                    setUpModal(false, getAvailableSemester(userInfo.date));
                 }
                 else if (response === 'already_enrolled')
                     console.log('already_enrolled');
@@ -236,29 +270,9 @@ $(function(){
             });
         }
 
-        if (success) {
-            socket.emit('getInfo', function (info) {
-                userInfo = info;
-            });
-
-            let modal = $('.modal-body');
-
-            modal.empty();
-            modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
-
-            if (userInfo.isProfessor){
-                (modal
-                    .append($('<p>').text("Give your students the join code below")))
-                    .append($('<p>').addClass('join-code-text').text(registrationCode));
-            }
-
-
-            let lastCourse = userInfo.courses[userInfo.courses.length - 1];
-            let courseName = lastCourse.name + " " + lastCourse.year;
-            let courseCode = lastCourse.code;
-
-            createClassCard(courseName, courseCode, "#");
-        }
+        socket.emit('getInfo', function(info){
+            userInfo = info;
+        });
 
         $('#course-id-input').val('');
 
