@@ -4,10 +4,10 @@ course = "Seng 513"
 sessions = null;
 
 
-function session(id,isLive,duration,questions){
+function session(id,isLive,name,questions){
     this.id = id;
     this.isLive = isLive;
-    this.duration = duration;
+    this.name = name;
     this.questions = questions;
 }
 
@@ -109,7 +109,8 @@ function question(question,author,date,upvotes,downvotes,comments){
 
         var replyForm = $("<form>").attr("action","");
         
-        replyMessage = $("<input>");    
+        replyMessage = $("<input>");  
+        replyMessage.attr("placeholder","Reply to comments above here!");  
         replyForm.append(replyMessage);
         replyForm.append($(`<button class="btn btn-dark btn-sm">Reply</button>`));
         replyForm.submit(this.reply);
@@ -173,7 +174,8 @@ function resetView(){
 
    
     var questionForm = $("<form>").attr("action","");
-    var replyQuestion = $("<input>");    
+    var replyQuestion = $("<input>");
+    replyQuestion.attr("placeholder","Ask a new question!");
     questionForm.append(replyQuestion);
     questionForm.append($(`<button class="btn btn-dark btn-sm">New Question</button>`));
     
@@ -186,7 +188,11 @@ function resetView(){
         return false;
     });
     
-    $(".questions-list").append(questionForm);
+    $(".questions-list").append(
+        $("<div>").attr("class","card").append(
+            questionForm
+        )
+    );
     
     questions.forEach(question => {
         $(".questions-list").append(question.view());
