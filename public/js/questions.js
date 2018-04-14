@@ -19,7 +19,7 @@ function question(question,user,date,upvotes,downvotes,comments){
         card.className ="card";
 
         var table = document.createElement("table");
-        
+
         var row = document.createElement("tr");
         row.innerHTML = `
         <td><img id="up" src="img/upArrow.svg" height="50px"></td>
@@ -32,8 +32,8 @@ function question(question,user,date,upvotes,downvotes,comments){
         row.innerHTML = `   <td><img id="down" src="img/downArrow.svg" height="50px"></td>
                             <td><div class="row">
                                 <div class="col-md-12 col-lg-4"><p>User: ` + user +`</p></div>
-                                <div class="col-md-12 col-lg-4"><p>Score: `+ (upvotes.length - downvotes.length) +`</p></div> 
-                                <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>    
+                                <div class="col-md-12 col-lg-4"><p>Score: `+ (upvotes.length - downvotes.length) +`</p></div>
+                                <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>
                             </div></td>`;
 
         table.append(row);
@@ -75,8 +75,3 @@ var question = new question("What is life?","Kouroshb26","April 16th 2017",["Kou
 console.log(questions);
 
 $(".questions-list").append(question.view());
-
-
-
-
-
