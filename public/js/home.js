@@ -1,3 +1,56 @@
+const MONTHS = {
+    "January":0,
+    "February":1,
+    "March":2,
+    "April":3,
+    "May":4,
+    "June":5,
+    "July":6,
+    "August":7,
+    "September":8,
+    "October":9,
+    "November":10,
+    "December":11
+};
+
+let SEMESTER = {
+    "Winter": {"val":0, "start":MONTHS["January"], "end":MONTHS["April"]},
+    "Spring": {"val":1, "start":MONTHS["May"], "end":MONTHS["June"]},
+    "Summer": {"val":2, "start":MONTHS["July"], "end":MONTHS["August"]},
+    "Fall": {"val":3, "start":MONTHS["September"], "end":MONTHS["December"]}
+};
+
+let getAvailableSemester = function(date){
+    let dateInfo = date.split(' ');
+    let month = parseInt(dateInfo[0]);
+    let year = parseInt(dateInfo[1]);
+
+    let currentSem = "";
+    let availableSemesters = [];
+    let allSems = Object.keys(SEMESTER);
+
+    // Retrieves the current semester and adds it to the semesters
+    // available to a user
+    allSems.forEach(function(sem){
+        if (month >= SEMESTER[sem].start && month <= SEMESTER[sem].end ){
+            currentSem = sem;
+            availableSemesters.push(currentSem + " " + year);
+        }
+    });
+
+    for (let i = SEMESTER[currentSem].val; i < SEMESTER[currentSem].val + 4; i++){
+        let j = i % 4;
+
+        if (j === 3) year++;
+
+        availableSemesters.push(allSems[j] + " " + year);
+    }
+
+    console.log(availableSemesters);
+
+    return availableSemesters;
+};
+
 let createClassCard = function(cName, cText){
 
     // temporary variables
@@ -38,23 +91,50 @@ let populateCourses = function(courses){
         createClassCard(courses[i].code + " " + courses[i].year, courses[i].name);
 };
 
-let setUpModal = function(isProf) {
+let setUpModal = function(isProf, sems) {
 
     $('.modal-body').empty();
+
+
+    let inputTemplate = function(textInput, id, placeholder) {
+        return $('<div>')
+            .append($('<p>').text(textInput))
+            .append($('<input>')
+                .addClass('form-control')
+                .attr('id', id)
+                .attr('placeholder', placeholder))
+    };
+
+
+    let semesterDropdown = function(availableSemesters) {
+
+        let sDropdown = $('<select>').addClass('form-control').attr("id", "course-date-input").attr("name", "semesters").attr("form","semesterForm");
+
+
+        availableSemesters.forEach(function(sem) {
+            sDropdown.append($('<option>', {value: sem, text: sem}));
+        });
+
+
+        return ($('<div>')
+            .append($('<p>').text("Please enter the semester of the course")))
+            .append(sDropdown);
+    };
 
     let modalTitle = "";
     if (isProf) {
         modalTitle = "Create a Course!";
-        (((($('.modal-body')
-            .append($('<p>').text('Please enter the course code')))
-            .append($('<input>')
-                .attr('id',"course-code-input")
-                .attr('placeholder',"eg. ANTH413")))
-            .append($('<p>').text('Please enter the course name')))
-            .append($('<input>')
-                .attr('id',"course-name-input")
-                .attr('placeholder',"eg. History of Western Countries")))
-            .append($('<p>').text('Please enter the semester of the course'));
+        (($('.modal-body')
+            .append(inputTemplate(
+                "Please enter the course name",
+                "course-code-input",
+                "eg. ANTH 413")))
+            .append(inputTemplate(
+                "Please enter the course number",
+                "course-name-input",
+                "eg. History of Western Countries")))
+            .append(semesterDropdown(sems));
+
     }
     else {
         modalTitle = 'Enroll in a Course!';
@@ -84,7 +164,7 @@ $(function(){
 
             $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
             populateCourses(info.courses);
-            setUpModal(userInfo.isProfessor);
+            setUpModal(userInfo.isProfessor, getAvailableSemester(info.date));
         });
 
     });
@@ -133,7 +213,7 @@ $(function(){
         if (userInfo.isProfessor) {
             info.code = $('#course-code-input').val();
             info.name = $('#course-name-input').val();
-            info.year = userInfo.date;
+            info.year = $('#course-date-input').val();
 
             socket.emit('addNewClass', info, function (response) {
                 console.log('creating a class...');
