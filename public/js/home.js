@@ -156,6 +156,7 @@ $(function(){
             populateCourses(info.courses);
             setUpModal(userInfo.isProfessor, getAvailableSemester(info.date));
             setupAllCourseModal(info.courses, info.date);
+            dropdownClasses(info.courses);
         });
 
     });
@@ -287,8 +288,14 @@ userinfo.courses.date -> check if not the current date
 userinfo.courses -> ALL courses incl. current
  */
 
-let setupAllCourseModal = function (c, date){
+let setupAllCourseModal = function (c, date) {
     for(let i = 0; i < c.length; i++){
         $('#allclass-card-modal .modal-body').append($('<p>').text(c[i].code + ": " + c[i].name));
     }
 };
+
+let dropdownClasses = function (c) {
+    for(let i = 0; i < c.length; i++){
+        $('.dropdown-content').append($('<a>').text(c[i].code).attr('href', "#"));
+    }
+}

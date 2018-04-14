@@ -181,6 +181,7 @@ a.article, a.article:hover {
 .dropdown-content {
     display: none;
     z-index: 1;
+    text-indent: 15px;
 }
 
 .navbar-dropdown:hover .dropdown-content {
