@@ -46,8 +46,6 @@ let getAvailableSemester = function(date){
         availableSemesters.push(allSems[j] + " " + year);
     }
 
-    console.log(availableSemesters);
-
     return availableSemesters;
 };
 
@@ -104,7 +102,6 @@ let setUpModal = function(isProf, sems) {
             sDropdown.append($('<option>', {value: sem, text: sem}));
         });
 
-
         return ($('<div>')
             .append($('<p>').text("Please enter the semester of the course")))
             .append(sDropdown);
@@ -152,6 +149,8 @@ $(function(){
         
         socket.emit('getInfo', function (info) {
             userInfo = info;
+
+            console.log(info);
 
             $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
             populateCourses(info.courses);
