@@ -247,7 +247,7 @@ a.article, a.article:hover {
     box-shadow: 1px 1px 3px rgba(114, 212, 229, 0.4);
 }
 
-.top-buffer { margin-top:50px; margin-bottom: 15px;}
+.top-buffer { margin-top:1px; margin-bottom: 1px;}
 
 /* ---------------------------------------------------
     MODAL STYLE
