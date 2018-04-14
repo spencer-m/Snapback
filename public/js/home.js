@@ -64,8 +64,8 @@ let createClassCard = function(cName, cText, cLink){
     }
 
     (classCards.children('.row').last()).append(
-        ($('<a>').addClass('col-sm-4').attr('href',cLink))
-            .append(($('<div>').addClass("card card-outline-secondary mb-3"))
+        ($('<div>').addClass('col-sm-4'))
+            .append(($('<a>').addClass("card card-outline-secondary mb-3").attr('href', cLink))
                 .append(($('<div>').addClass('block'))
                     .append(
                         $('<h3>').addClass('card-title').text(cName))
