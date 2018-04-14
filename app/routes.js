@@ -63,6 +63,16 @@ router.get('/', function(req, res) {
     }
 });
 
+router.get('/questions', function(req, res) {
+
+    if (req.isAuthenticated()) {
+        res.sendFile(path.join(__dirname, '../public/lecture.html'));
+    }
+    else {
+        res.redirect('/login');
+    }
+});
+
 router.get('/register', function(req, res) {
 
     if (req.query.isprof) {

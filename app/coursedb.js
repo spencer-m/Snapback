@@ -2,7 +2,7 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let CommentsSchema = new Schema({
-    user: {
+    author: {
         type: Schema.ObjectId,
         ref: 'User',
         required: true
@@ -16,6 +16,15 @@ let CommentsSchema = new Schema({
 let QuestionSchema = new Schema({
 
     question: {
+        type: String,
+        required: true
+    },
+    author: {
+        type: Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    date: {
         type: String,
         required: true
     },

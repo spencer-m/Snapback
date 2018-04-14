@@ -194,7 +194,21 @@ function resetView(){
     
 }
 
+let classid = '5ad04f21822a4f2db88bfa68';
+
 $( document ).ready(function(){
+
+    let socket = io();
+    
+    // initialize
+
+    socket.emit('loadClass', classid, function(classinfo) {
+
+        // process class info here
+        console.log('clientside', classinfo);
+    });
+
+
     resetView();
 
 });
