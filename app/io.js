@@ -19,7 +19,7 @@ let isCourseIdInArray = function(cid, arr) {
 };
 
 io.connection = function(socket) {
-        
+
     
     /* connection initialiation */
 
@@ -50,8 +50,16 @@ io.connection = function(socket) {
                         date: d.getMonth() + ' ' + d.getFullYear() 
                     };
 
-                    for (let i = 0; i < user.courses.length; i++)
-                        info.courses.push(user.courses[i].courseinfo);
+                    for (let i = 0; i < user.courses.length; i++) {
+                        let x = {
+                            code: user.courses[i].courseinfo.code,
+                            name: user.courses[i].courseinfo.name,
+                            year: user.courses[i].courseinfo.year,
+                            regcode: user.courses[i].regcode
+                        };
+
+                        info.courses.push(x);
+                    }
             
                     cb(info);
                 });
