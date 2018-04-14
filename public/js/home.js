@@ -83,8 +83,7 @@ let populateCourses = function(courses){
 
 let setUpModal = function(isProf, sems) {
 
-    $('.modal-body').empty();
-
+    $('#class-card-modal.modal-body').empty();
 
     let inputTemplate = function(textInput, id, placeholder) {
         return $('<div>')
@@ -116,7 +115,7 @@ let setUpModal = function(isProf, sems) {
 
     if (isProf) {
         modalTitle = "Create a Course!";
-        (($('.modal-body')
+        (($('#class-card-modal .modal-body')
             .append(inputTemplate(
                 "Please enter the course name",
                 "course-code-input",
@@ -130,7 +129,7 @@ let setUpModal = function(isProf, sems) {
     }
     else {
         modalTitle = 'Enroll in a Course!';
-        ($('.modal-body')
+        ($('#class-card-modal .modal-body')
             .append($('<p>').text('Please enter the course code')))
             .append($('<input>')
                 .attr('id',"course-id-input")
@@ -139,7 +138,7 @@ let setUpModal = function(isProf, sems) {
         );
     }
 
-    $('.modal-title').text(modalTitle);
+    $('#class-card-modal .modal-title').text(modalTitle);
 };
 
 // on ready()
@@ -294,3 +293,9 @@ $(function(){
     });
 
 });
+
+/*
+userinfo.courses.date -> check if not the current date
+
+userinfo.courses -> ALL courses incl. current
+ */

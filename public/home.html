@@ -77,7 +77,7 @@
     <!-- Page Content -->
     <div id="content">
 
-      <!-- The Modal -->
+      <!-- The Add Class Modal -->
       <div class="modal fade" id="class-card-modal">
 
         <!-- classes retrieved from:
@@ -103,6 +103,35 @@
         </div>
       </div>
 
+      <!-- The Prev Class Modal -->
+      <div class="modal fade" id="prevclass-card-modal">
+
+        <!-- classes retrieved from:
+        https://stackoverflow.com/questions/41377501/how-to-vertically-align-bootstrap-v4-modal-dialogs
+        -->
+        <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
+
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h3 class="modal-title">Previous Courses</h3>
+            </div>
+
+            <div class="modal-body">
+              <!--
+              <p>Please enter the course code</p>
+              <input id="course-code-input" autocomplete="off" placeholder="eg. 41Q23AB">
+              -->
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" id="class-cancel-button2" class="btn btn-blue" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       <nav class="navbar navbar-default rounded" style="margin-bottom: -3px;">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Classes</a>
@@ -111,6 +140,9 @@
             <div class="class-card-button">
               <button id="class-card-add-button" class="btn btn-blue my-2" type="button" data-toggle="modal" data-target="#class-card-modal">
                 Add Class
+              </button>
+              <button id="class-card-prevClass-button" class="btn btn-blue my-2" type="button" data-toggle="modal" data-target="#prevclass-card-modal">
+                Prev. Classes
               </button>
             </div>
           </ul>
