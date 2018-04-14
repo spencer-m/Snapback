@@ -6,6 +6,18 @@ let Course = require('./coursedb.js');
 
 let io = {};
 
+let isCourseIdInArray = function(cid, arr) {
+    let result = false;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == cid) {
+            result = true;
+            break;
+        }
+    }
+    
+    return result;
+};
+
 io.connection = function(socket) {
         
     
@@ -38,9 +50,8 @@ io.connection = function(socket) {
                         date: d.getMonth() + ' ' + d.getFullYear() 
                     };
 
-                    for (let i = 0; i < user.courses.length; i++) {
+                    for (let i = 0; i < user.courses.length; i++)
                         info.courses.push(user.courses[i].courseinfo);
-                    }
             
                     cb(info);
                 });
@@ -65,8 +76,7 @@ io.connection = function(socket) {
 
                         if (err) throw err;
 
-                        // TODO: verify
-                        if (course._id in user.courses)
+                        if (isCourseIdInArray(course._id, user.courses))
                             cb({status: 'already_enrolled'});
                         else {
                             course.classlist.push(user._id);
@@ -164,10 +174,7 @@ io.connection = function(socket) {
                 if (err) throw err;
 
                 if (user) {
-                    console.log('courses of user', user.courses);
-                    console.log('classid', cid);
-                    if (thisInThat(cid, user.courses)) {
-                        console.log('contained');
+                    if (isCourseIdInArray(cid, user.courses)) {
                         Course.Course.findById(cid, function(err, course) {
                             
                             if (err) throw err;
