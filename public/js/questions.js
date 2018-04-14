@@ -1,5 +1,6 @@
 user = "Kourosh"
 course = "Seng 513"
+isProf = false;
 
 sessions = null;
 
@@ -23,6 +24,8 @@ function question(question,author,date,upvotes,downvotes,comments){
     var replyMessage;
     var upArrow;
     var downArrow;
+    var commentList;
+    var showCommentList = false;
 
     this.upArrowClick = function(){
         if(upvotes.indexOf(user) < 0){
@@ -51,7 +54,15 @@ function question(question,author,date,upvotes,downvotes,comments){
         resetView();
     }
 
+    this.deleteQuestion = function(){
+        questions.splice(questions.indexOf(question),1);
+        resetView();
+    }
 
+    this.toggleComments = function(){
+        showCommentList = ! showCommentList;
+        commentList.toggle();
+    }
 
     this.reply = function(){
     
@@ -71,6 +82,13 @@ function question(question,author,date,upvotes,downvotes,comments){
         card.attr("class","card");
 
         var table = $("<table>");
+       
+        if(user == author || isProf){
+            table.append($("<tr>")
+                .append($("<td>"))
+                .append($(`<td align="right" >`)
+                    .append($(`<img height="30px" src="img/close.svg">`).click(this.deleteQuestion))));
+        }
         
         var row = $("<tr>");
         upArrow = $(`<img id="down" height="50px">`);
@@ -88,24 +106,42 @@ function question(question,author,date,upvotes,downvotes,comments){
         downArrow.attr("src",(downvotes.includes(user)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         downArrow.click(this.downArrowClick);
         row.append(downArrow);
-        row.append($(`<td><div class="row">
-                        <div class="col-md-12 col-lg-4"><p>User: ` + author +`</p></div>
-                        <div class="col-md-12 col-lg-4"><p>Score: `+ this.score() +`</p></div> 
-                        <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>    
-                        </div></td>`));
+        row.append($("<td>").append($(`<div class="row">`).append($(`
+                        <div class="col-md-12 col-lg-3">User: ` + author +`</div>
+                        <div class="col-md-12 col-lg-3">Score: `+ this.score() +`</div> 
+                        <div class="col-md-12 col-lg-3">Posted: `+ this.date + `</div>`))
+                        .append($("<div>").attr("class","col-md-12 col-lg-3").append($(`<span class="commentCollapse">`).text("Comments").click(this.toggleComments)))));   
+                        
                             
 
         table.append(row);
         card.append(table);
 
-        var commentList = $("<div>");
-        commentList.attr("class","comments-list");
+        commentList = $("<div>").attr("class","comments-list");
+        if(!showCommentList){
+            commentList.toggle();
+        }
 
         comments.forEach(comment => {
-            commentList.append(comment.view())
-        });
-        card.append(commentList);
 
+            this.deleteComment = function(){
+                comments.splice(comments.indexOf(comment),1);
+                resetView();
+            }
+        
+            
+            let rowComment = $("<div>").attr("class","row comment");
+            rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
+            if(user == comment.author || isProf ){
+                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.msg)
+                .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment))); 
+            }else{
+                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.msg));
+            }
+
+            commentList.append(rowComment);
+
+        });
 
         var replyForm = $("<form>").attr("action","");
         
@@ -116,7 +152,8 @@ function question(question,author,date,upvotes,downvotes,comments){
         replyForm.submit(this.reply);
         
 
-        $(card).append(replyForm);
+        commentList.append(replyForm);
+        card.append(commentList);
         return(card);
     }
 
@@ -126,19 +163,23 @@ function comment(author,msg){
     this.author = author;
     this.msg = msg;
 
-    this.view = function view(){
-        rowComment = $("<div>");
-        rowComment.attr("class","row comment");
+    // this.view = function view(){
+    //     var rowComment = $("<div>");
+    //     rowComment.attr("class","row comment");
 
-        rowComment.html(`<div class="col-md-12 col-lg-2"><p>User: `+author+`</p></div>
-                                <div class="col-md-12 col-lg-10"><p>`+msg+`</p></div>`);
-        return(rowComment);
-    }
+    //     rowComment
+    //         .append($("<div>").attr("class","col-md-12 col-lg-1 author").text(author))
+    //         .append($("<div>").attr("class","col-md-12 col-lg-11").text(msg)
+    //         .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`)));
+                
+    
+    //     return(rowComment);
+    // }
 }
 
 
-questions = [new question("What is life?","Kouroshb26","April 16th 2017",["Jake"],[user],
-    [new comment("Hello123","I like you. Don't hurt me"),
+questions = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[user],
+    [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
     new comment("Jerry","I like you."),
     new comment("Swagmaster","Swag is All i care about"),
     ]),
@@ -202,7 +243,6 @@ function resetView(){
 
 $( document ).ready(function(){
     resetView();
-
 });
 
 

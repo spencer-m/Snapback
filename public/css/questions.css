@@ -16,9 +16,10 @@
     box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.comments-list .comment p{
-    margin: 0;
-    padding: 0;
+.comments-list .comment p, td p, td h4{
+    margin: 0px;
+    padding: 0px;
+    color: black;
 }
 
 #up , #down{
@@ -29,10 +30,6 @@
 
 td {
     vertical-align: middle;
-}
-td p,  td h4{
-    margin: 0px;
-    padding: 0px;
 }
 
 
@@ -47,6 +44,15 @@ td p,  td h4{
     flex:1;
 }
 
+.commentCollapse{
+    text-decoration: underline;
+    cursor: pointer; 
+}
+
+.commentCollapse:hover{
+    color: red;
+}
+
 #addQuestion {
     position: fixed;
     bottom: 100px;
@@ -54,10 +60,10 @@ td p,  td h4{
 }
 
 
+.author {
+    text-align: right;
+}
 
-
-
-
-
-
-
+.deleteComment{
+ float: right;
+}
