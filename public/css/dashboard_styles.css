@@ -6,7 +6,8 @@
 /*
 * {
     border: 1px solid black;
-}*/
+}
+*/
 
 body {
     font-family: 'Nunito', sans-serif;
@@ -62,7 +63,6 @@ a, a:hover, a:focus {
     z-index: 999;
     background: #72d4e5;
     color: #fff;
-    border-right: 1px solid white;
     transition: all 0.3s;
 }
 
@@ -187,12 +187,12 @@ a.article, a.article:hover {
     right: 0;
 }
 
-#content.active {
+#content.active{
     width: 95%;
 }
 
-.class-cards.active {
-    margin-left: 50px;
+#class-cards-row {
+
 }
 
 .navbar {
