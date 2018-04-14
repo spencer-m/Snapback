@@ -16,6 +16,7 @@ io.connection = function(socket) {
     socket.emit('init');
 
     socket.on('getInfo', function(cb){
+
         if (socket.request.user.logged_in) {
             User.
                 findById(socket.request.user._id).
@@ -49,6 +50,7 @@ io.connection = function(socket) {
     /* enrolling to course */
 
     socket.on('enrollToClass', function(code, cb) {
+
         if (socket.request.user.logged_in) {
 
             Course.Course.findOne({regcode: code}, function(err, course) {
@@ -63,6 +65,7 @@ io.connection = function(socket) {
 
                         if (err) throw err;
 
+                        // TODO: verify
                         if (course._id in user.courses)
                             cb({status: 'already_enrolled'});
                         else {
@@ -106,6 +109,7 @@ io.connection = function(socket) {
                 let generatedCode = generateRandomString();
 
                 Course.Course.findOne({regcode: generatedCode}, function(err, course) {
+                    
                     if (err) throw err;
                 
                     if (course) {
@@ -130,6 +134,8 @@ io.connection = function(socket) {
 
                         User.findById(socket.request.user._id, function(err, user) {
                         
+                            if (err) throw err;
+
                             user.courses.push(c._id);
                             user.save();
                         });
@@ -147,6 +153,37 @@ io.connection = function(socket) {
             cb({status: 'failure'});
     });
 
+    /* accessing a class */
+
+    socket.on('loadClass', function(cid, cb) {
+        
+        if (socket.request.user.logged_in) {
+
+            User.findById(socket.request.user._id, function(err, user) {
+
+                if (err) throw err;
+
+                if (user) {
+                    console.log('courses of user', user.courses);
+                    console.log('classid', cid);
+                    if (thisInThat(cid, user.courses)) {
+                        console.log('contained');
+                        Course.Course.findById(cid, function(err, course) {
+                            
+                            if (err) throw err;
+
+                            if  (course)
+                                cb(course);
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+
+    //update(id, new q) detele(id) add(q)
+    // end io function
 };
 
 module.exports = io;

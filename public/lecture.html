@@ -177,29 +177,31 @@
  
               <table>
                 <tr> 
-                  <td><img src="img/upArrow.svg" height="50px"></td>
-                  <td>
-                      <div class="row">
-                        <div class="col-sm-12 col-md-6"><h4>ID: 10149436</h4></div>
-                        <div class="col-sm-12 col-md-6"><h4>Score: 56</h4></div>     
-                      </div>
-                  </td>
+                  <td width="90px"><img id="up" src="img/upArrow.svg" height="50px"></td>
+                  <td> <h4> My question is to get this done before school. BUT SWAGER AINT STOPPING ME NOW?</h4></td>
+
                 </tr>
                 <tr>
-                  <td><img src="img/downArrow.svg" height="50px"></td>
-                  <td> <p> My question is to get this done before school. BUT SWAGER AINT STOPPING ME NOW</p></td>
+                  <td width="90px"><img id="down" src="img/downArrow.svg" height="50px"></td>
+                  <td>
+                      <div class="row">
+                        <div class="col-md-12 col-lg-4"><p>ID: 10149436</p></div>
+                        <div class="col-md-12 col-lg-4"><p>Score: 56</p></div> 
+                        <div class="col-md-12 col-lg-4"><p>Posted: May 5th 2017</p></div>    
+                      </div>
+                  </td>
                 </tr>
               </table>
               <div class="comments-list">
 
                   <div class="row comment">
-                      <div class="col-sm-12 col-md-2"><p>ID: 5498498463</p></div>
-                      <div class="col-sm-12 col-md-10"><p>You are doing it wrong</p></div>    
+                      <div class="col-md-12 col-lg-2"><p>ID: 5498498463</p></div>
+                      <div class="col-md-12 col-lg-10"><p>You are doing it wrong</p></div>    
                   </div>
 
                   <div class="row comment">
-                      <div class="col-sm-12 col-md-2"><p>ID: 10149436</p></div>
-                      <div class="col-sm-12 col-md-10"><p>Oh that makes sense now</p></div>     
+                      <div class="col-md-12 col-lg-2"><p>ID: 10149436</p></div>
+                      <div class="col-md-12 col-lg-10"><p>Oh that makes sense now</p></div>     
                   </div>
 
               </div>
@@ -247,9 +249,10 @@
  <!-- jQuery Custom Scroller CDN -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-  <!-- Questions.js -->
-  <script src="js/questions.js"/>
+ <script src="/socket.io/socket.io.js"></script>
 
+  <!-- Questions.js -->
+  <script src="js/questions.js"></script>
 
 </body>
 </html>
