@@ -74,9 +74,10 @@ let createClassCard = function(cName, cText, cLink){
     );
 };
 
-let populateCourses = function(courses){
+let populateCourses = function(courses, currDate){
     for (let i = 0; i < courses.length; i++)
-        createClassCard(courses[i].code, courses[i].name, "#");
+        if (courses[i].date === currDate)
+            createClassCard(courses[i].code, courses[i].name, "#");
 };
 
 let setUpModal = function(isProf, sems) {
@@ -153,7 +154,7 @@ $(function(){
             console.log(info);
 
             $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
-            populateCourses(info.courses);
+            populateCourses(info.courses, info.date);
             setUpModal(userInfo.isProfessor, getAvailableSemester(info.date));
             setupAllCourseModal(info.courses, info.date);
         });
@@ -202,7 +203,7 @@ $(function(){
                         console.log('textinfront ', newInfo);
                     });
 
-                    let modal = $('.modal-body');
+                    let modal = $('#class-card-modal .modal-body');
 
                     modal.empty();
                     $('#class-submit-button').hide();
@@ -212,13 +213,13 @@ $(function(){
                     (modal.append($('<p>').text("Give your students the join code below")))
                         .append($('<p>').addClass('join-code-text').text(registrationCode));
 
-                    console.log(userInfo);
-
                     let lastCourse = userInfo.courses[userInfo.courses.length - 1];
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
-                    createClassCard(courseName, courseCode, "#");
+                    if (info.year === userInfo.year)
+                        createClassCard(courseName, courseCode, "#");
+                    setupAllCourseModal(userInfo.courses);
                     setUpModal(true, getAvailableSemester(userInfo.date));
 
                     console.log('class creation success');
@@ -232,14 +233,16 @@ $(function(){
             let code = $('#course-id-input').val();
 
             socket.emit('enrollToClass', code, function (response) {
+
                 if (response === 'success') {
+
                     console.log('successfully enrolled');
 
                     socket.emit('getInfo', function (info) {
                         userInfo = info;
                     });
 
-                    let modal = $('.modal-body');
+                    let modal = $('#class-card-modal .modal-body');
 
                     modal.empty();
                     $('#class-submit-button').hide();
@@ -255,8 +258,9 @@ $(function(){
                     createClassCard(courseName, courseCode, "#");
                     setUpModal(false, getAvailableSemester(userInfo.date));
                 }
-                else if (response === 'already_enrolled')
+                else if (response === 'already_enrolled'){
                     console.log('already_enrolled');
+                }
                 else if (response === 'invalid')
                     console.log('invalid class code');
                 else
