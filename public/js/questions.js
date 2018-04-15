@@ -1,11 +1,10 @@
 user = "Kourosh"
-course = "Seng 513"
+courseID = "Seng 513"
 isProf = true;
-sessions = null;
 
 
-function session(id,isLive,name,questions){
-    this.id = id;
+function session(_id,isLive,name,questions){
+    this._id = _id;
     this.isLive = isLive;
     this.name = name;
     this.questions = questions;
@@ -34,7 +33,8 @@ function session(id,isLive,name,questions){
 
 }
 
-function question(question,author,date,upvotes,downvotes,comments){
+function question(id,question,author,date,upvotes,downvotes,comments){
+    this.id = id;
     this.question = question;
     this.author = author;
     this.date = date;
@@ -155,10 +155,10 @@ function question(question,author,date,upvotes,downvotes,comments){
             let rowComment = $("<div>").attr("class","row comment");
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
             if(user == comment.author || isProf ){
-                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.msg)
+                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
                 .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment))); 
             }else{
-                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.msg));
+                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message));
             }
 
             commentList.append(rowComment);
@@ -181,9 +181,9 @@ function question(question,author,date,upvotes,downvotes,comments){
 
 }
 
-function comment(author,msg){
+function comment(author,message){
     this.author = author;
-    this.msg = msg;
+    this.message = message;
 }
 
 
@@ -213,6 +213,8 @@ sessions = [new session(123,true,"Session1",question1),new session(123,true,"Ses
 clientQuestions = null;
 clientSession = null;
 
+
+console.log(sessions);
 
 
 
@@ -306,9 +308,18 @@ function sessionsView(){
 
 }
 
-$( document ).ready(function(){
-    sessionsView();
+$(document).ready(function(){
+    let socket = io();
+
+    socket.emit("loadClass",courseID,function(classinfo){
+        sessions = classinfo.sessions;
+        sessionsView();
+    })
+
+
 });
+
+
 
 
 
