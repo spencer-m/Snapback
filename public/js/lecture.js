@@ -132,76 +132,32 @@ function course(lectureName) {
     lecUpButton.setAttribute("data-target", "#lecUploadModal");
     lecUpButton.innerHTML = "Upload";
 
-    var lecModal = document.createElement("div");
-    lecModal.className = "modal fade";
-    lecModal.setAttribute("id", "lecUploadModal");
-    lecModal.setAttribute("tabindex", "-1");
-    lecModal.setAttribute("role", "dialog");
-    lecModal.setAttribute("aria-labelledby", "lecUploadModalLabel");
-    lecModal.setAttribute("aria-hidden", "true");
+    // Modal for lecture notes upload
+    var lecUploadModal = document.createElement("div");
+    lecUploadModal.innerHTML = `<div class="modal fade" id="lecUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="lecUploadModalLabel">Upload File to Lecture Notes</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <label for="lecFileUpload" class="custom-file-upload">
+                        <i class="fa fa-cloud-upload"></i> Click here to upload a file
+                      </label>
+                      <input id="lecFileUpload" type="file"/>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
 
-    var lecModalDialog = document.createElement("div");
-    lecModalDialog.className = "modal-dialog";
-    lecModalDialog.setAttribute("role", "document");
-    var lecModalContent = document.createElement("div");
-    lecModalContent.className = "modal-content";
-    var lecModalHeader = document.createElement("div");
-    lecModalHeader.className = "modal-header";
-    var lecModalTitle = document.createElement("h5");
-    lecModalTitle.Classes = "modal-title";
-    lecModalTitle.setAttribute("id", "lecUploadModalLabel");
-    lecModalTitle.innerHTML = "Upload File";
-    var lecModalClose = document.createElement("button");
-    lecModalClose.className = "close";
-    lecModalClose.setAttribute("type","button");
-    lecModalClose.setAttribute("data-dismiss","modal");
-    lecModalClose.setAttribute("aria-label","Close");
-    var lecModalSpan = document.createElement("span");
-    lecModalSpan.setAttribute("aria-hidden", "true");
-    lecModalSpan.innerHTML = "&times;";
-    var lecModalBody = document.createElement("div");
-    lecModalBody.className = "modal-body";
-    var lecModalLabel = document.createElement("label");
-    lecModalLabel.className = "custom-file-upload";
-    lecModalLabel.setAttribute("for", "lecFileUpload");
-    var lecModalUpload = document.createElement("i");
-    lecModalUpload.className = "fa fa-cloud-upload";
-    lecModalUpload.innerHTML = "Click here to upload a file";
-    var lecModalInput = document.createElement("input");
-    lecModalInput.setAttribute("id", "lecFileUpload");
-    lecModalInput.setAttribute("type", "file");
-    lecModalInput.setAttribute("onchange", "handleLecFiles();")
-    var lecModalFooter = document.createElement("div");
-    lecModalFooter.className = "modal-footer";
-    var lecModalCloseButton = document.createElement("button");
-    lecModalCloseButton.className = "btn btn-secondary";
-    lecModalCloseButton.setAttribute("type","button");
-    lecModalCloseButton.setAttribute("data-dismiss","modal");
-    lecModalCloseButton.innerHTML = "Close";
-    var lecModalSaveButton = document.createElement("button");
-    lecModalSaveButton.className = "btn btn-primary";
-    lecModalSaveButton.setAttribute("type","button");
-    lecModalSaveButton.innerHTML = "Save";
-
-
-    lecModalClose.append(lecModalSpan);
-    lecModalHeader.append(lecModalTitle);
-    lecModalHeader.append(lecModalClose);
-
-    lecModalFooter.append(lecModalCloseButton);
-    lecModalFooter.append(lecModalSaveButton);
-
-    lecModalLabel.append(lecModalUpload);
-    lecModalBody.append(lecModalLabel);
-    lecModalBody.append(lecModalInput);
-
-    lecModalContent.append(lecModalHeader);
-    lecModalContent.append(lecModalBody);
-    lecModalContent.append(lecModalFooter);
-
-    lecModalDialog.append(lecModalContent);
-    lecModal.append(lecModalDialog);
-    lecContent.append(lecModal);
+    lecContent.append(lecUploadModal);
 
     // Append lecture stuff together
     lecBody.append(lecList);
@@ -243,76 +199,32 @@ function course(lectureName) {
     assignUpButton.setAttribute("data-target", "#assignUploadModal");
     assignUpButton.innerHTML = "Upload";
 
-    var assignModal = document.createElement("div");
-    assignModal.className = "modal fade";
-    assignModal.setAttribute("id", "assignUploadModal");
-    assignModal.setAttribute("tabindex", "-1");
-    assignModal.setAttribute("role", "dialog");
-    assignModal.setAttribute("aria-labelledby", "assignUploadModalLabel");
-    assignModal.setAttribute("aria-hidden", "true");
+    // Modal for assignment upload
+    var assignUploadModal = document.createElement("div");
+    assignUploadModal.innerHTML = `<div class="modal fade" id="assignUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="AssignUploadModalLabel">Upload File to Assignments</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <label for="assignFileUpload" class="custom-file-upload">
+                        <i class="fa fa-cloud-upload"></i> Click here to upload a file
+                      </label>
+                      <input id="assignFileUpload" type="file"/>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
 
-    var assignModalDialog = document.createElement("div");
-    assignModalDialog.className = "modal-dialog";
-    assignModalDialog.setAttribute("role", "document");
-    var assignModalContent = document.createElement("div");
-    assignModalContent.className = "modal-content";
-    var assignModalHeader = document.createElement("div");
-    assignModalHeader.className = "modal-header";
-    var assignModalTitle = document.createElement("h5");
-    assignModalTitle.Classes = "modal-title";
-    assignModalTitle.setAttribute("id", "assignUploadModalLabel");
-    assignModalTitle.innerHTML = "Upload File";
-    var assignModalClose = document.createElement("button");
-    assignModalClose.className = "close";
-    assignModalClose.setAttribute("type","button");
-    assignModalClose.setAttribute("data-dismiss","modal");
-    assignModalClose.setAttribute("aria-label","Close");
-    var assignModalSpan = document.createElement("span");
-    assignModalSpan.setAttribute("aria-hidden", "true");
-    assignModalSpan.innerHTML = "&times;";
-    var assignModalBody = document.createElement("div");
-    assignModalBody.className = "modal-body";
-    var assignModalLabel = document.createElement("label");
-    assignModalLabel.className = "custom-file-upload";
-    assignModalLabel.setAttribute("for", "assignFileUpload");
-    var assignModalUpload = document.createElement("i");
-    assignModalUpload.className = "fa fa-cloud-upload";
-    assignModalUpload.innerHTML = "Click here to upload a file";
-    var assignModalInput = document.createElement("input");
-    assignModalInput.setAttribute("id", "assignFileUpload");
-    assignModalInput.setAttribute("type", "file");
-    assignModalInput.setAttribute("onchange", "handleAssignFiles();")
-    var assignModalFooter = document.createElement("div");
-    assignModalFooter.className = "modal-footer";
-    var assignModalCloseButton = document.createElement("button");
-    assignModalCloseButton.className = "btn btn-secondary";
-    assignModalCloseButton.setAttribute("type","button");
-    assignModalCloseButton.setAttribute("data-dismiss","modal");
-    assignModalCloseButton.innerHTML = "Close";
-    var assignModalSaveButton = document.createElement("button");
-    assignModalSaveButton.className = "btn btn-primary";
-    assignModalSaveButton.setAttribute("type","button");
-    assignModalSaveButton.innerHTML = "Save";
-
-
-    assignModalClose.append(assignModalSpan);
-    assignModalHeader.append(assignModalTitle);
-    assignModalHeader.append(assignModalClose);
-
-    assignModalFooter.append(assignModalCloseButton);
-    assignModalFooter.append(assignModalSaveButton);
-
-    assignModalLabel.append(assignModalUpload);
-    assignModalBody.append(assignModalLabel);
-    assignModalBody.append(assignModalInput);
-
-    assignModalContent.append(assignModalHeader);
-    assignModalContent.append(assignModalBody);
-    assignModalContent.append(assignModalFooter);
-
-    assignModalDialog.append(assignModalContent);
-    assignModal.append(assignModalDialog);
-    lecContent.append(assignModal);
+    lecContent.append(assignUploadModal);
 
     assignBody.append(assignList);
     assignCollapse.append(assignBody);
@@ -351,75 +263,32 @@ function course(lectureName) {
     testUpButton.setAttribute("data-target", "#testUploadModal");
     testUpButton.innerHTML = "Upload";
 
-    var testModal = document.createElement("div");
-    testModal.className = "modal fade";
-    testModal.setAttribute("id", "testUploadModal");
-    testModal.setAttribute("tabindex", "-1");
-    testModal.setAttribute("role", "dialog");
-    testModal.setAttribute("aria-labelledby", "testUploadModalLabel");
-    testModal.setAttribute("aria-hidden", "true");
+    // Modal for test material upload
+    var testUploadModal = document.createElement("div");
+    testUploadModal.innerHTML = `<div class="modal fade" id="testUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="uploadModalLabel">Upload File to Test Material</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <label for="testFileUpload" class="custom-file-upload">
+                        <i class="fa fa-cloud-upload"></i> Click here to upload a file
+                      </label>
+                      <input id="testFileupload" type="file"/>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
 
-    var testModalDialog = document.createElement("div");
-    testModalDialog.className = "modal-dialog";
-    testModalDialog.setAttribute("role", "document");
-    var testModalContent = document.createElement("div");
-    testModalContent.className = "modal-content";
-    var testModalHeader = document.createElement("div");
-    testModalHeader.className = "modal-header";
-    var testModalTitle = document.createElement("h5");
-    testModalTitle.Classes = "modal-title";
-    testModalTitle.setAttribute("id", "testUploadModalLabel");
-    testModalTitle.innerHTML = "Upload File";
-    var testModalClose = document.createElement("button");
-    testModalClose.className = "close";
-    testModalClose.setAttribute("type","button");
-    testModalClose.setAttribute("data-dismiss","modal");
-    testModalClose.setAttribute("aria-label","Close");
-    var testModalSpan = document.createElement("span");
-    testModalSpan.setAttribute("aria-hidden", "true");
-    testModalSpan.innerHTML = "&times;";
-    var testModalBody = document.createElement("div");
-    testModalBody.className = "modal-body";
-    var testModalLabel = document.createElement("label");
-    testModalLabel.className = "custom-file-upload";
-    testModalLabel.setAttribute("for", "testFileUpload");
-    var testModalUpload = document.createElement("i");
-    testModalUpload.className = "fa fa-cloud-upload";
-    testModalUpload.innerHTML = "Click here to upload a file";
-    var testModalInput = document.createElement("input");
-    testModalInput.setAttribute("id", "testFileUpload");
-    testModalInput.setAttribute("type", "file");
-    testModalInput.setAttribute("onchange", "handleTestFiles();")
-    var testModalFooter = document.createElement("div");
-    testModalFooter.className = "modal-footer";
-    var testModalCloseButton = document.createElement("button");
-    testModalCloseButton.className = "btn btn-secondary";
-    testModalCloseButton.setAttribute("type","button");
-    testModalCloseButton.setAttribute("data-dismiss","modal");
-    testModalCloseButton.innerHTML = "Close";
-    var testModalSaveButton = document.createElement("button");
-    testModalSaveButton.className = "btn btn-primary";
-    testModalSaveButton.setAttribute("type","button");
-    testModalSaveButton.innerHTML = "Save";
-
-    testModalClose.append(testModalSpan);
-    testModalHeader.append(testModalTitle);
-    testModalHeader.append(testModalClose);
-
-    testModalFooter.append(testModalCloseButton);
-    testModalFooter.append(testModalSaveButton);
-
-    testModalLabel.append(testModalUpload);
-    testModalBody.append(testModalLabel);
-    testModalBody.append(testModalInput);
-
-    testModalContent.append(testModalHeader);
-    testModalContent.append(testModalBody);
-    testModalContent.append(testModalFooter);
-
-    testModalDialog.append(testModalContent);
-    testModal.append(testModalDialog);
-    lecContent.append(testModal);
+    lecContent.append(testUploadModal);
 
     testBody.append(testList);
     testCollapse.append(testBody);
