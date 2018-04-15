@@ -1,6 +1,33 @@
-user = "Kourosh"
+clientUser = "Kourosh"
 courseID = "Seng 513"
 isProf = true;
+
+
+question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[clientUser],
+    [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
+    new comment("Jerry","I like you."),
+    new comment("Swagmaster","Swag is All i care about"),
+    ]),
+    new question("This is another question I AM FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
+    [new comment("Jerry","I don't like you."),
+    new comment("Jebrone","Wow such nice comments."),
+    ]),
+    new question("asfdhadfjhkanothdskjfdoaijfoewjrfoejrdsafdsa FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
+    [new comment("Jerry","I don't like you."),
+    new comment("Jebrone","Wow such nice comments."),
+    ]),
+];
+
+question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[clientUser],
+[new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
+new comment("Jerry","I like you."),
+new comment("Swagmaster","Swag is All i care about"),
+])]
+
+sessions = [new session(123,true,"Session1",question1),new session(123,true,"Session5",question2)]
+clientQuestions = null;
+clientSession = null;
+
 
 
 function session(_id,isLive,name,questions){
@@ -13,7 +40,6 @@ function session(_id,isLive,name,questions){
 
     this.expand = function(){
         clientSession = session;
-        clientQuestions = questions;
         questionsView();
     }
 
@@ -33,8 +59,8 @@ function session(_id,isLive,name,questions){
 
 }
 
-function question(id,question,author,date,upvotes,downvotes,comments){
-    this.id = id;
+function question(_id,question,author,date,upvotes,downvotes,comments){
+    this._id = _id;
     this.question = question;
     this.author = author;
     this.date = date;
@@ -48,37 +74,38 @@ function question(id,question,author,date,upvotes,downvotes,comments){
     var downArrow;
     var commentList;
     var showCommentList = false;
+    var scoreBox;
 
     this.upArrowClick = function(){
-        if(upvotes.indexOf(user) < 0){
-            upvotes.push(user);
-            if(downvotes.indexOf(user) >=0 ){
-                downvotes.splice(downvotes.indexOf(user),1);
+        if(upvotes.indexOf(clientUser) < 0){
+            upvotes.push(clientUser);
+            if(downvotes.indexOf(clientUser) >=0 ){
+                downvotes.splice(downvotes.indexOf(clientUser),1);
             }
         }else{
-            upvotes.splice(upvotes.indexOf(user) ,1);
+            upvotes.splice(upvotes.indexOf(clientUser) ,1);
         }
-        console.log(question);
-        questionsView();
+        upArrow.attr("src",(upvotes.includes(clientUser)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        scoreBox.text("Score: "+this.score());
         
     }
 
     this.downArrowClick = function(){
-        if(downvotes.indexOf(user) < 0){
-            downvotes.push(user);
-            if(upvotes.indexOf(user) >=0 ){
-                upvotes.splice(upvotes.indexOf(user),1);
+        if(downvotes.indexOf(clientUser) < 0){
+            downvotes.push(clientUser);
+            if(upvotes.indexOf(clientUser) >=0 ){
+                upvotes.splice(upvotes.indexOf(clientUser),1);
             }
         }else{
-            downvotes.splice(downvotes.indexOf(user,1));
+            downvotes.splice(downvotes.indexOf(clientUser,1));
         }
-        console.log(question);
-        questionsView();
+        downArrow.attr("src",(downvotes.includes(clientUser)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        scoreBox.text("Score: "+this.score());
     }
 
     this.deleteQuestion = function(){
         clientQuestions.splice(clientQuestions.indexOf(question),1);
-        questionsView();
+        $("#"+question._id).remove();
     }
 
     this.toggleComments = function(){
@@ -89,7 +116,7 @@ function question(id,question,author,date,upvotes,downvotes,comments){
     this.reply = function(){
     
         if(replyMessage.val().trim() != ""){
-            question.comments.push(new comment(user,replyMessage.val().trim()));
+            question.comments.push(new comment(clientUser,replyMessage.val().trim()));
         }
         questionsView();
         return false;
@@ -102,10 +129,11 @@ function question(id,question,author,date,upvotes,downvotes,comments){
     this.view = function view(){
         var card = $("<div>")
         card.attr("class","card");
+        card.attr("id",this._id);
 
         var table = $("<table>");
        
-        if(user == author || isProf){
+        if(clientUser == author || isProf){
             table.append($("<tr>")
                 .append($("<td>"))
                 .append($(`<td align="right" >`)
@@ -114,7 +142,7 @@ function question(id,question,author,date,upvotes,downvotes,comments){
         
         var row = $("<tr>");
         upArrow = $(`<img id="down" height="50px">`);
-        upArrow.attr("src",(upvotes.includes(user)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        upArrow.attr("src",(upvotes.includes(clientUser)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         upArrow.click(this.upArrowClick);
         row.append($("<td>").attr("width","70px").append(upArrow));
         row.append($(`<td><h4>` + this.question +`</h4></td>`));
@@ -124,14 +152,14 @@ function question(id,question,author,date,upvotes,downvotes,comments){
 
         var row = $("<tr>");
         downArrow = $(`<img id="down" height="50px">`);
-    
-        downArrow.attr("src",(downvotes.includes(user)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        downArrow.attr("src",(downvotes.includes(clientUser)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         downArrow.click(this.downArrowClick);
+        scoreBox = $("<div>").attr("class","col-md-12 col-lg-3").text("Score: "+this.score());
         row.append($("<td>").attr("width","70px").append(downArrow));
-        row.append($("<td>").append($(`<div class="row">`).append($(`
-                        <div class="col-md-12 col-lg-3">User: ` + author +`</div>
-                        <div class="col-md-12 col-lg-2">Score: `+ this.score() +`</div> 
-                        <div class="col-md-12 col-lg-4">Posted: `+ this.date + `</div>`))
+        row.append($("<td>").append($(`<div class="row">`)
+                        .append($(`<div class="col-md-12 col-lg-3">User: ` + author +`</div>`))
+                        .append(scoreBox)
+                        .append(`<div class="col-md-12 col-lg-4">Posted: `+ this.date + `</div>`)
                         .append($("<div>").attr("class","col-md-12 col-lg-3").append($(`<span class="commentCollapse">`).text("Comments").click(this.toggleComments)))));   
                         
                             
@@ -148,15 +176,15 @@ function question(id,question,author,date,upvotes,downvotes,comments){
 
             this.deleteComment = function(){
                 comments.splice(comments.indexOf(comment),1);
-                questionsView();
+                $("#"+comment._id).remove();
             }
         
             
-            let rowComment = $("<div>").attr("class","row comment");
+            let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
-            if(user == comment.author || isProf ){
+            if(clientUser == comment.author || isProf ){
                 rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
-                .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment))); 
+                .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
             }else{
                 rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message));
             }
@@ -179,44 +207,35 @@ function question(id,question,author,date,upvotes,downvotes,comments){
         return(card);
     }
 
+    this.addComment = function(comment){
+        
+        this.deleteComment = function(){
+            comments.splice(comments.indexOf(comment),1);
+            $("#"+comment._id).remove();
+        }
+    
+        
+        let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
+        rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
+        if(clientUser == comment.author || isProf ){
+            rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
+            .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
+        }else{
+            rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message));
+        }
+
+        replyForm.prepend(rowComment);
+    }
+
+
+
 }
 
-function comment(author,message){
+function comment(_id,author,message,){
+    this._id = _id;
     this.author = author;
     this.message = message;
 }
-
-
-question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[user],
-    [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
-    new comment("Jerry","I like you."),
-    new comment("Swagmaster","Swag is All i care about"),
-    ]),
-    new question("This is another question I AM FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
-    [new comment("Jerry","I don't like you."),
-    new comment("Jebrone","Wow such nice comments."),
-    ]),
-    new question("asfdhadfjhkanothdskjfdoaijfoewjrfoejrdsafdsa FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
-    [new comment("Jerry","I don't like you."),
-    new comment("Jebrone","Wow such nice comments."),
-    ]),
-];
-
-
-question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[user],
-[new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
-new comment("Jerry","I like you."),
-new comment("Swagmaster","Swag is All i care about"),
-])]
-
-sessions = [new session(123,true,"Session1",question1),new session(123,true,"Session5",question2)]
-clientQuestions = null;
-clientSession = null;
-
-
-console.log(sessions);
-
-
 
 
 function formatDate(time){
@@ -237,12 +256,6 @@ function questionsView(){
     $(".sessions-list").empty();
     $(".questions-list").empty();
 
-    clientQuestions.sort(function(question1,question2){
-        return(question2.score() - question1.score());
-    })
-
-
-
     var checkBox;
     checkBox = $("<input>");
     checkBox.attr("type","checkbox");
@@ -252,7 +265,6 @@ function questionsView(){
         checkBox.prop('checked', true);
     }
     
-
     toggleLive = function(){
         clientSession.isLive = this.checked;
     }
@@ -268,7 +280,7 @@ function questionsView(){
         )
     );
 
-
+    
     var questionForm = $("<form>").attr("action","");
     var replyQuestion = $("<input>");
     replyQuestion.attr("placeholder","Ask a new question!");
@@ -278,7 +290,7 @@ function questionsView(){
     
     questionForm.submit(function(){
         if(replyQuestion.val().trim() != ""){
-            clientQuestions.push(new question(replyQuestion.val().trim(),user,formatDate(new Date()),[],[],[]));
+            clientQuestions.push(new question(replyQuestion.val().trim(),clientUser,formatDate(new Date()),[],[],[]));
         }
         questionsView();
         return false;
@@ -290,9 +302,21 @@ function questionsView(){
             
     );
     
-    clientQuestions.forEach(question => {
-        $(".questions-list").append(question.view());
-    });
+    let socket = io()
+
+    socket.emit("getSession",clientSession._id,function(questions){
+        clientQuestions = [];
+        for(let q in questions){
+            let newQuestion = new question(q._id,q.question,q.author,q.date,q.upvotes,q.downvotes,q.comments);
+            clientQuestions.append(newQuestion);
+        }
+        clientQuestions.sort(function(question1,question2){
+            return(question2.score() - question1.score());
+        })
+        clientQuestions.forEach(question => {
+            $(".questions-list").append(question.view());
+        });
+    })
     
 }
 
@@ -301,19 +325,108 @@ function sessionsView(){
     $(".questions-list").empty();
     $(".sessions-list").empty();
 
+    let socket = io();
+    
+    socket.emit("loadClass",courseID,function(classinfo){
+        sessions = []
+        for (let i in classinfo.sessions){
+            let newSession = new session(i._id,i.isLive,i.name,i.questions);
+            sessions.append(newSession);
+        }
 
-    sessions.forEach(session =>{
-        $(".sessions-list").append($(`<div class="col-md-12 col-lg-4">`).append(session.view()));
+        sessions.forEach(session =>{
+            $(".sessions-list").append($(`<div class="col-md-12 col-lg-4">`).append(session.view()));
+        })
     })
-
 }
 
 $(document).ready(function(){
     let socket = io();
 
-    socket.emit("loadClass",courseID,function(classinfo){
-        sessions = classinfo.sessions;
-        sessionsView();
+    socket.on("addedQuestion",function(session_id,question){
+        if(session_id == clientSession._id){
+            newQuestion = new question(question._id,question.question,question.author,question.date,question.upvotes,question.downvotes,question.comments)
+            clientQuestions.append(newQuestion);
+            $(".questions-list").append(newQuestion);
+        }
+    });
+
+
+    socket.on("addedComment",function(question_id,comment){
+        
+        question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        })
+
+        if(question){
+            newComment = new comment(comment._id,comment.author,comment.message);
+            question.comments.append(newComment);
+            questions.addComment(newComment);
+
+        }        
+    })
+
+
+    socket.on("deletedComment",function(question_id,comment){
+        question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        })
+
+        if(question){
+            question.comments.splice(question.comments.indexOf(comment),1);
+            $("#"+comment._id).remove();
+        }
+    })
+
+    socket.on("upvoted",function(question_id,user){
+        question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        })
+        if(question){
+            if(user == clientUser){
+                question.upArrowClick();
+            }else{
+                if(question.upvotes.indexOf(user) < 0){
+                    question.upvotes.push(user);
+                    if(question.downvotes.indexOf(user) >=0 ){
+                        question.downvotes.splice(downvotes.indexOf(user),1);
+                    }
+                }else{
+                    question.upvotes.splice(upvotes.indexOf(user) ,1);
+                }
+            }
+
+        }        
+    })
+
+
+    socket.on("downvoted",function(question_id,user){
+        question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        })
+        if(question){
+            if(user == clientUser){
+                question.downArrowClick();
+            }else{
+                if(question.downvotes.indexOf(user) < 0){
+                    question.downvotes.push(user);
+                    if(question.upvotes.indexOf(user) >=0 ){
+                        question.upvotes.splice(upvotes.indexOf(user),1);
+                    }
+                }else{
+                    question.downvotes.splice(downvotes.indexOf(user,1));
+                }
+            }
+        }        
+    })
+
+    socket.on("deletedQuestion",function(question_id){
+        question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        })
+        clientQuestions.splice(clientQuestions.indexOf(question),1);
+
+        $("#"+question_id).remove();
     })
 
 
