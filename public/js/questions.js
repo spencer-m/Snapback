@@ -194,7 +194,7 @@ function resetView(){
     
 }
 
-let classid = '5ad04f21822a4f2db88bfa68';
+let courseID = '5ad04f21822a4f2db88bfa68';
 
 $( document ).ready(function(){
 
@@ -202,12 +202,13 @@ $( document ).ready(function(){
     
     // initialize
 
-    socket.emit('loadClass', classid, function(classinfo) {
+    socket.emit('loadClass', courseID, function(classinfo) {
 
         // process class info here
         console.log('clientside', classinfo);
     });
 
+    //socket.emit('addSession', courseID, null);
 
     resetView();
 

@@ -6,10 +6,10 @@ let Course = require('./coursedb.js');
 
 let io = {};
 
-let isCourseIdInArray = function(cid, arr) {
+let isIdInArray = function(id, arr) {
     let result = false;
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == cid) {
+        if (arr[i] == id) {
             result = true;
             break;
         }
@@ -76,7 +76,7 @@ io.connection = function(socket) {
 
                         if (err) throw err;
 
-                        if (isCourseIdInArray(course._id, user.courses))
+                        if (isIdInArray(course._id, user.courses))
                             cb({status: 'already_enrolled'});
                         else {
                             course.classlist.push(user._id);
@@ -165,32 +165,255 @@ io.connection = function(socket) {
 
     /* accessing a class */
 
-    socket.on('loadClass', function(cid, cb) {
+    socket.on('loadClass', function(regcode, cb) {
         
         if (socket.request.user.logged_in) {
 
-            User.findById(socket.request.user._id, function(err, user) {
-
+            Course.Course.findOne({regcode: regcode}, function(err, course) {
+                
                 if (err) throw err;
 
-                if (user) {
-                    if (isCourseIdInArray(cid, user.courses)) {
-                        Course.Course.findById(cid, function(err, course) {
-                            
-                            if (err) throw err;
+                if (course) {
 
-                            if  (course)
-                                cb(course);
-                        });
-                    }
+                    let cid = course._id;
+
+                    User.findById(socket.request.user._id, function(err, user) {
+                        
+                        if (err) throw err;
+                        
+                        if ((user) && (isIdInArray(cid, user.courses))) {
+                                            
+                            Course.Course.
+                                findById(cid).
+                                populate('sessions').
+                                exec(function(err, course) {
+                                                    
+                                    if (err) throw err;
+                        
+                                    if (course)
+                                        cb(JSON.parse(JSON.stringify(course)));
+                                });
+                            // TODO
+                            // socket.join(cid);
+                        }
+                    });
                 }
             });
+            
         }
     });
 
+    /**
+     * Missing:
+     *  isloggedin verification
+     *  server side verification
+     */
 
-    //update(id, new q) detele(id) add(q)
+
+    socket.on('addQuestion', function(session_id, question) {
+
+        // create question
+        let q = new Course.Question({
+            question: question.question,
+            author: question.author,
+            date: question.date
+        });
+        q.save();
+
+        // add question to session
+        Course.Session.findById(session_id, function(err, session) {
+            
+            if (err) throw err;
+
+            session.questions.push(q._id);
+            session.save();
+            
+            // TODO
+            // verfiy it works
+            // i need class id to emit to
+            //io.to(classid).emit('addedQuestion', thiss);
+        });
+    });
+
+    socket.on('addComment', function(question_id, comment) {
+        
+        // create comment
+        let c = new Course.Comment({
+            author: comment.author,
+            message: comment.message
+        });
+        c.save();
+
+        // add comment to question
+        Course.Question.findById(question_id, function(err, question) {
+            
+            if (err) throw err;
+            
+            question.comments.push(c._id);
+            question.save();
+            
+            // TODO
+            // verfiy it works
+            // i need class id to emit to
+            //io.to(classid).emit(question_id, comment);
+        });
+    });
+
+    socket.on('deleteComment', function(question_id, comment_id) {
+
+        // remove association of comment in question
+        Course.Question.findByIdAndUpdate(question_id, {$pullAll: {comments: [comment_id]}}, function(err) {
+            if (err) throw err;
+        });
+
+        // destroy comment
+        Course.Comment.findByIdAndRemove(comment_id, function(err) {
+            if (err) throw err;
+            // TODO
+            // verfiy it works
+            // i need class id to emit to
+            //io.to(classid).emit(question_id, comment_id);
+        });
+    });
+
+    socket.on('upvote', function(question_id) {
+        
+        Course.Question.findById(question_id, function(err, question) {
+            
+            // toggle: remove from upvote
+            if (isIdInArray(socket.request.user._id, question.upvotes)) {
+                // remove from upvote
+                question.upvotes = question.upvotes.filter(function(user) {
+                    return user !== socket.request.user._id;
+                });
+            }
+            // remove from downvote and add to upvote
+            else if (isIdInArray(socket.request.user._id, question.downvotes)) {
+
+                // remove from downvote
+                question.downvotes = question.downvotes.filter(function(user) {
+                    return user !== socket.request.user._id;
+                });
+                // add to upvote
+                question.upvotes.push(socket.request.user._id);
+            }
+            // add to upvote
+            else 
+                question.upvotes.push(socket.request.user._id);
+
+            // update
+            question.save();
+
+            // TODO
+            // verfiy it works
+            // i need class id to emit to
+            //io.to(classid).emit(question_id);
+            // if success, send username which is part of email, split at @, and questionidd
+        });
+    });
+
+    socket.on('downvote', function(question_id) {
+        
+        Course.Question.findById(question_id, function(err, question) {
+            
+            // toggle: remove from downvote
+            if (isIdInArray(socket.request.user._id, question.downvotes)) {
+                // remove from downvote
+                question.downvotes = question.downvotes.filter(function(user) {
+                    return user !== socket.request.user._id;
+                });
+            }
+            // remove from upvote and add to downvote
+            else if (isIdInArray(socket.request.user._id, question.downvotes)) {
+
+                // remove from upvote
+                question.upvotes = question.upvotes.filter(function(user) {
+                    return user !== socket.request.user._id;
+                });
+                // add to downvote
+                question.downvotes.push(socket.request.user._id);
+            }
+            // add to downvote
+            else 
+                question.downvotes.push(socket.request.user._id);
+
+            // update
+            question.save();
+
+            // TODO
+            // verfiy it works
+            // i need class id to emit to
+            //io.to(classid).emit(question_id);
+            // if success, send username which is part of email, split at @, and questionidd
+        });
+    });
+    
+    socket.on('deleteQuestion', function(session_id, question_id) {
+        
+        // remove association of question in session
+        Course.Session.findByIdAndUpdate(session_id, {$pullAll: {questions: [question_id]}}, function(err) {
+            if (err) throw err;
+        });
+
+        // remove comments associated with question
+        Course.Question.findById(question_id, function(err, question) {
+
+            if (err) throw err;
+            for (let i = 0; i < question.comments.length; i++) {
+                // destroy comment
+                Course.Comment.findByIdAndRemove(question.comments[i]._id, function(err) {
+                    if (err) throw err;
+                });
+            }
+        });
+
+        // destroy question
+        Course.Question.findByIdAndRemove(question_id, function(err) {
+            if (err) throw err;
+            // TODO
+            // verfiy it works
+            // i need class id to emit to
+            //io.to(classid).emit(question_id, comment_id);
+        });
+    });
+
+    socket.on('getSession', function(session_id) {
+
+        Course.Session.
+            findById(session_id).
+            populate('questions').
+            exec(function(err, session) {
+                if (err) throw err;
+                
+                let sessionInfo = {
+                    name: session.name,
+                    isLive: session.isLive,
+                    questions: JSON.parse(JSON.stringify(session.questions))
+                };
+                
+                //cb(sessionInfo);
+            });
+
+    });
+
+    socket.on('addSession', function(class_id, session) {
+
+        let s = new Course.Session({
+            name: session.name,
+            isLive: session.isLive
+        });
+        s.save();
+
+        Course.Course.findById(class_id, function(err, course) {
+
+            course.sessions.push(s._id);
+            course.save();
+        });
+    });
+    
     // end io function
 };
 
 module.exports = io;
+
+// existing class when register not working
