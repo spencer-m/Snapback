@@ -1,6 +1,6 @@
 socket = io();
 
-courseID = "Seng 513"
+courseID = null;
 
 
 
@@ -80,38 +80,42 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
             position = 1;
         }
         console.log("position: "+position);
-        socket.emit("upvote",courseID,question._id,position);
+        socket.emit("vote",courseID._id,question._id,position);
     }
 
     this.downArrowClick = function(){
         let position = 0;
-        if(upArrow.attr("src") == "img/downArrow.svg"){
+        if(downArrow.attr("src") == "img/downArrow.svg"){
             position = -1;
         }
         console.log("position: "+position);
-        socket.emit("downvote",courseID,question._id,position);
+        socket.emit("vote",courseID._id,question._id,position);
 
     }
     this.vote = function(user,position){
+        console.log("Position",position);
         let filterFunction = function(aUser){
             aUser != user;
         } 
-        question.downvotes = question.downvotes.filter(filterFunction);
-        question.upvotes = question.upvotes.filter(filterFunction);
+        this.downvotes = this.downvotes.filter(filterFunction);
+        this.upvotes = this.upvotes.filter(filterFunction);
 
         if(position == 1){
-            question.upvotes.push(user);
+            this.upvotes.push(user);
         }else if(position == -1){
-            question.downvotes.push(user);
+            this.downvotes.push(user);
         }
 
-        upArrow.attr("src",(upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
-        downArrow.attr("src",(downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        console.log(this.upvotes);
+        console.log(this.downvotes);
+        console.log(this.score());
+        upArrow.attr("src",(this.upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        downArrow.attr("src",(this.downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         scoreBox.text("Score: "+this.score());
     }
 
     this.deleteQuestion = function(){
-        socket.emit("deleteQuestion",courseID,clientSession._id,question._id);
+        socket.emit("deleteQuestion",courseID._id,clientSession._id,question._id);
     }
 
     this.toggleComments = function(){
@@ -125,13 +129,13 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
             let newComment = new comment(null,client.email.split("@")[0],replyMessage.val().trim());
             replyMessage.val("");
-            socket.emit("addComment",courseID,question._id,newComment);
+            socket.emit("addComment",courseID._id,question._id,newComment);
         }
         return false;
     }
 
     this.score = function(){
-        return(this.upvotes.length - downvotes.length);
+        return(this.upvotes.length - this.downvotes.length);
     }
 
     this.view = function view(){
@@ -184,7 +188,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
             this.deleteComment = function(){
 
-                socket.emit("deleteComment",courseID,question._id,comment);
+                socket.emit("deleteComment",courseID._id,question._id,comment);
             }
         
             
@@ -219,7 +223,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         
         this.deleteComment = function(){
 
-            socket.emit("deleteComment",courseID,question._id,comment);
+            socket.emit("deleteComment",courseID._id,question._id,comment);
         }
     
         
@@ -274,7 +278,7 @@ function questionsView(){
     }
     
     toggleLive = function(){
-        socket.emit("toggleSession",courseID,clientSession._id,this.checked);
+        socket.emit("toggleSession",courseID._id,clientSession._id,this.checked);
     }
 
     checkBox.click(toggleLive);
@@ -302,7 +306,7 @@ function questionsView(){
 
             let newQuestion = new question(null,replyQuestion.val().trim(),client.email.split("@")[0],formatDate(new Date()),[],[],[]);
             replyQuestion.val("");
-            socket.emit("addQuestion",courseID,clientSession._id,newQuestion);   
+            socket.emit("addQuestion",courseID._id,clientSession._id,newQuestion);   
         }
         return false;
     });
@@ -319,6 +323,7 @@ function questionsView(){
         clientQuestions = [];
         for(let q of questions){
             let newQuestion = new question(q._id,q.question,q.author,q.date,q.upvotes,q.downvotes,q.comments);
+            console.log(q);
             clientQuestions.push(newQuestion);
         }
         clientQuestions.sort(function(question1,question2){
@@ -332,16 +337,21 @@ function questionsView(){
 }
 
 
-function sessionsView(){
+function sessionsView(regcode){
     $(".questions-list").empty();
     $(".sessions-list").empty();
 
+    let savedregcode;
+    if(typeof regcode === 'string'){
+        savedregcode = regcode;
+    }else{
+        savedregcode = courseID.regcode;
+    }
 
     
-    socket.emit("loadClass","RW91C3",function(userinfo,classinfo){
+    socket.emit("loadClass",savedregcode,function(userinfo,classinfo){
         client = userinfo;
-        
-        courseID = classinfo._id;
+        courseID = classinfo;
         sessions = [];
 
         for (let i of classinfo.sessions){
@@ -398,9 +408,9 @@ $(document).ready(function(){
         var question = clientQuestions.find(function(question){
             return question._id == question_id;
         })
-        console.log(question);
+
         if(question){
-            question.updateUpVotes(user);
+            question.vote(user,position);
         }        
     })
 
@@ -424,7 +434,7 @@ $(document).ready(function(){
         }
 
     });
-    sessionsView();
+    sessionsView("RW91C3");
 
 });
 
