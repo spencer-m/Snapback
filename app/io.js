@@ -180,6 +180,7 @@ module.exports = function(io) {
 
                         let cid = course._id;
 
+                        //populate lectures etc
                         User.findById(socket.request.user._id, function(err, user) {
                         
                             if (err) throw err;
@@ -203,6 +204,10 @@ module.exports = function(io) {
                     }
                 });
             }
+        });
+
+        socket.on('lecture', function() {
+
         });
 
         /**

@@ -83,7 +83,8 @@ let SectionSchema = new Schema({
         required: true
     },
     files: {
-        type: [{type: Schema.ObjectId, ref: 'Files'}]
+        type: [{type: Schema.ObjectId, ref: 'Files'}],
+        default: []
     }
 });
 
