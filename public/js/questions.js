@@ -338,7 +338,8 @@ function sessionsView(){
 
 
     
-    socket.emit("loadClass",courseID,function(classinfo){
+    socket.emit("loadClass","RW91C3",function(classinfo){
+	courseID = classinfo._id;
         sessions = []
         for (let i in classinfo.sessions){
             let newSession = new session(i._id,i.isLive,i.name,i.questions);

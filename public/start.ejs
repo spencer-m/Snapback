@@ -76,15 +76,28 @@
                     <h2>Sign In</h2>
 					<form method="post" class="d-flex align-content-start flex-column">
 						<div class="form-group">
-							<input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
+
+                            <% if (error && error.length > 0) { %>
+                            <input type="email" name="email" id="email" class="form-control is-invalid" placeholder="Email" required autofocus>
                             <br>
-							<input type="password" name="password" id="password" class="form-control" placeholder="Password" required autofocus>
+                            <input type="password" name="password" id="password" class="form-control is-invalid" placeholder="Password" required autofocus>
+                            <small id="errorMsg" class="form-text text-muted">Wrong login credentials</small>
+                                <%= error %>
+                            <% } else { %>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
+                                <br>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required autofocus>
+                            <% } %>
+                            <br>
+
 						</div>
 
                         <label id="checkBox-label"><input id="checkBox" type="checkbox"> <span class="checkBox-mark"></span>   Remember me</label>
 
                         <button type="submit" id="submit" class="align-self-center">Let's go!</button>
 					</form>
+
+
 
                     <div id="register-area">
                         Don't have an account? Get started! Join us <a href="register">here</a> if you're a student
