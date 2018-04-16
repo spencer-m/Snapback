@@ -91,14 +91,14 @@ let createClassCard = function(courseCode, courseName, regCode){
             .append(($('<div>').addClass("card card-outline-secondary mb-3"))
                 .append(($('<div>').addClass('block'))
                     .append(
-                        $('<h3>').addClass('card-title').text(courseCode))
+                        $('<h3>').addClass('card-title').text(courseCode).css('user-select', 'none'))
                     .append(
-                        $('<p>').addClass('card-text').text(courseName)))
+                        $('<p>').addClass('card-text').text(courseName).css('user-select', 'none')))
                     .append(
-                        $('<p>').text("ID: " + regCode)
+                        $('<p>').text("ID: " + regCode).css('user-select', 'none')
                     )
                 )
-            )
+            ).fadeIn(1000)
     );
 };
 
@@ -186,13 +186,13 @@ let setUpModal = function(isProf, sems) {
  * */
 let initializeDashboard = function(user){
 
+    $('#content-header').text('Classes');
+    $('.sidebar-header h3').text(user.name.first + " " + user.name.last);
+
     $('.main-content').append($('<div>').addClass('row'));
 
     let dateInfo = user.date.split(' ');
     let currSemester = dateToSemester(user.date) + " " + dateInfo[1];
-
-    $('#content-header').text('Classes');
-    $('.sidebar-header h3').text(user.name.first + " " + user.name.last);
 
     populateCourses(user.courses, currSemester);
 
@@ -258,6 +258,13 @@ $(function(){
             userInfo = info;
             currSemester = initializeDashboard(userInfo);
         })
+    });
+
+    $('.dropBtn').on('click', function(){
+        $('#dropdown-content').toggleClass('dropped');
+
+        $('#class-icon').toggleClass('fa-caret-down fa-caret-up');
+
     });
 
     /**

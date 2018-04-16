@@ -110,20 +110,6 @@ a, a:hover, a:focus {
     display: block;
 }
 
-/*
-#sidebar ul li:hover {
-    color: #72d4e5;
-    background: #fff;
-}
-*/
-
-/*
-#sidebar ul li.active > button, button[aria-expanded="true"] {
-    color: #fff;
-    background: #9ae7f4;
-}
-*/
-
 /* moves button to the right if sidebar is collapsed */
 #sidebar button.sidebar-expand {
     margin-right: -30px;
@@ -133,6 +119,7 @@ a, a:hover, a:focus {
 #sidebar .sidebar-clickable {
     cursor: pointer;
     color: white;
+    user-select: none;
 }
 
 #sidebar .navbar-dropdown, #sidebar #dropdown-content, #sidebar .dropdown-class{
@@ -166,9 +153,10 @@ a, a:hover, a:focus {
     display: none;
     z-index: 1;
     text-indent: 15px;
+    user-select: none;
 }
 
-#sidebar .navbar-dropdown:hover #dropdown-content {
+#sidebar #dropdown-content.dropped {
     display: block;
 }
 
