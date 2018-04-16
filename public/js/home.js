@@ -20,25 +20,36 @@ let SEMESTER = {
     "Fall": {"val":3, "start":MONTHS["September"], "end":MONTHS["December"]}
 };
 
-let getAvailableSemester = function(date){
+let dateToSemester = function(date){
     let dateInfo = date.split(' ');
     let month = parseInt(dateInfo[0]);
-    let year = parseInt(dateInfo[1]);
-
-    let currentSem = "";
-    let availableSemesters = [];
     let allSems = Object.keys(SEMESTER);
 
-    // Retrieves the current semester and adds it to the semesters
-    // available to a user
+    let currSem = "";
+
     allSems.forEach(function(sem){
         if (month >= SEMESTER[sem].start && month <= SEMESTER[sem].end ){
-            currentSem = sem;
-            availableSemesters.push(currentSem + " " + year);
+            currSem = sem;
         }
     });
 
-    for (let i = SEMESTER[currentSem].val; i < SEMESTER[currentSem].val + 4; i++){
+    return currSem;
+};
+
+let getAvailableSemester = function(date){
+    let dateInfo = date.split(' ');
+    let year = parseInt(dateInfo[1]);
+
+    let currentSem = dateToSemester(date);
+    let semInfo = currentSem.split(' ');
+    let curSem = semInfo[0];
+
+    let availableSemesters = [];
+    let allSems = Object.keys(SEMESTER);
+
+    availableSemesters.push(curSem + " " + year);
+
+    for (let i = SEMESTER[curSem].val + 1; i < SEMESTER[curSem].val + 4; i++){
         let j = i % 4;
 
         if (j === 3) year++;
@@ -49,7 +60,7 @@ let getAvailableSemester = function(date){
     return availableSemesters;
 };
 
-let createClassCard = function(cName, cText, cLink){
+let createClassCard = function(courseCode, courseName, regCode, cLink){
 
     let classCards = $(".class-cards");
 
@@ -62,26 +73,40 @@ let createClassCard = function(cName, cText, cLink){
     }
 
     (classCards.children('.row').last()).append(
-        ($('<div>').addClass('col-sm-4'))
+        (($('<div>').addClass('col-sm-4'))
             .append(($('<a>').addClass("card card-outline-secondary mb-3").attr('href', cLink))
                 .append(($('<div>').addClass('block'))
                     .append(
-                        $('<h3>').addClass('card-title').text(cName))
+                        $('<h3>').addClass('card-title').text(courseCode))
                     .append(
-                        $('<p>').addClass('card-text').text(cText))
+                        $('<p>').addClass('card-text').text(courseName)))
+                    .append(
+                        $('<p>').text("ID: " + regCode)
+                    )
                 )
             )
     );
 };
 
-let populateCourses = function(courses){
-    for (let i = 0; i < courses.length; i++)
-        createClassCard(courses[i].code, courses[i].name, "#");
+let populateCourses = function(courses, currDate){
+    for (let i = 0; i < courses.length; i++) {
+        if (courses[i].year === currDate)
+            createClassCard(courses[i].code, courses[i].name, courses[i].regcode, "#");
+    }
+};
+
+let setModalMessage = function(message) {
+    let modal = $('#class-card-modal .modal-body');
+
+    modal.empty();
+    $('#class-submit-button').hide();
+    $('#class-back-button').show();
+    modal.append($('<p>').addClass('modal-message').text(message));
 };
 
 let setUpModal = function(isProf, sems) {
 
-    $('#class-card-modal.modal-body').empty();
+    $('#class-card-modal .modal-body').empty();
 
     let inputTemplate = function(textInput, id, placeholder) {
         return $('<div>')
@@ -96,7 +121,6 @@ let setUpModal = function(isProf, sems) {
     let semesterDropdown = function(availableSemesters) {
 
         let sDropdown = $('<select>').addClass('form-control modal-input').attr("id", "course-date-input").attr("name", "semesters").attr("form","semesterForm");
-
 
         availableSemesters.forEach(function(sem) {
             sDropdown.append($('<option>', {value: sem, text: sem}));
@@ -114,11 +138,11 @@ let setUpModal = function(isProf, sems) {
         modalTitle = "Create a Course!";
         (($('#class-card-modal .modal-body')
             .append(inputTemplate(
-                "Please enter the course name",
+                "Please enter the course code",
                 "course-code-input",
                 "eg. ANTH 413")))
             .append(inputTemplate(
-                "Please enter the course number",
+                "Please enter the course name",
                 "course-name-input",
                 "eg. History of Western Countries")))
             .append(semesterDropdown(sems));
@@ -143,6 +167,7 @@ $(function(){
 
     let socket = io();
     let userInfo = {};
+    let currSemester = "";
 
     /** has all info of dude **/
     socket.on('init', function() {
@@ -150,10 +175,11 @@ $(function(){
         socket.emit('getInfo', function (info) {
             userInfo = info;
 
-            console.log(info);
+            let dateInfo = info.date.split(' ');
+            currSemester = dateToSemester(info.date) + " " + dateInfo[1];
 
             $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
-            populateCourses(info.courses);
+            populateCourses(info.courses, currSemester);
             setUpModal(userInfo.isProfessor, getAvailableSemester(info.date));
             setupAllCourseModal(info.courses);
             dropdownClasses(info.courses);
@@ -176,12 +202,27 @@ $(function(){
        $('#sidebar, #content').toggleClass('active');
     });
 
+    $('#class-back-button').on('click', function(){
+        $('#class-back-button').hide();
+        $('#class-submit-button').show();
+        $('#class-card-modal .modal-body').empty();
+        setUpModal(userInfo.isProfessor, getAvailableSemester(userInfo.date));
+    });
+
+    $('#class-card-add-button').on('click', function(){
+        setUpModal(userInfo.isProfessor, getAvailableSemester(userInfo.date));
+
+        $('#class-back-button').hide();
+        $('#class-submit-button').show();
+    });
+
     /**
      * handles the add-class-card button
      *
      * TODO: There is no space between the two buttons in the newly appended card
      * **/
     $('#class-submit-button').on('click', function(){
+        let modal = $('#class-card.modal-body');
 
         /*info = need code, name and year*/
         let info = {'code':"", 'name':"", 'year':""};
@@ -200,27 +241,20 @@ $(function(){
 
                     socket.emit('getinfo', function (newInfo) {
                         userInfo = newInfo;
-                        console.log('textinfront ', newInfo);
                     });
 
-                    let modal = $('.modal-body');
-
-                    modal.empty();
-                    $('#class-submit-button').hide();
-
-                    modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
+                    setModalMessage("Adding the course was a success!");
 
                     (modal.append($('<p>').text("Give your students the join code below")))
                         .append($('<p>').addClass('join-code-text').text(registrationCode));
-
-                    console.log(userInfo);
 
                     let lastCourse = userInfo.courses[userInfo.courses.length - 1];
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
-                    createClassCard(courseName, courseCode, "#");
-                    setUpModal(true, getAvailableSemester(userInfo.date));
+                    if (info.year === currSemester)
+                        createClassCard(courseName, courseCode, response.regcode, "#");
+                    setupAllCourseModal(userInfo.courses);
 
                     console.log('class creation success');
                 }
@@ -233,35 +267,38 @@ $(function(){
             let code = $('#course-id-input').val();
 
             socket.emit('enrollToClass', code, function (response) {
-                if (response === 'success') {
+
+                console.log(response.status);
+
+                if (response.status === 'success') {
                     console.log('successfully enrolled');
 
                     socket.emit('getInfo', function (info) {
                         userInfo = info;
                     });
 
-                    let modal = $('.modal-body');
-
-                    modal.empty();
-                    $('#class-submit-button').hide();
-                    modal.append($('<p>').addClass('modal-message').text('Adding course was a success!'));
-
+                    setModalMessage('Adding the course was a success!');
+                    
                     let lastCourse = userInfo.courses[userInfo.courses.length - 1];
-
-                    console.log(lastCourse);
-
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
-                    createClassCard(courseName, courseCode, "#");
-                    setUpModal(false, getAvailableSemester(userInfo.date));
+                    createClassCard(courseName, courseCode, lastCourse.regcode, "#");
                 }
-                else if (response === 'already_enrolled')
+                else if (response.status === 'already_enrolled'){
                     console.log('already_enrolled');
-                else if (response === 'invalid')
+
+                    setModalMessage('You already have this course!');
+                }
+                else if (response.status === 'invalid'){
                     console.log('invalid class code');
-                else
+
+                    setModalMessage("This course doesn't exist... ):");
+                }
+                else {
+                    setModalMessage("ERROR");
                     console.log('unknown error');
+                }
             });
         }
 
@@ -282,12 +319,6 @@ $(function(){
 
 });
 
-/*
-userinfo.courses.date -> check if not the current date
-
-userinfo.courses -> ALL courses incl. current
- */
-
 let setupAllCourseModal = function (c) {
     $('#allclass-card-modal .modal-body').empty();
     for(let i = 0; i < c.length; i++){
@@ -300,4 +331,4 @@ let dropdownClasses = function (c) {
     for(let i = 0; i < c.length; i++){
         $('#dropdown-content').append($('<a>').text(c[i].code).attr('href', "#"));
     }
-}
+};
