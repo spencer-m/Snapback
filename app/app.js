@@ -28,7 +28,7 @@ let router = require('./routes.js');
 let app = express();
 let http = require('http').createServer(app);
 let io = require('socket.io')(http);
-let ioFunctions = require('./io.js');
+let ioFunctions = require('./io.js')(io);
 // ES6 Promises - Promises represents the eventual completion or failure
 // of an asynchronous operation and its resulting value
 mongoose.Promise = global.Promise;
@@ -87,7 +87,6 @@ app.use(function(err, req, res, next) {
     res.sendFile(path.join(__dirname, '../public/error.html'));
 });
 
-io.on('connection', ioFunctions.connection);
 app.set('appserver', http);
 app.set('views', path.join(__dirname, '../public'));
 app.set('view engine', 'ejs');

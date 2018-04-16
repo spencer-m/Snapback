@@ -2,9 +2,13 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let CommentsSchema = new Schema({
-    author: {
+    authorid: {
         type: Schema.ObjectId,
         ref: 'User',
+        required: true
+    },
+    author: {
+        type: String,
         required: true
     },
     message: {
@@ -14,25 +18,28 @@ let CommentsSchema = new Schema({
 });
 
 let QuestionSchema = new Schema({
-
     question: {
         type: String,
         required: true
     },
-    author: {
+    authorid: {
         type: Schema.ObjectId,
         ref: 'User',
+        required: true
+    },
+    author: {
+        type: String,
         required: true
     },
     date: {
         type: String,
         required: true
     },
-    upvoters: {
+    upvotes: {
         type: [{type: Schema.ObjectId, ref: 'User'}],
         default: []
     },
-    downvoters: {
+    downvotes: {
         type: [{type: Schema.ObjectId, ref: 'User'}],
         default: []
     },
@@ -44,28 +51,18 @@ let QuestionSchema = new Schema({
 });
 
 let SessionSchema = new Schema({
-    session: {
-        name: {
-            type: String,
-            required: true
-        },
-        isSessionLive: {
-            type: Boolean,
-            required: true
-        },
-        timeStart: {
-            type: Date,
-            required: true
-        },
-        timeEnd: {
-            type: Date,
-            required: true
-        },
-        // array of questions
-        questions: {
-            type: [{type: Schema.ObjectId, ref: 'Question'}],
-            default: []
-        }
+    name: {
+        type: String,
+        required: true
+    },
+    isLive: {
+        type: Boolean,
+        required: true
+    },
+    // array of questions
+    questions: {
+        type: [{type: Schema.ObjectId, ref: 'Question'}],
+        default: []
     }
 });
 
