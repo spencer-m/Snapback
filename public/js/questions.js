@@ -266,7 +266,7 @@ function questionsView(){
 
     var checkBox;
     checkBox = $("<input>");
-    checkBox.attr("type","checkbox");
+    checkBox.attr("type","checkbox").attr("id","isLive");
     
 
     if(clientSession.isLive){
@@ -274,7 +274,7 @@ function questionsView(){
     }
     
     toggleLive = function(){
-        clientSession.isLive = this.checked;
+        socket.emit("toggleSession",courseID,clientSession._id,this.checked);
     }
 
     checkBox.click(toggleLive);
@@ -417,13 +417,21 @@ $(document).ready(function(){
 
     })
 
+    socket.on("toggledSession",function(session_id,bool){
+        if(clientSession._id = session_id){
+            clientSession.isLive = bool;
+            $("#isLive").prop('checked', bool);
+        }
+
+    });
     sessionsView();
 
 });
 
 
 
+//Impelement "toggleSession",courseID, session ID, BOOL)
 
-
-
+//If true it is live, 
+//if false it is not live
 
