@@ -1,4 +1,4 @@
-.questions-list .card {
+.sessions-list .card, .questions-list .card {
     background: white;
     padding: 15px 15px;
     border: 1px solid rgba(0, 0, 0, 0.1); 
@@ -16,9 +16,10 @@
     box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.comments-list .comment p{
-    margin: 0;
-    padding: 0;
+.comments-list .comment p, td p, td h4{
+    margin: 0px;
+    padding: 0px;
+    color: black;
 }
 
 #up , #down{
@@ -29,10 +30,6 @@
 
 td {
     vertical-align: middle;
-}
-td p,  td h4{
-    margin: 0px;
-    padding: 0px;
 }
 
 
@@ -47,6 +44,15 @@ td p,  td h4{
     flex:1;
 }
 
+.commentCollapse{
+    text-decoration: underline;
+    cursor: pointer; 
+}
+
+.commentCollapse:hover{
+    color: red;
+}
+
 #addQuestion {
     position: fixed;
     bottom: 100px;
@@ -54,10 +60,82 @@ td p,  td h4{
 }
 
 
+.author {
+    text-align: right;
+}
+
+.deleteComment{
+ float: right;
+}
 
 
 
+.sessions-list h3{
+      margin: 0px;
+      padding: 0px;
+      vertical-align: middle;
+      display: inline-block;
+}
+
+.sessions-list label{
+    margin: 0px;
+    padding: 0px;
+}
 
 
+/* Switch Styling */
+.switch {
+  position: relative;
+  float: right;
+  width: 60px;
+  height: 34px;
+}
 
+.switch input {display:none;}
 
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

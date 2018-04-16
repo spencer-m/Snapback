@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-let app = require('./app.js');
+let app = require('./app.js').app;
 let debug = require('debug')('snapback:server');
 
 /**
