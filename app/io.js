@@ -9,7 +9,7 @@ let io = {};
 let isCourseIdInArray = function(cid, arr) {
     let result = false;
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == cid) {
+        if ("" + arr[i] === "" + cid) {
             result = true;
             break;
         }
@@ -196,7 +196,7 @@ io.connection = function(socket) {
         }
     });
 
-
+    
     //update(id, new q) detele(id) add(q)
     // end io function
 };
