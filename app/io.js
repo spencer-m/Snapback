@@ -191,7 +191,7 @@ io.connection = function(socket) {
                                     if (err) throw err;
                         
                                     if (course)
-                                        cb(JSON.parse(JSON.stringify(course)));
+                                        cb(JSON.parse(JSON.stringify(socket.request.user)), JSON.parse(JSON.stringify(course)));
                                 });
                             // TODO
                             // socket.join(cid);
@@ -207,7 +207,6 @@ io.connection = function(socket) {
      *  isloggedin verification
      *  server side verification
      */
-
 
     socket.on('addQuestion', function(cid, session_id, question) {
 
