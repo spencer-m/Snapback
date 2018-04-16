@@ -222,7 +222,6 @@ $(function(){
      * TODO: There is no space between the two buttons in the newly appended card
      * **/
     $('#class-submit-button').on('click', function(){
-        let modal = $('#class-card.modal-body');
 
         /*info = need code, name and year*/
         let info = {'code':"", 'name':"", 'year':""};
@@ -234,6 +233,8 @@ $(function(){
             info.year = $('#course-date-input').val();
 
             socket.emit('addNewClass', info, function (response) {
+                let modal = $('#class-card .modal-body');
+
                 console.log('creating a class...');
 
                 if (response.status === 'success') {
