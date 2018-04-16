@@ -3,8 +3,9 @@
 let User = require('./userdb.js');
 let Util = require('./utildb.js');
 let Course = require('./coursedb.js');
+let io = require('./app.js').io;
 
-let io = {};
+let ioFunctions = {};
 
 let isIdInArray = function(id, arr) {
     let result = false;
@@ -19,7 +20,7 @@ let isIdInArray = function(id, arr) {
     return result;
 };
 
-io.connection = function(socket) {
+ioFunctions.connection = function(socket) {
         
     /* connection initialiation */
 
@@ -409,6 +410,6 @@ io.connection = function(socket) {
     // end io function
 };
 
-module.exports = io;
+module.exports = ioFunctions;
 
 // existing class when register not working

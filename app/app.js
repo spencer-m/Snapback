@@ -92,7 +92,10 @@ app.set('appserver', http);
 app.set('views', path.join(__dirname, '../public'));
 app.set('view engine', 'ejs');
 
-module.exports = app;
+module.exports = {
+    app: app,
+    io: io
+};
 
 /* initialization */
 
