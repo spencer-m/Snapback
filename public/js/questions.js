@@ -1,7 +1,7 @@
 socket = io();
 
 courseID = "Seng 513"
-isProf = true;
+
 
 
 // question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[client.email.split("@")[0]],
@@ -72,24 +72,26 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     var commentList;
     var showCommentList = false;
     var scoreBox;
+    var replyForm;
 
     this.upArrowClick = function(){
 
         socket.emit("upvote",courseID,question._id);
 
     }
-    this.updateUpVotes = function(){
-        if(upvotes.indexOf(client._id) < 0){
-            upvotes.push(client._id);
-            if(downvotes.indexOf(client._id) >=0 ){
-                downvotes.splice(downvotes.indexOf(client._id),1);
+    this.updateUpVotes = function(user){
+
+        if(question.upvotes.indexOf(user) < 0){
+            question.upvotes.push(user);
+            if(question.downvotes.indexOf(user) >=0 ){
+                question.downvotes.splice(downvotes.indexOf(user),1);
             }
         }else{
-            upvotes.splice(upvotes.indexOf(client._id) ,1);
+            question.upvotes.splice(upvotes.indexOf(user) ,1);
         }
         upArrow.attr("src",(upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
-        scoreBox.text("Score: "+this.score());
-        
+        downArrow.attr("src",(downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        scoreBox.text("Score: "+this.score()); 
     }
 
 
@@ -98,17 +100,21 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         socket.emit("downvote",courseID,question._id);
 
     }
-    this.updateDownVotes = function(){
-        if(downvotes.indexOf(client._id) < 0){
-            downvotes.push(client._id);
-            if(upvotes.indexOf(client._id) >=0 ){
-                upvotes.splice(upvotes.indexOf(client._id),1);
+    this.updateDownVotes = function(user){
+
+        if(question.downvotes.indexOf(user) < 0){
+            question.downvotes.push(user);
+            if(question.upvotes.indexOf(user) >=0 ){
+                question.upvotes.splice(upvotes.indexOf(user),1);
             }
         }else{
-            downvotes.splice(downvotes.indexOf(client._id,1));
+            question.downvotes.splice(downvotes.indexOf(user,1));
         }
+        
+        upArrow.attr("src",(upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         downArrow.attr("src",(downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         scoreBox.text("Score: "+this.score());
+        
     }
 
     this.deleteQuestion = function(){
@@ -125,15 +131,13 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         if(replyMessage.val().trim() != ""){
 
             let newComment = new comment(null,client.email.split("@")[0],replyMessage.val().trim());
-
             socket.emit("addComment",courseID,question._id,newComment);
         }
-        questionsView();
         return false;
     }
 
     this.score = function(){
-        return(upvotes.length - downvotes.length);
+        return(this.upvotes.length - downvotes.length);
     }
 
     this.view = function view(){
@@ -143,7 +147,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
         var table = $("<table>");
        
-        if(client.email.split("@")[0] == author || isProf){
+        if(client.email.split("@")[0] == author || client.isProfessor){
             table.append($("<tr>")
                 .append($("<td>"))
                 .append($(`<td align="right" >`)
@@ -162,7 +166,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
         var row = $("<tr>");
         downArrow = $(`<img id="down" height="50px">`);
-        downArrow.attr("src",(downvotes.includes(socket.request.uesr._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        downArrow.attr("src",(downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         downArrow.click(this.downArrowClick);
         scoreBox = $("<div>").attr("class","col-md-12 col-lg-3").text("Score: "+this.score());
         row.append($("<td>").attr("width","70px").append(downArrow));
@@ -192,7 +196,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
             
             let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
-            if(client.email.split("@")[0] == comment.author || isProf ){
+            if(client.email.split("@")[0] == comment.author || client.isProfessor ){
                 rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
                 .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
             }else{
@@ -203,7 +207,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
         });
 
-        var replyForm = $("<form>").attr("action","");
+        replyForm = $("<form>").attr("action","");
         
         replyMessage = $("<input>");  
         replyMessage.attr("placeholder","Reply to comments above here!");  
@@ -227,14 +231,14 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         
         let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
         rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
-        if(client.email.split("@")[0] == comment.author || isProf ){
+        if(client.email.split("@")[0] == comment.author || client.isProfessor ){
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
             .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
         }else{
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message));
         }
 
-        replyForm.prepend(rowComment);
+        replyForm.before(rowComment);
     }
 
 
@@ -303,10 +307,8 @@ function questionsView(){
 
 
             let newQuestion = new question(null,replyQuestion.val().trim(),client.email.split("@")[0],formatDate(new Date()),[],[],[]);
-
-            socket.emit("addQuestion",courseID,clientSession._id,newQuestion);
+            socket.emit("addQuestion",courseID,clientSession._id,newQuestion);   
         }
-        questionsView();
         return false;
     });
     
@@ -320,9 +322,9 @@ function questionsView(){
 
     socket.emit("getSession",clientSession._id,function(questions){
         clientQuestions = [];
-        for(let q in questions){
+        for(let q of questions){
             let newQuestion = new question(q._id,q.question,q.author,q.date,q.upvotes,q.downvotes,q.comments);
-            clientQuestions.append(newQuestion);
+            clientQuestions.push(newQuestion);
         }
         clientQuestions.sort(function(question1,question2){
             return(question2.score() - question1.score());
@@ -348,7 +350,6 @@ function sessionsView(){
         sessions = [];
 
         for (let i of classinfo.sessions){
-            console.log(i);
             let newSession = new session(i._id,i.isLive,i.name,i.questions);
             sessions.push(newSession);
         }
@@ -362,32 +363,33 @@ function sessionsView(){
 $(document).ready(function(){
 
 
-    socket.on("addedQuestion",function(session_id,question){
+    socket.on("addedQuestion",function(session_id,addQuestion){
+        console.log(addQuestion._id);
         if(session_id == clientSession._id){
-            newQuestion = new question(question._id,question.question,question.author,question.date,question.upvotes,question.downvotes,question.comments)
-            clientQuestions.append(newQuestion);
-            $(".questions-list").append(newQuestion);
+            let newQuestion = new question(addQuestion._id,addQuestion.question,addQuestion.author,addQuestion.date,addQuestion.upvotes,addQuestion.downvotes,addQuestion.comments)
+            clientQuestions.push(newQuestion);
+            $(".questions-list").append(newQuestion.view());
         }
     });
 
 
-    socket.on("addedComment",function(question_id,comment){
+    socket.on("addedComment",function(question_id,addcomment){
         
-        question = clientQuestions.find(function(question){
+        var question = clientQuestions.find(function(question){
             return question._id == question_id;
         })
 
         if(question){
-            newComment = new comment(comment._id,comment.author,comment.message);
-            question.comments.append(newComment);
-            questions.addComment(newComment);
+            newComment = new comment(addcomment._id,addcomment.author,addcomment.message);
+            question.comments.push(newComment);
+            question.addComment(newComment);
 
         }        
     })
 
 
     socket.on("deletedComment",function(question_id,comment){
-        question = clientQuestions.find(function(question){
+        var question = clientQuestions.find(function(question){
             return question._id == question_id;
         })
 
@@ -398,51 +400,28 @@ $(document).ready(function(){
     })
 
     socket.on("upvoted",function(question_id,user){
-        question = clientQuestions.find(function(question){
+        var question = clientQuestions.find(function(question){
             return question._id == question_id;
         })
+        console.log(question);
         if(question){
-            if(user == client._id){
-                question.updateUpVotes();
-            }else{
-                if(question.upvotes.indexOf(user) < 0){
-                    question.upvotes.push(user);
-                    if(question.downvotes.indexOf(user) >=0 ){
-                        question.downvotes.splice(downvotes.indexOf(user),1);
-                    }
-                }else{
-                    question.upvotes.splice(upvotes.indexOf(user) ,1);
-                }
-            }
-
+            question.updateUpVotes(user);
         }        
     })
 
 
     socket.on("downvoted",function(question_id,user){
-        question = clientQuestions.find(function(question){
+        var question = clientQuestions.find(function(question){
             return question._id == question_id;
         })
         if(question){
-            if(user == client._id){
-                question.updateDownVotes();
-            }else{
-                if(question.downvotes.indexOf(user) < 0){
-                    question.downvotes.push(user);
-                    if(question.upvotes.indexOf(user) >=0 ){
-                        question.upvotes.splice(upvotes.indexOf(user),1);
-                    }
-                }else{
-                    question.downvotes.splice(downvotes.indexOf(user,1));
-                }
-            }
+            question.updateDownVotes(user);
         }        
     })
 
     socket.on("deletedQuestion",function(session_id,question_id){
-
-        if(session_id == clientSession){
-            question = clientQuestions.find(function(question){
+        if(session_id == clientSession._id){
+            var question = clientQuestions.find(function(question){
                 return question._id == question_id;
             })
             clientQuestions.splice(clientQuestions.indexOf(question),1);

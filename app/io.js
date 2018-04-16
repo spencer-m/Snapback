@@ -232,7 +232,7 @@ module.exports = function(io) {
             
                 // TODO
                 // verfiy it works
-                question.id = q._id;
+                question._id = q._id;
                 io.in(cid).emit('addedQuestion', session_id, question);
             });
         });
@@ -257,7 +257,7 @@ module.exports = function(io) {
             
                 // TODO
                 // verfiy it works
-                comment.id = c._id;
+                comment._id = c._id;
                 io.in(cid).emit('addedComment', question_id, comment);
             });
         });
@@ -280,6 +280,9 @@ module.exports = function(io) {
             });
         });
 
+        // TODO
+        // change to vote
+        // -1 is down, 0 is none, 1 is up
         socket.on('upvote', function(cid, question_id) {
         
             Course.Question.findById(question_id, function(err, question) {
@@ -310,8 +313,8 @@ module.exports = function(io) {
 
                 // TODO
                 // verfiy it works
-                let username = socket.request.user.email.split('@')[0];
-                io.in(cid).emit('upvoted', question_id, username);
+
+                io.in(cid).emit('upvoted', question_id, socket.request.user._id);
             });
         });
 
@@ -345,13 +348,13 @@ module.exports = function(io) {
 
                 // TODO
                 // verfiy it works
-                let username = socket.request.user.email.split('@')[0];
-                io.in(cid).emit('downvoted', question_id, username);
+                
+                io.in(cid).emit('downvoted', question_id, socket.request.user._id);
             });
         });
     
         socket.on('deleteQuestion', function(cid, session_id, question_id) {
-        
+            console.log(question_id);
         // remove association of question in session
             Course.Session.findByIdAndUpdate(session_id, {$pullAll: {questions: [question_id]}}, function(err) {
                 if (err) throw err;
@@ -361,11 +364,14 @@ module.exports = function(io) {
             Course.Question.findById(question_id, function(err, question) {
 
                 if (err) throw err;
-                for (let i = 0; i < question.comments.length; i++) {
-                // destroy comment
-                    Course.Comment.findByIdAndRemove(question.comments[i]._id, function(err) {
-                        if (err) throw err;
-                    });
+
+                if (question) {
+                    for (let i = 0; i < question.comments.length; i++) {
+                    // destroy comment
+                        Course.Comment.findByIdAndRemove(question.comments[i]._id, function(err) {
+                            if (err) throw err;
+                        });
+                    }
                 }
             });
 
