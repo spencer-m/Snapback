@@ -52,6 +52,9 @@ function session(_id,isLive,name,questions){
         card.append($("<h3>").text(this.name));
 
         card.click(this.expand);
+        if(isLive){
+            card.addClass("live");
+        }
         return (card);
     }
 }
@@ -272,25 +275,32 @@ function questionsView(){
     checkBox = $("<input>");
     checkBox.attr("type","checkbox").attr("id","isLive");
     
-
-    if(clientSession.isLive){
-        checkBox.prop('checked', true);
-    }
-    
+  
     toggleLive = function(){
         socket.emit("toggleSession",courseID._id,clientSession._id,this.checked);
     }
 
+    if(clientSession.isLive){
+        checkBox.prop('checked', true);
+        $(".questions-list").addClass("live");
+    }
+
     checkBox.click(toggleLive);
-    $(".questions-list").append($("<div>").attr("class","row")
-        .append($(`<div class="col-6">`)
-            .append($(`<button class="btn btn-dark btn-sm">Back</button>`).click(sessionsView)))
-        .append($(`<div class="col-6">`)
-            .append($("<label>").attr("class","switch").append(checkBox)
-                .append($("<span>").attr("class", "slider round"))
+    if(client.isProfessor){
+        $(".questions-list").append($("<div>").attr("class","row navigation")
+            .append($(`<div class="col-6">`)
+                .append($(`<button class="btn btn-dark btn-sm">Back</button>`).click(sessionsView)))
+            .append($(`<div class="col-6">`)
+                .append($("<label>").attr("class","switch").append(checkBox)
+                    .append($("<span>").attr("class", "slider round"))
+                )
             )
-        )
-    );
+        );
+    }else{
+        $(".questions-list").append($("<div").attr("class","row navigation")
+            .append($(`<div class="col-6">`)
+                .append($(`<button class="btn btn-dark btn-sm">Back</button>`).click(sessionsView))));
+    }
 
     
     var questionForm = $("<form>").attr("action","");
@@ -334,12 +344,14 @@ function questionsView(){
         });
     })
     
+
 }
 
 
 function sessionsView(regcode){
     $(".questions-list").empty();
     $(".sessions-list").empty();
+    $(".questions-list").removeClass("live");
 
     let savedregcode;
     if(typeof regcode === 'string'){
@@ -348,7 +360,52 @@ function sessionsView(regcode){
         savedregcode = courseID.regcode;
     }
 
-    
+    $(".sessions-list").append($(`<div class="col-12 navigation">`)
+        .append($("<button>").attr("class","btn btn-dark btn-sm")
+                            .text("Add Session")
+                            .attr("type","button")
+                            .attr("data-toggle","modal")
+                            .attr("data-target","#add-session-modal")));
+
+    $(".sessions-list").append($(`
+    <div class="modal fade" id="add-session-modal">
+        <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+            <h3 class="modal-title">Make New Session</h3>
+            </div>
+
+            <div class="modal-body">
+            <div>
+                <p>Please Enter Session Name</p>
+                <input class="form-control" id="session-name" placeholder="eg. Session #1">
+            </div>
+            <div>
+                <p>Make session live?</p>
+                <select class="form-control" id="session-isLive" name="semesters" form="semesterForm">
+                <option value="true">true</option>
+                <option value="false">false</option>
+                </select>
+            </div>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" id="session-submit-button" class="btn btn-blue">Submit</button>
+            <button type="button" id="session-cancel-button" class="btn btn-blue" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>`));
+
+    $("#session-submit-button").click(function(){
+        let newSession = new session(null,$("#session-isLive").val(),$('#session-name').val(),[]);
+        socket.emit("addSession",courseID._id,session,function(){
+
+        });
+ 
+    })
     socket.emit("loadClass",savedregcode,function(userinfo,classinfo){
         client = userinfo;
         courseID = classinfo;
@@ -432,6 +489,11 @@ $(document).ready(function(){
             clientSession.isLive = bool;
             $("#isLive").prop('checked', bool);
         }
+        if(bool){
+            $(".questions-list").addClass("live");
+        }else{
+            $(".questions-list").removeClass("live");
+        }
 
     });
     sessionsView("RW91C3");
@@ -439,9 +501,5 @@ $(document).ready(function(){
 });
 
 
-
-//Impelement "toggleSession",courseID, session ID, BOOL)
-
-//If true it is live, 
-//if false it is not live
+//Impelement add session
 
