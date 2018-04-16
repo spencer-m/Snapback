@@ -344,6 +344,46 @@ function handleTestFiles() {
 
 
 $(document).ready(function() {
+(
+  socket = io();
+
+  socket.emit('loadClass', regcode, function(userinfo, courseinfo) {
+    userinfo.isProfessor
+    // store regcode somewhere, we'll figure it out at merge
+    courseinfo._id <- courseID
+    courseinfo.lectures.section.files
+  });
+
+  //section has a name
+  // section name has to be unique in a class
+  socket.emit('addSection', courseID, section, function(response) {
+    if (response.status === 'exists'){
+      sorry section name already exxists
+    }
+    else if (respose.status === 'success')
+      section created
+  });
+
+  // refresh section div
+  socket.on('addedSection', function() {
+    // what do you want the server to give you
+    socket.emit('getSections')
+  });
+
+
+// file has name and data, filename is unique
+  socket.emit('addFile', courseID, sectionname, file, function(response) {
+    if response.stastus === error
+    do Something;
+  });
+
+  socket.on('addedFile', )
+
+  // only emit when user clicks on a file
+  socket.emit('getFile', sectionname, fileName, function(response) {
+    response.status === success
+      response.filedata <decode>
+  });
 
   // TEST CLASS **************
   var seng = new course("SENG 513", "professor");
@@ -354,7 +394,6 @@ $(document).ready(function() {
   console.log(file);
   file.view();
   file2.view();
-
 
 
   // Opens the lecture upload moda
