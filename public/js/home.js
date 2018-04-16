@@ -305,7 +305,7 @@ $(function(){
                     let courseCode = lastCourse.code;
 
                     if (info.year === currSemester)
-                        createClassCard(courseName, courseCode, response.regcode);
+                        createClassCard(courseCode, courseName, response.regcode);
                     setupAllCourseModal(userInfo.courses);
 
                     console.log('class creation success');
@@ -335,7 +335,7 @@ $(function(){
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
-                    createClassCard(courseName, courseCode, lastCourse.regcode);
+                    createClassCard(courseCode, courseName, lastCourse.regcode);
                 }
                 else if (response.status === 'already_enrolled'){
                     console.log('already_enrolled');
