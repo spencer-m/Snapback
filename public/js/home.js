@@ -49,7 +49,7 @@ let getAvailableSemester = function(date){
 
     availableSemesters.push(curSem + " " + year);
 
-    for (let i = SEMESTER[curSem].val; i < SEMESTER[curSem].val + 4; i++){
+    for (let i = SEMESTER[curSem].val + 1; i < SEMESTER[curSem].val + 4; i++){
         let j = i % 4;
 
         if (j === 3) year++;
@@ -210,6 +210,8 @@ $(function(){
     });
 
     $('#class-card-add-button').on('click', function(){
+        setUpModal(userInfo.isProfessor, getAvailableSemester(userInfo.date));
+
         $('#class-back-button').hide();
         $('#class-submit-button').show();
     });
@@ -266,7 +268,9 @@ $(function(){
 
             socket.emit('enrollToClass', code, function (response) {
 
-                if (response === 'success') {
+                console.log(response.status);
+
+                if (response.status === 'success') {
                     console.log('successfully enrolled');
 
                     socket.emit('getInfo', function (info) {
@@ -279,22 +283,20 @@ $(function(){
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
-                    createClassCard(courseName, courseCode, "#");
+                    createClassCard(courseName, courseCode, lastCourse.regcode, "#");
                 }
-                else if (response === 'already_enrolled'){
+                else if (response.status === 'already_enrolled'){
                     console.log('already_enrolled');
 
                     setModalMessage('You already have this course!');
                 }
-                else if (response === 'invalid'){
+                else if (response.status === 'invalid'){
                     console.log('invalid class code');
 
                     setModalMessage("This course doesn't exist... ):");
                 }
                 else {
-
                     setModalMessage("ERROR");
-
                     console.log('unknown error');
                 }
             });
