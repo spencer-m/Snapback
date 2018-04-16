@@ -256,6 +256,7 @@ $(function(){
 
         socket.emit('getInfo', function(info){
             userInfo = info;
+            $('.main-content').empty();
             currSemester = initializeDashboard(userInfo);
         })
     });
