@@ -342,12 +342,15 @@ function sessionsView(){
 
     
     socket.emit("loadClass","RW91C3",function(userinfo,classinfo){
-    client = userinfo;
-	courseID = classinfo._id;
-        sessions = []
-        for (let i in classinfo.sessions){
+        client = userinfo;
+        
+        courseID = classinfo._id;
+        sessions = [];
+
+        for (let i of classinfo.sessions){
+            console.log(i);
             let newSession = new session(i._id,i.isLive,i.name,i.questions);
-            sessions.append(newSession);
+            sessions.push(newSession);
         }
 
         sessions.forEach(session =>{
@@ -449,6 +452,7 @@ $(document).ready(function(){
 
     })
 
+    sessionsView();
 
 });
 
