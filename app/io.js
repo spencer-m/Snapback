@@ -194,7 +194,7 @@ io.connection = function(socket) {
                                         cb(JSON.parse(JSON.stringify(socket.request.user)), JSON.parse(JSON.stringify(course)));
                                 });
                             // TODO
-                            // socket.join(cid);
+                            socket.join(cid);
                         }
                     });
                 }
@@ -230,7 +230,7 @@ io.connection = function(socket) {
             // TODO
             // verfiy it works
             question.id = q._id;
-            io.to(cid).emit('addedQuestion', session_id, question);
+            io.in(cid).emit('addedQuestion', session_id, question);
         });
     });
 
@@ -255,7 +255,7 @@ io.connection = function(socket) {
             // TODO
             // verfiy it works
             comment.id = c._id;
-            io.to(cid).emit('addedComment', question_id, comment);
+            io.in(cid).emit('addedComment', question_id, comment);
         });
     });
 
@@ -273,7 +273,7 @@ io.connection = function(socket) {
             if (err) throw err;
             // TODO
             // verfiy it works
-            io.to(cid).emit('deletedComment', question_id, comment);
+            io.in(cid).emit('deletedComment', question_id, comment);
         });
     });
 
@@ -308,7 +308,7 @@ io.connection = function(socket) {
             // TODO
             // verfiy it works
             let username = socket.request.user.email.split('@')[0];
-            io.to(cid).emit('upvoted', question_id, username);
+            io.in(cid).emit('upvoted', question_id, username);
         });
     });
 
@@ -343,7 +343,7 @@ io.connection = function(socket) {
             // TODO
             // verfiy it works
             let username = socket.request.user.email.split('@')[0];
-            io.to(cid).emit('downvoted', question_id, username);
+            io.in(cid).emit('downvoted', question_id, username);
         });
     });
     
@@ -371,7 +371,7 @@ io.connection = function(socket) {
             if (err) throw err;
             // TODO
             // verfiy it works
-            io.to(cid).emit('deletedQuestion', session_id, question_id);
+            io.in(cid).emit('deletedQuestion', session_id, question_id);
         });
     });
 
