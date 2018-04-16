@@ -119,6 +119,7 @@ a, a:hover, a:focus {
 #sidebar .sidebar-clickable {
     cursor: pointer;
     color: white;
+    -moz-user-select: none;
     user-select: none;
 }
 
@@ -153,6 +154,7 @@ a, a:hover, a:focus {
     display: none;
     z-index: 1;
     text-indent: 15px;
+    -moz-user-select: none;
     user-select: none;
 }
 
@@ -190,6 +192,11 @@ a, a:hover, a:focus {
 
 #content.active{
     width: 95%;
+}
+
+#content-header {
+    user-select: none;
+    -moz-user-select: none;
 }
 
 .navbar {
