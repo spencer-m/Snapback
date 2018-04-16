@@ -352,11 +352,13 @@ module.exports = function(io) {
 
             Course.Session.
                 findById(session_id).
-                populate('questions').
-                populate('questions.comments').
+                populate({
+                    path: 'questions',
+                    populate: {path: 'comments'}
+                }).
                 exec(function(err, session) {
                     if (err) throw err;
-                
+                    
                     cb(JSON.parse(JSON.stringify(session.questions)));
                 });
 
