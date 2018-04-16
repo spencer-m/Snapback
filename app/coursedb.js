@@ -2,9 +2,13 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let CommentsSchema = new Schema({
-    author: {
+    authorid: {
         type: Schema.ObjectId,
         ref: 'User',
+        required: true
+    },
+    author: {
+        type: String,
         required: true
     },
     message: {
@@ -18,9 +22,13 @@ let QuestionSchema = new Schema({
         type: String,
         required: true
     },
-    author: {
+    authorid: {
         type: Schema.ObjectId,
         ref: 'User',
+        required: true
+    },
+    author: {
+        type: String,
         required: true
     },
     date: {

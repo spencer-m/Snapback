@@ -194,7 +194,7 @@ function resetView(){
     
 }
 
-let courseID = '5ad04f21822a4f2db88bfa68';
+let regcode = 'RW91C3';
 
 $( document ).ready(function(){
 
@@ -202,7 +202,7 @@ $( document ).ready(function(){
     
     // initialize
 
-    socket.emit('loadClass', courseID, function(classinfo) {
+    socket.emit('loadClass', regcode, function(classinfo) {
 
         // process class info here
         console.log('clientside', classinfo);
