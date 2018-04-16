@@ -1,9 +1,9 @@
-clientUser = "Kourosh"
+socket = io();
 courseID = "Seng 513"
 isProf = true;
 
 
-question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[clientUser],
+question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[socket.request.user.email.split("@")[0]],
     [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
     new comment("Jerry","I like you."),
     new comment("Swagmaster","Swag is All i care about"),
@@ -18,7 +18,7 @@ question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[
     ]),
 ];
 
-question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[clientUser],
+question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[socket.request.user.email.split("@")[0]],
 [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
 new comment("Jerry","I like you."),
 new comment("Swagmaster","Swag is All i care about"),
@@ -51,12 +51,6 @@ function session(_id,isLive,name,questions){
         card.click(this.expand);
         return (card);
     }
-
-
-
-
-
-
 }
 
 function question(_id,question,author,date,upvotes,downvotes,comments){
@@ -77,35 +71,45 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     var scoreBox;
 
     this.upArrowClick = function(){
-        if(upvotes.indexOf(clientUser) < 0){
-            upvotes.push(clientUser);
-            if(downvotes.indexOf(clientUser) >=0 ){
-                downvotes.splice(downvotes.indexOf(clientUser),1);
+
+        socket.emit("upvote",courseID,question._id);
+
+    }
+    this.updateUpVotes = function(){
+        if(upvotes.indexOf(socket.request.user._id) < 0){
+            upvotes.push(socket.request.user._id);
+            if(downvotes.indexOf(socket.request.user._id) >=0 ){
+                downvotes.splice(downvotes.indexOf(socket.request.user._id),1);
             }
         }else{
-            upvotes.splice(upvotes.indexOf(clientUser) ,1);
+            upvotes.splice(upvotes.indexOf(socket.request.user._id) ,1);
         }
-        upArrow.attr("src",(upvotes.includes(clientUser)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        upArrow.attr("src",(upvotes.includes(socket.request.user._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         scoreBox.text("Score: "+this.score());
         
     }
 
+
     this.downArrowClick = function(){
-        if(downvotes.indexOf(clientUser) < 0){
-            downvotes.push(clientUser);
-            if(upvotes.indexOf(clientUser) >=0 ){
-                upvotes.splice(upvotes.indexOf(clientUser),1);
+
+        socket.emit("downvote",courseID,question._id);
+
+    }
+    this.updateDownVotes = function(){
+        if(downvotes.indexOf(socket.request.user._id) < 0){
+            downvotes.push(socket.request.user._id);
+            if(upvotes.indexOf(socket.request.user._id) >=0 ){
+                upvotes.splice(upvotes.indexOf(socket.request.user._id),1);
             }
         }else{
-            downvotes.splice(downvotes.indexOf(clientUser,1));
+            downvotes.splice(downvotes.indexOf(socket.request.user._id,1));
         }
-        downArrow.attr("src",(downvotes.includes(clientUser)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        downArrow.attr("src",(downvotes.includes(socket.request.user._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         scoreBox.text("Score: "+this.score());
     }
 
     this.deleteQuestion = function(){
-        clientQuestions.splice(clientQuestions.indexOf(question),1);
-        $("#"+question._id).remove();
+        socket.emit("deleteQuestion",courseID,clientSession._id,question._id);
     }
 
     this.toggleComments = function(){
@@ -116,7 +120,10 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     this.reply = function(){
     
         if(replyMessage.val().trim() != ""){
-            question.comments.push(new comment(clientUser,replyMessage.val().trim()));
+
+            let newComment = new comment(null,socket.request.user.email.split("@")[0],replyMessage.val().trim());
+
+            socket.emit("addComment",courseID,question._id,newComment);
         }
         questionsView();
         return false;
@@ -133,7 +140,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
         var table = $("<table>");
        
-        if(clientUser == author || isProf){
+        if(socket.request.user.email.split("@")[0] == author || isProf){
             table.append($("<tr>")
                 .append($("<td>"))
                 .append($(`<td align="right" >`)
@@ -142,7 +149,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         
         var row = $("<tr>");
         upArrow = $(`<img id="down" height="50px">`);
-        upArrow.attr("src",(upvotes.includes(clientUser)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        upArrow.attr("src",(upvotes.includes(socket.request.user._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         upArrow.click(this.upArrowClick);
         row.append($("<td>").attr("width","70px").append(upArrow));
         row.append($(`<td><h4>` + this.question +`</h4></td>`));
@@ -152,7 +159,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
         var row = $("<tr>");
         downArrow = $(`<img id="down" height="50px">`);
-        downArrow.attr("src",(downvotes.includes(clientUser)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        downArrow.attr("src",(downvotes.includes(socket.request.uesr._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         downArrow.click(this.downArrowClick);
         scoreBox = $("<div>").attr("class","col-md-12 col-lg-3").text("Score: "+this.score());
         row.append($("<td>").attr("width","70px").append(downArrow));
@@ -175,14 +182,14 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         comments.forEach(comment => {
 
             this.deleteComment = function(){
-                comments.splice(comments.indexOf(comment),1);
-                $("#"+comment._id).remove();
+
+                socket.emit("deleteComment",courseID,question._id,comment);
             }
         
             
             let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
-            if(clientUser == comment.author || isProf ){
+            if(socket.request.user.email.split("@")[0] == comment.author || isProf ){
                 rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
                 .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
             }else{
@@ -210,14 +217,14 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     this.addComment = function(comment){
         
         this.deleteComment = function(){
-            comments.splice(comments.indexOf(comment),1);
-            $("#"+comment._id).remove();
+
+            socket.emit("deleteComment",courseID,question._id,comment);
         }
     
         
         let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
         rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
-        if(clientUser == comment.author || isProf ){
+        if(socket.request.user.email.split("@")[0] == comment.author || isProf ){
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
             .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
         }else{
@@ -231,7 +238,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
 }
 
-function comment(_id,author,message,){
+function comment(_id,author,message){
     this._id = _id;
     this.author = author;
     this.message = message;
@@ -290,7 +297,11 @@ function questionsView(){
     
     questionForm.submit(function(){
         if(replyQuestion.val().trim() != ""){
-            clientQuestions.push(new question(replyQuestion.val().trim(),clientUser,formatDate(new Date()),[],[],[]));
+
+
+            let newQuestion = new question(null,replyQuestion.val().trim(),socket.request.user.email.split("@")[0],formatDate(new Date()),[],[],[]);
+
+            socket.emit("addQuestion",courseID,clientSession._id,newQuestion);
         }
         questionsView();
         return false;
@@ -302,7 +313,7 @@ function questionsView(){
             
     );
     
-    let socket = io()
+
 
     socket.emit("getSession",clientSession._id,function(questions){
         clientQuestions = [];
@@ -325,7 +336,7 @@ function sessionsView(){
     $(".questions-list").empty();
     $(".sessions-list").empty();
 
-    let socket = io();
+
     
     socket.emit("loadClass",courseID,function(classinfo){
         sessions = []
@@ -341,7 +352,7 @@ function sessionsView(){
 }
 
 $(document).ready(function(){
-    let socket = io();
+
 
     socket.on("addedQuestion",function(session_id,question){
         if(session_id == clientSession._id){
@@ -383,8 +394,8 @@ $(document).ready(function(){
             return question._id == question_id;
         })
         if(question){
-            if(user == clientUser){
-                question.upArrowClick();
+            if(user == socket.request.user._id){
+                question.updateUpVotes();
             }else{
                 if(question.upvotes.indexOf(user) < 0){
                     question.upvotes.push(user);
@@ -405,8 +416,8 @@ $(document).ready(function(){
             return question._id == question_id;
         })
         if(question){
-            if(user == clientUser){
-                question.downArrowClick();
+            if(user == socket.request.user._id){
+                question.updateDownVotes();
             }else{
                 if(question.downvotes.indexOf(user) < 0){
                     question.downvotes.push(user);
@@ -420,13 +431,17 @@ $(document).ready(function(){
         }        
     })
 
-    socket.on("deletedQuestion",function(question_id){
-        question = clientQuestions.find(function(question){
-            return question._id == question_id;
-        })
-        clientQuestions.splice(clientQuestions.indexOf(question),1);
+    socket.on("deletedQuestion",function(session_id,question_id){
 
-        $("#"+question_id).remove();
+        if(session_id == clientSession){
+            question = clientQuestions.find(function(question){
+                return question._id == question_id;
+            })
+            clientQuestions.splice(clientQuestions.indexOf(question),1);
+            $("#"+question_id).remove();
+
+        }
+
     })
 
 
