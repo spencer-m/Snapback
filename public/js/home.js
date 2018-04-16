@@ -138,11 +138,11 @@ let setUpModal = function(isProf, sems) {
         modalTitle = "Create a Course!";
         (($('#class-card-modal .modal-body')
             .append(inputTemplate(
-                "Please enter the course name",
+                "Please enter the course code",
                 "course-code-input",
                 "eg. ANTH 413")))
             .append(inputTemplate(
-                "Please enter the course number",
+                "Please enter the course name",
                 "course-name-input",
                 "eg. History of Western Countries")))
             .append(semesterDropdown(sems));
@@ -214,12 +214,6 @@ $(function(){
         $('#class-submit-button').show();
     });
 
-    /*
-    $('#class-card-add-button').on('click', function(){
-        setUpModal(true, getAvailableSemester(userInfo.date));
-    });
-    */
-
     /**
      * handles the add-class-card button
      *
@@ -256,7 +250,7 @@ $(function(){
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
-                    if (info.year === userInfo.year)
+                    if (info.year === currSemester)
                         createClassCard(courseName, courseCode, response.regcode, "#");
                     setupAllCourseModal(userInfo.courses);
 
@@ -297,11 +291,12 @@ $(function(){
 
                     setModalMessage("This course doesn't exist... ):");
                 }
-                else
+                else {
 
                     setModalMessage("ERROR");
 
                     console.log('unknown error');
+                }
             });
         }
 

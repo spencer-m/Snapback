@@ -296,10 +296,10 @@ a.article, a.article:hover {
 
     background-color: #72d4e5;
     color: white;
-    border: 1px #72d4e5 solid;
 }
 
 .btn-blue {
+    border: 1px #72d4e5 solid;
     background-color: white;
     color: #72d4e5;
 }
