@@ -31,7 +31,7 @@ function File(section, filePath, fileName) {
 
 }
 
-function course(lectureName) {
+function course(lectureName, userType) {
 
 
   this.load = function load() {
@@ -122,48 +122,52 @@ function course(lectureName) {
     lecList.className = "list-group list-group-flush";
     lecList.setAttribute("id", "list-lecture");
 
-    // Upload button for lecture section
-    var lecUpButton = document.createElement("button");
-    lecUpButton.className = "btn btn-outline-primary";
-    lecUpButton.setAttribute("id", "lecUpButton");
-    lecUpButton.setAttribute("type", "button");
-    lecUpButton.setAttribute("style", "float: right;");
-    lecUpButton.setAttribute("data-toggle", "modal");
-    lecUpButton.setAttribute("data-target", "#lecUploadModal");
-    lecUpButton.innerHTML = "Upload";
+    // Checks that the user is a professor before creating upload buttons
+    if(userType === "professor") {
+      // Upload button for lecture section
+      var lecUpButton = document.createElement("button");
+      lecUpButton.className = "btn btn-outline-primary";
+      lecUpButton.setAttribute("id", "lecUpButton");
+      lecUpButton.setAttribute("type", "button");
+      lecUpButton.setAttribute("style", "float: right;");
+      lecUpButton.setAttribute("data-toggle", "modal");
+      lecUpButton.setAttribute("data-target", "#lecUploadModal");
+      lecUpButton.innerHTML = "Upload";
 
-    // Modal for lecture notes upload
-    var lecUploadModal = document.createElement("div");
-    lecUploadModal.innerHTML = `<div class="modal fade" id="lecUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="lecUploadModalLabel">Upload File to Lecture Notes</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <label for="lecFileUpload" class="custom-file-upload">
-                        <i class="fa fa-cloud-upload"></i> Click here to upload a file
-                      </label>
-                      <input id="lecFileUpload" type="file"/>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
+      // Modal for lecture notes upload
+      var lecUploadModal = document.createElement("div");
+      lecUploadModal.innerHTML = `<div class="modal fade" id="lecUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="lecUploadModalLabel">Upload File to Lecture Notes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <label for="lecFileUpload" class="custom-file-upload">
+                          <i class="fa fa-cloud-upload"></i> Click here to upload a file
+                        </label>
+                        <input id="lecFileUpload" type="file"/>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>`;
+                </div>`;
 
-    lecContent.append(lecUploadModal);
+      lecContent.append(lecUploadModal);
+      lecHeader.append(lecUpButton);
 
-    // Append lecture stuff together
+    }
+    // Append lecture note stuff together
     lecBody.append(lecList);
     lecCollapse.append(lecBody);
     lecHeader.append(lecLink);
-    lecHeader.append(lecUpButton);
+
 
     lecSection.append(lecHeader);
     lecSection.append(lecCollapse);
@@ -188,48 +192,50 @@ function course(lectureName) {
     assignList.className = "list-group list-group-flush";
     assignList.setAttribute("id", "list-assignment");
 
+    if(userType === "professor") {
+      // Upload button for assignment section
+      var assignUpButton = document.createElement("button");
+      assignUpButton.className = "btn btn-outline-primary";
+      assignUpButton.setAttribute("id", "assignUpButton");
+      assignUpButton.setAttribute("type", "button");
+      assignUpButton.setAttribute("style", "float: right;");
+      assignUpButton.setAttribute("data-toggle", "modal");
+      assignUpButton.setAttribute("data-target", "#assignUploadModal");
+      assignUpButton.innerHTML = "Upload";
 
-    // Upload button for assignment section
-    var assignUpButton = document.createElement("button");
-    assignUpButton.className = "btn btn-outline-primary";
-    assignUpButton.setAttribute("id", "assignUpButton");
-    assignUpButton.setAttribute("type", "button");
-    assignUpButton.setAttribute("style", "float: right;");
-    assignUpButton.setAttribute("data-toggle", "modal");
-    assignUpButton.setAttribute("data-target", "#assignUploadModal");
-    assignUpButton.innerHTML = "Upload";
-
-    // Modal for assignment upload
-    var assignUploadModal = document.createElement("div");
-    assignUploadModal.innerHTML = `<div class="modal fade" id="assignUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="AssignUploadModalLabel">Upload File to Assignments</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <label for="assignFileUpload" class="custom-file-upload">
-                        <i class="fa fa-cloud-upload"></i> Click here to upload a file
-                      </label>
-                      <input id="assignFileUpload" type="file"/>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
+      // Modal for assignment upload
+      var assignUploadModal = document.createElement("div");
+      assignUploadModal.innerHTML = `<div class="modal fade" id="assignUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="AssignUploadModalLabel">Upload File to Assignments</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <label for="assignFileUpload" class="custom-file-upload">
+                          <i class="fa fa-cloud-upload"></i> Click here to upload a file
+                        </label>
+                        <input id="assignFileUpload" type="file"/>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>`;
+                </div>`;
 
-    lecContent.append(assignUploadModal);
+      lecContent.append(assignUploadModal);
+      assignHeader.append(assignUpButton);
+
+    }
 
     assignBody.append(assignList);
     assignCollapse.append(assignBody);
     assignHeader.append(assignLink);
-    assignHeader.append(assignUpButton)
 
     assignSection.append(assignHeader);
     assignSection.append(assignCollapse);
@@ -253,53 +259,54 @@ function course(lectureName) {
     testList.className = "list-group list-group-flush";
     testList.setAttribute("id", "list-test");
 
-    // Upload button for test section
-    var testUpButton = document.createElement("button");
-    testUpButton.className = "btn btn-outline-primary";
-    testUpButton.setAttribute("id", "lecUpButton");
-    testUpButton.setAttribute("type", "button");
-    testUpButton.setAttribute("style", "float: right;");
-    testUpButton.setAttribute("data-toggle", "modal");
-    testUpButton.setAttribute("data-target", "#testUploadModal");
-    testUpButton.innerHTML = "Upload";
 
-    // Modal for test material upload
-    var testUploadModal = document.createElement("div");
-    testUploadModal.innerHTML = `<div class="modal fade" id="testUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="uploadModalLabel">Upload File to Test Material</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <label for="testFileUpload" class="custom-file-upload">
-                        <i class="fa fa-cloud-upload"></i> Click here to upload a file
-                      </label>
-                      <input id="testFileupload" type="file"/>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
+    if(userType === "professor") {
+      // Upload button for test section
+      var testUpButton = document.createElement("button");
+      testUpButton.className = "btn btn-outline-primary";
+      testUpButton.setAttribute("id", "lecUpButton");
+      testUpButton.setAttribute("type", "button");
+      testUpButton.setAttribute("style", "float: right;");
+      testUpButton.setAttribute("data-toggle", "modal");
+      testUpButton.setAttribute("data-target", "#testUploadModal");
+      testUpButton.innerHTML = "Upload";
+
+      // Modal for test material upload
+      var testUploadModal = document.createElement("div");
+      testUploadModal.innerHTML = `<div class="modal fade" id="testUploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="uploadModalLabel">Upload File to Test Material</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <label for="testFileUpload" class="custom-file-upload">
+                          <i class="fa fa-cloud-upload"></i> Click here to upload a file
+                        </label>
+                        <input id="testFileupload" type="file"/>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>`;
+                </div>`;
 
-    lecContent.append(testUploadModal);
+      lecContent.append(testUploadModal);
+      testHeader.append(testUpButton);
+    }
 
     testBody.append(testList);
     testCollapse.append(testBody);
     testHeader.append(testLink);
-    testHeader.append(testUpButton);
+
 
     testSection.append(testHeader);
     testSection.append(testCollapse);
-
-
-
 
 
     accordion.append(lecSection);
@@ -318,10 +325,28 @@ function course(lectureName) {
 
   }
 }
+
+// Handles files from lecture upload modal
+function handleLecFiles() {
+  file = document.getElementById("lecFileUpload").files[0];
+  console.log(file.name);
+}
+// Handles files from assignment upload modal
+function handleAssignFiles() {
+  file = document.getElementById("assignFileUpload").files[0];
+  console.log(file.name);
+}
+// Handles files from test upload modal
+function handleTestFiles() {
+  file = document.getElementById("testFileUpload").files[0];
+  console.log(file.name);
+}
+
+
 $(document).ready(function() {
 
   // TEST CLASS **************
-  var seng = new course("SENG 513");
+  var seng = new course("SENG 513", "professor");
   seng.load();
   // TEST FILES **************
   var file = new File("lecture", "testFile.txt", "testFile");
@@ -350,19 +375,3 @@ $(document).ready(function() {
   });
 
 });
-
-// Handles files from lecture upload modal
-function handleLecFiles() {
-  file = document.getElementById("lecFileUpload").files[0];
-  console.log(file.name);
-}
-// Handles files from assignment upload modal
-function handleAssignFiles() {
-  file = document.getElementById("assignFileUpload").files[0];
-  console.log(file.name);
-}
-// Handles files from test upload modal
-function handleTestFiles() {
-  file = document.getElementById("testFileUpload").files[0];
-  console.log(file.name);
-}
