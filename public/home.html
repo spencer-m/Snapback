@@ -36,7 +36,7 @@
     <!-- Sidebar -->
     <nav id="sidebar">
 
-      <a id="sidebar-collapse" class="active" href="#" style="font-size: 24px; display: block; text-align: right; padding: 16px; color: white;"><i class="fa fa-arrow-left"></i></a>
+      <div id="sidebar-collapse-button" class="sidebar-clickable"><i class="fa fa-arrow-left"></i></div>
 
       <div class="sidebar-header">
         <h3 style="text-align: center"></h3>
@@ -44,30 +44,24 @@
 
       <ul class="list-unstyled components">
         <p style="line-height: 0em;"><b><i>Menu</i></b></p>
-        <li class="active">
-          <a href="home.html"><i class="fa fa-home"></i> Dashboard</a>
+        <li class="home-button sidebar-clickable">
+            <i class="fa fa-home"></i> Dashboard
         </li>
-        <li>
-          <div class="navbar-dropdown">
-            <a class="dropbtn"><i class="fa fa-book"></i> Classes</a>
-            <div id="dropdown-content"></div>
-          </div>
+        <li class="navbar-dropdown sidebar-clickable">
+          <div class="dropbtn"><i class="fa fa-book"></i> Classes <i class="fa fa-caret-down"></i> </div>
+          <div id="dropdown-content"></div>
         </li>
-
-        <li>
+        <li class="sidebar-clickable">
           <a href="logout"><i class="fa fa-sign-out"></i> Logout</a>
         </li>
       </ul>
-      <!--
-      <button type="button" id="sidebar-collapse" class="btn btn-light navbar-btn float-right"><</button>
-      -->
     </nav>
 
 
     <div class="icon-bar">
-      <a id="sidebarBtn" class="active" href="#"><i class="fa fa-arrow-right"></i></a>
-      <a href="#"><i class="fa fa-home"></i></a>
-      <a href="#"><i class="fa fa-sign-out"></i></a>
+      <div id="sidebarBtn" class="active sidebar-clickable"><i class="fa fa-arrow-right"></i></div>
+      <div class="home-button sidebar-clickable"><i class="fa fa-home"></i></div>
+      <div class="sidebar-clickable"><i class="fa fa-sign-out"></i></div>
     </div>
 
     <!-- Page Content -->
@@ -75,10 +69,10 @@
 
       <ul id="mobile-nav" class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="#"> <i class="fa fa-home"></i> Dashboard </a>
+          <a class="home-button nav-link active" href="#"> <i class="fa fa-home"></i> Dashboard </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"> <i class="fa fa-book"></i> Logout </a>
+          <a class="nav-link" href="logout"> <i class="fa fa-book"></i> Logout </a>
         </li>
       </ul>
 
@@ -124,10 +118,6 @@
             </div>
 
             <div class="modal-body">
-              <!--
-              <p>Please enter the course code</p>
-              <input id="course-code-input" autocomplete="off" placeholder="eg. 41Q23AB">
-              -->
             </div>
 
             <div class="modal-footer">
@@ -141,7 +131,7 @@
       <nav class="navbar navbar-default rounded" style="margin-bottom: -3px;">
         <div class="container-fluid">
 
-          <a class="navbar-brand" href="#">Classes</a>
+          <div class="navbar-brand" id="content-header">Classes</div>
 
           <ul class="nav navbar-nav ml-auto">
             <div class="class-card-button">
@@ -158,9 +148,7 @@
 
       <hr> <!-- Divider -->
 
-      <div class="class-cards">
-        <div class="row">
-        </div>
+      <div class="main-content">
       </div>
 
     </div>

@@ -84,10 +84,15 @@ a, a:hover, a:focus {
     transform: rotate(180deg);
 }
 
+#sidebar.active .fa-caret-down {
+    align-self: flex-end;
+}
+
 #sidebar .sidebar-header {
     padding: 20px;
     background: #72d4e5;
 }
+
 
 #sidebar ul.components {
     padding: 20px 0;
@@ -99,24 +104,25 @@ a, a:hover, a:focus {
     padding: 10px;
 }
 
-#sidebar ul li a {
+#sidebar ul li {
     padding: 10px;
     font-size: 1.1em;
     display: block;
 }
-#sidebar ul li a:hover {
+
+/*
+#sidebar ul li:hover {
     color: #72d4e5;
     background: #fff;
 }
+*/
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
+/*
+#sidebar ul li.active > button, button[aria-expanded="true"] {
     color: #fff;
     background: #9ae7f4;
 }
-
-#sidebar button {
-    transition: all 0.4s;
-}
+*/
 
 /* moves button to the right if sidebar is collapsed */
 #sidebar button.sidebar-expand {
@@ -124,77 +130,40 @@ a, a:hover, a:focus {
     display: none;
 }
 
-#sidebar-collapse {
-    margin-left: 215px;
-    line-height: 15px;
+#sidebar .sidebar-clickable {
+    cursor: pointer;
+    color: white;
 }
 
-#sidebar-collapse.active {
-    display: none;
-    margin-left: 0px;
+#sidebar .navbar-dropdown, #sidebar #dropdown-content, #sidebar .dropdown-class{
     background-color: #72d4e5;
+    transition: background-color 0.4s;
+}
+
+#sidebar .sidebar-clickable:hover, #sidebar .dropdown-class:hover, #sidebar .navbar-dropdown:hover {
+    background-color: #9ae7f4;
+
+}
+
+#sidebar-collapse-button {
+    font-size: 24px;
+    display: block;
+    text-align: right;
+    padding: 16px;
     color: white;
 }
 
-a[data-toggle="collapse"] {
+#sidebar .navbar-dropdown {
     position: relative;
 }
 
-a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
-    content: '\e259';
-    display: block;
-    position: absolute;
-    right: 20px;
-    font-family: 'Glyphicons Halflings';
-    font-size: 0.6em;
-}
-a[aria-expanded="true"]::before {
-    content: '\e260';
-}
-
-
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: white;
-}
-
-ul.CTAs {
-    padding: 20px;
-}
-
-ul.CTAs a {
-    text-align: center;
-    font-size: 0.9em !important;
-    display: block;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-a.download {
-    background: #fff;
-    color: white;
-}
-a.article, a.article:hover {
-    background: white !important;
-    color: #fff !important;
-}
-
-#sidebar-collapse:hover {
-    background: #9ae7f4;
-
-}
-
-.navbar-dropdown {
-    position: relative;
-}
-
-#dropdown-content {
+#sidebar #dropdown-content {
     display: none;
     z-index: 1;
     text-indent: 15px;
 }
 
-.navbar-dropdown:hover #dropdown-content {
+#sidebar .navbar-dropdown:hover #dropdown-content {
     display: block;
 }
 
@@ -207,7 +176,7 @@ a.article, a.article:hover {
     font-size: 1.1em;
 }
 
-#mobile-nav a:hover {
+#mobile-nav li:hover {
     background: white;
     color: #72d4e5;
 }
@@ -215,6 +184,7 @@ a.article, a.article:hover {
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
+
 #content {
     width: calc(100% - 250px);
     padding: 40px;
@@ -264,6 +234,8 @@ a.article, a.article:hover {
 }
 
 .card {
+    transition: background .5s, color .5s;
+
     background: white;
     padding: 30px 20px;
     /*border: 1px solid #358bbe;*/
@@ -276,6 +248,7 @@ a.article, a.article:hover {
 .card:hover {
     background: rgba(114, 212, 229, 0.5);
     color: white;
+    cursor: pointer;
 }
 
 .top-buffer { margin-top:1px; margin-bottom: 1px;}
@@ -410,16 +383,18 @@ a.article, a.article:hover {
     margin-left: -15px;
 }
 
-.icon-bar a {
+.icon-bar div {
     display: block;
     text-align: center;
     padding: 16px;
     transition: all 0.3s ease;
     color: white;
     font-size: 24px;
+
+    cursor: pointer;
 }
 
-.icon-bar a:hover {
+.icon-bar div:hover {
     background-color: #9ae7f4;
 }
 

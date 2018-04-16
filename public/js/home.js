@@ -60,9 +60,11 @@ let getAvailableSemester = function(date){
     return availableSemesters;
 };
 
-let createClassCard = function(courseCode, courseName, regCode, cLink){
+let createClassCard = function(courseCode, courseName, regCode){
 
-    let classCards = $(".class-cards");
+    console.log('hello');
+
+    let classCards = $(".main-content");
 
     // once you reach 3 items in the last row, make a new row
     if (classCards.children('.row').last().children('.col-sm-4').length >= 3) {
@@ -73,8 +75,20 @@ let createClassCard = function(courseCode, courseName, regCode, cLink){
     }
 
     (classCards.children('.row').last()).append(
-        (($('<div>').addClass('col-sm-4'))
-            .append(($('<a>').addClass("card card-outline-secondary mb-3").attr('href', cLink))
+        (($('<div>').addClass('col-sm-4').attr('id', regCode).on('click', function(){
+
+                let regCode = $(this).attr('id');
+                console.log(regCode);
+
+                $('.main-content').empty();
+
+                $('#class-card-add-button').hide();
+                $('#class-card-allClass-button').hide();
+                $('#content-header').text(courseCode + ": " + courseName);
+                // NATHAN'S FUNCTION
+
+                }))
+            .append(($('<div>').addClass("card card-outline-secondary mb-3"))
                 .append(($('<div>').addClass('block'))
                     .append(
                         $('<h3>').addClass('card-title').text(courseCode))
@@ -90,8 +104,9 @@ let createClassCard = function(courseCode, courseName, regCode, cLink){
 
 let populateCourses = function(courses, currDate){
     for (let i = 0; i < courses.length; i++) {
-        if (courses[i].year === currDate)
-            createClassCard(courses[i].code, courses[i].name, courses[i].regcode, "#");
+        if (courses[i].year === currDate) {
+            createClassCard(courses[i].code, courses[i].name, courses[i].regcode);
+        }
     }
 };
 
@@ -162,6 +177,35 @@ let setUpModal = function(isProf, sems) {
     $('#class-card-modal .modal-title').text(modalTitle);
 };
 
+
+/**
+ * intializeDashboard is only used alongside the "getInfo" socket event
+ *
+ * It takes the user information retrieved from said event
+ *
+ * */
+let initializeDashboard = function(user){
+
+    $('.main-content').append($('<div>').addClass('row'));
+
+    let dateInfo = user.date.split(' ');
+    let currSemester = dateToSemester(user.date) + " " + dateInfo[1];
+
+    $('#content-header').text('Classes');
+    $('.sidebar-header h3').text(user.name.first + " " + user.name.last);
+
+    populateCourses(user.courses, currSemester);
+
+    setUpModal(user.isProfessor, getAvailableSemester(user.date));
+    setupAllCourseModal(user.courses);
+    dropdownClasses(user.courses);
+
+    $('#class-card-add-button').show();
+    $('#class-card-allClass-button').show();
+
+    return currSemester;
+};
+
 // on ready()
 $(function(){
 
@@ -175,14 +219,7 @@ $(function(){
         socket.emit('getInfo', function (info) {
             userInfo = info;
 
-            let dateInfo = info.date.split(' ');
-            currSemester = dateToSemester(info.date) + " " + dateInfo[1];
-
-            $('.sidebar-header h3').text(info.name.first + " " + info.name.last);
-            populateCourses(info.courses, currSemester);
-            setUpModal(userInfo.isProfessor, getAvailableSemester(info.date));
-            setupAllCourseModal(info.courses);
-            dropdownClasses(info.courses);
+            currSemester = initializeDashboard(info)
         });
 
     });
@@ -190,9 +227,9 @@ $(function(){
     /**
      *  handles sidebar expansion and collapse
      **/
-    $('#sidebar-collapse').on('click', function () {
+    $('#sidebar-collapse-button').on('click', function () {
         $('#sidebar, #content, .icon-bar').toggleClass('active');
-        $('.class-cards').toggleClass('active');
+        $('.main-content').toggleClass('active');
         $('.collapse.in').toggleClass('in');
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
     });
@@ -211,15 +248,21 @@ $(function(){
 
     $('#class-card-add-button').on('click', function(){
         setUpModal(userInfo.isProfessor, getAvailableSemester(userInfo.date));
-
         $('#class-back-button').hide();
         $('#class-submit-button').show();
+    });
+
+    $('.home-button').on('click', function(){
+
+        socket.emit('getInfo', function(info){
+            userInfo = info;
+            currSemester = initializeDashboard(userInfo);
+        })
     });
 
     /**
      * handles the add-class-card button
      *
-     * TODO: There is no space between the two buttons in the newly appended card
      * **/
     $('#class-submit-button').on('click', function(){
 
@@ -254,7 +297,7 @@ $(function(){
                     let courseCode = lastCourse.code;
 
                     if (info.year === currSemester)
-                        createClassCard(courseName, courseCode, response.regcode, "#");
+                        createClassCard(courseName, courseCode, response.regcode);
                     setupAllCourseModal(userInfo.courses);
 
                     console.log('class creation success');
@@ -284,7 +327,7 @@ $(function(){
                     let courseName = lastCourse.name;
                     let courseCode = lastCourse.code;
 
-                    createClassCard(courseName, courseCode, lastCourse.regcode, "#");
+                    createClassCard(courseName, courseCode, lastCourse.regcode);
                 }
                 else if (response.status === 'already_enrolled'){
                     console.log('already_enrolled');
@@ -330,6 +373,6 @@ let setupAllCourseModal = function (c) {
 let dropdownClasses = function (c) {
     $('#dropdown-content').empty();
     for(let i = 0; i < c.length; i++){
-        $('#dropdown-content').append($('<a>').text(c[i].code).attr('href', "#"));
+        $('#dropdown-content').append($('<div>').addClass('dropdown-class').text(c[i].code));
     }
 };
