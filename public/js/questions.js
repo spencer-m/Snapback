@@ -75,46 +75,39 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     var replyForm;
 
     this.upArrowClick = function(){
-
-        socket.emit("upvote",courseID,question._id);
-
-    }
-    this.updateUpVotes = function(user){
-
-        if(question.upvotes.indexOf(user) < 0){
-            question.upvotes.push(user);
-            if(question.downvotes.indexOf(user) >=0 ){
-                question.downvotes.splice(downvotes.indexOf(user),1);
-            }
-        }else{
-            question.upvotes.splice(upvotes.indexOf(user) ,1);
+        let position = 0;
+        if(upArrow.attr("src") == "img/upArrow.svg"){
+            position = 1;
         }
-        upArrow.attr("src",(upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
-        downArrow.attr("src",(downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
-        scoreBox.text("Score: "+this.score()); 
+        console.log("position: "+position);
+        socket.emit("upvote",courseID,question._id,position);
     }
-
 
     this.downArrowClick = function(){
-
-        socket.emit("downvote",courseID,question._id);
+        let position = 0;
+        if(upArrow.attr("src") == "img/downArrow.svg"){
+            position = -1;
+        }
+        console.log("position: "+position);
+        socket.emit("downvote",courseID,question._id,position);
 
     }
-    this.updateDownVotes = function(user){
+    this.vote = function(user,position){
+        let filterFunction = function(aUser){
+            aUser != user;
+        } 
+        question.downvotes = question.downvotes.filter(filterFunction);
+        question.upvotes = question.upvotes.filter(filterFunction);
 
-        if(question.downvotes.indexOf(user) < 0){
+        if(position == 1){
+            question.upvotes.push(user);
+        }else if(position == -1){
             question.downvotes.push(user);
-            if(question.upvotes.indexOf(user) >=0 ){
-                question.upvotes.splice(upvotes.indexOf(user),1);
-            }
-        }else{
-            question.downvotes.splice(downvotes.indexOf(user,1));
         }
-        
+
         upArrow.attr("src",(upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         downArrow.attr("src",(downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         scoreBox.text("Score: "+this.score());
-        
     }
 
     this.deleteQuestion = function(){
@@ -131,6 +124,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         if(replyMessage.val().trim() != ""){
 
             let newComment = new comment(null,client.email.split("@")[0],replyMessage.val().trim());
+            replyMessage.val("");
             socket.emit("addComment",courseID,question._id,newComment);
         }
         return false;
@@ -307,6 +301,7 @@ function questionsView(){
 
 
             let newQuestion = new question(null,replyQuestion.val().trim(),client.email.split("@")[0],formatDate(new Date()),[],[],[]);
+            replyQuestion.val("");
             socket.emit("addQuestion",courseID,clientSession._id,newQuestion);   
         }
         return false;
@@ -399,7 +394,7 @@ $(document).ready(function(){
         }
     })
 
-    socket.on("upvoted",function(question_id,user){
+    socket.on("voted",function(question_id,user,position){
         var question = clientQuestions.find(function(question){
             return question._id == question_id;
         })
@@ -409,15 +404,6 @@ $(document).ready(function(){
         }        
     })
 
-
-    socket.on("downvoted",function(question_id,user){
-        var question = clientQuestions.find(function(question){
-            return question._id == question_id;
-        })
-        if(question){
-            question.updateDownVotes(user);
-        }        
-    })
 
     socket.on("deletedQuestion",function(session_id,question_id){
         if(session_id == clientSession._id){
