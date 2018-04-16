@@ -373,6 +373,6 @@ let setupAllCourseModal = function (c) {
 let dropdownClasses = function (c) {
     $('#dropdown-content').empty();
     for(let i = 0; i < c.length; i++){
-        $('#dropdown-content').append($('<div>').addClass('dropdown-class').text(c[i].code));
+        $('#dropdown-content').append($('<div>').addClass('dropdown-class sidebar-clickable').text(c[i].code));
     }
 };

@@ -140,7 +140,12 @@ a, a:hover, a:focus {
     transition: background-color 0.4s;
 }
 
-#sidebar .sidebar-clickable:hover, #sidebar .dropdown-class:hover, #sidebar .navbar-dropdown:hover {
+#sidebar .dropBtn {
+    width: 100%;
+
+}
+
+#sidebar .sidebar-clickable:hover, #sidebar .dropdown-class:hover {
     background-color: #9ae7f4;
 
 }
@@ -377,10 +382,8 @@ a, a:hover, a:focus {
 }
 
 .icon-bar.active {
-    width: 70px;
-    background-color: #72d4e5;
-    height: 100vh;
     margin-left: -15px;
+    position: fixed;
 }
 
 .icon-bar div {
