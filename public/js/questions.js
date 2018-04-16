@@ -1,31 +1,34 @@
 socket = io();
+
 courseID = "Seng 513"
 isProf = true;
 
 
-question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[socket.request.user.email.split("@")[0]],
-    [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
-    new comment("Jerry","I like you."),
-    new comment("Swagmaster","Swag is All i care about"),
-    ]),
-    new question("This is another question I AM FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
-    [new comment("Jerry","I don't like you."),
-    new comment("Jebrone","Wow such nice comments."),
-    ]),
-    new question("asfdhadfjhkanothdskjfdoaijfoewjrfoejrdsafdsa FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
-    [new comment("Jerry","I don't like you."),
-    new comment("Jebrone","Wow such nice comments."),
-    ]),
-];
+// question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[client.email.split("@")[0]],
+//     [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
+//     new comment("Jerry","I like you."),
+//     new comment("Swagmaster","Swag is All i care about"),
+//     ]),
+//     new question("This is another question I AM FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
+//     [new comment("Jerry","I don't like you."),
+//     new comment("Jebrone","Wow such nice comments."),
+//     ]),
+//     new question("asfdhadfjhkanothdskjfdoaijfoewjrfoejrdsafdsa FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
+//     [new comment("Jerry","I don't like you."),
+//     new comment("Jebrone","Wow such nice comments."),
+//     ]),
+// ];
 
-question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[socket.request.user.email.split("@")[0]],
-[new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
-new comment("Jerry","I like you."),
-new comment("Swagmaster","Swag is All i care about"),
-])]
+// question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[client.email.split("@")[0]],
+// [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
+// new comment("Jerry","I like you."),
+// new comment("Swagmaster","Swag is All i care about"),
+// ])]
 
-sessions = [new session(123,true,"Session1",question1),new session(123,true,"Session5",question2)]
-clientQuestions = null;
+// sessions = [new session(123,true,"Session1",question1),new session(123,true,"Session5",question2)]
+client = null;
+sessions = [];
+clientQuestions = [];
 clientSession = null;
 
 
@@ -76,15 +79,15 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
     }
     this.updateUpVotes = function(){
-        if(upvotes.indexOf(socket.request.user._id) < 0){
-            upvotes.push(socket.request.user._id);
-            if(downvotes.indexOf(socket.request.user._id) >=0 ){
-                downvotes.splice(downvotes.indexOf(socket.request.user._id),1);
+        if(upvotes.indexOf(client._id) < 0){
+            upvotes.push(client._id);
+            if(downvotes.indexOf(client._id) >=0 ){
+                downvotes.splice(downvotes.indexOf(client._id),1);
             }
         }else{
-            upvotes.splice(upvotes.indexOf(socket.request.user._id) ,1);
+            upvotes.splice(upvotes.indexOf(client._id) ,1);
         }
-        upArrow.attr("src",(upvotes.includes(socket.request.user._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        upArrow.attr("src",(upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         scoreBox.text("Score: "+this.score());
         
     }
@@ -96,15 +99,15 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
     }
     this.updateDownVotes = function(){
-        if(downvotes.indexOf(socket.request.user._id) < 0){
-            downvotes.push(socket.request.user._id);
-            if(upvotes.indexOf(socket.request.user._id) >=0 ){
-                upvotes.splice(upvotes.indexOf(socket.request.user._id),1);
+        if(downvotes.indexOf(client._id) < 0){
+            downvotes.push(client._id);
+            if(upvotes.indexOf(client._id) >=0 ){
+                upvotes.splice(upvotes.indexOf(client._id),1);
             }
         }else{
-            downvotes.splice(downvotes.indexOf(socket.request.user._id,1));
+            downvotes.splice(downvotes.indexOf(client._id,1));
         }
-        downArrow.attr("src",(downvotes.includes(socket.request.user._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
+        downArrow.attr("src",(downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         scoreBox.text("Score: "+this.score());
     }
 
@@ -121,7 +124,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     
         if(replyMessage.val().trim() != ""){
 
-            let newComment = new comment(null,socket.request.user.email.split("@")[0],replyMessage.val().trim());
+            let newComment = new comment(null,client.email.split("@")[0],replyMessage.val().trim());
 
             socket.emit("addComment",courseID,question._id,newComment);
         }
@@ -140,7 +143,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
         var table = $("<table>");
        
-        if(socket.request.user.email.split("@")[0] == author || isProf){
+        if(client.email.split("@")[0] == author || isProf){
             table.append($("<tr>")
                 .append($("<td>"))
                 .append($(`<td align="right" >`)
@@ -149,7 +152,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         
         var row = $("<tr>");
         upArrow = $(`<img id="down" height="50px">`);
-        upArrow.attr("src",(upvotes.includes(socket.request.user._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
+        upArrow.attr("src",(upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         upArrow.click(this.upArrowClick);
         row.append($("<td>").attr("width","70px").append(upArrow));
         row.append($(`<td><h4>` + this.question +`</h4></td>`));
@@ -189,7 +192,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
             
             let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
-            if(socket.request.user.email.split("@")[0] == comment.author || isProf ){
+            if(client.email.split("@")[0] == comment.author || isProf ){
                 rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
                 .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
             }else{
@@ -224,7 +227,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         
         let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
         rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
-        if(socket.request.user.email.split("@")[0] == comment.author || isProf ){
+        if(client.email.split("@")[0] == comment.author || isProf ){
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
             .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
         }else{
@@ -299,7 +302,7 @@ function questionsView(){
         if(replyQuestion.val().trim() != ""){
 
 
-            let newQuestion = new question(null,replyQuestion.val().trim(),socket.request.user.email.split("@")[0],formatDate(new Date()),[],[],[]);
+            let newQuestion = new question(null,replyQuestion.val().trim(),client.email.split("@")[0],formatDate(new Date()),[],[],[]);
 
             socket.emit("addQuestion",courseID,clientSession._id,newQuestion);
         }
@@ -338,7 +341,8 @@ function sessionsView(){
 
 
     
-    socket.emit("loadClass","RW91C3",function(classinfo){
+    socket.emit("loadClass","RW91C3",function(userinfo,classinfo){
+    client = userinfo;
 	courseID = classinfo._id;
         sessions = []
         for (let i in classinfo.sessions){
@@ -395,7 +399,7 @@ $(document).ready(function(){
             return question._id == question_id;
         })
         if(question){
-            if(user == socket.request.user._id){
+            if(user == client._id){
                 question.updateUpVotes();
             }else{
                 if(question.upvotes.indexOf(user) < 0){
@@ -417,7 +421,7 @@ $(document).ready(function(){
             return question._id == question_id;
         })
         if(question){
-            if(user == socket.request.user._id){
+            if(user == client._id){
                 question.updateDownVotes();
             }else{
                 if(question.downvotes.indexOf(user) < 0){
