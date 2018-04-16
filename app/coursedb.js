@@ -72,7 +72,7 @@ let FileSchema = new Schema({
         required: true
     },
     data: {
-        type: Buffer,
+        type: String,
         required: true
     }
 });
