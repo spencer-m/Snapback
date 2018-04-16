@@ -206,10 +206,10 @@ module.exports = function(io) {
         });
 
         /**
-     * Missing:
-     *  isloggedin verification
-     *  server side verification
-     */
+         * Missing:
+         *  isloggedin verification
+         *  server side verification
+         */
 
         socket.on('addQuestion', function(cid, session_id, question) {
 
@@ -235,6 +235,59 @@ module.exports = function(io) {
                 question._id = q._id;
                 io.in(cid).emit('addedQuestion', session_id, question);
             });
+        });
+    
+        socket.on('deleteQuestion', function(cid, session_id, question_id) {
+    
+            // remove association of question in session
+            Course.Session.findByIdAndUpdate(session_id, {$pullAll: {questions: [question_id]}}, function(err) {
+                if (err) throw err;
+            });
+
+            // remove comments associated with question
+            Course.Question.findById(question_id, function(err, question) {
+
+                if (err) throw err;
+
+                if (question) {
+                    for (let i = 0; i < question.comments.length; i++) {
+                    // destroy comment
+                        Course.Comment.findByIdAndRemove(question.comments[i]._id, function(err) {
+                            if (err) throw err;
+                        });
+                    }
+                }
+            });
+
+            // destroy question
+            Course.Question.findByIdAndRemove(question_id, function(err) {
+                if (err) throw err;
+                // TODO
+                // verfiy it works
+                io.in(cid).emit('deletedQuestion', session_id, question_id);
+            });
+        });
+
+        socket.on('vote', function(cid, question_id, state) {
+
+            if (state === -1) {
+                Course.Question.findByIdAndUpdate(question_id, {$pullAll: {upvotes: [socket.request.user._id]}, $addToSet: {downvotes: socket.request.user._id}}, function(err) {
+                    if (err) throw err;
+                    io.in(cid).emit('voted', question_id, socket.request.user._id, state);
+                });
+            }
+            else if (state === 0) {
+                Course.Question.findByIdAndUpdate(question_id, {$pullAll: {upvotes: [socket.request.user._id], downvotes: [socket.request.user._id]}}, function(err) {
+                    if (err) throw err;
+                    io.in(cid).emit('voted', question_id, socket.request.user._id, state);
+                });
+            }
+            else if (state === 1) {
+                Course.Question.findByIdAndUpdate(question_id, {$pullAll: {downvotes: [socket.request.user._id]}, $addToSet: {upvotes: socket.request.user._id}}, function(err) {
+                    if (err) throw err;
+                    io.in(cid).emit('voted', question_id, socket.request.user._id, state);
+                });
+            } 
         });
 
         socket.on('addComment', function(cid, question_id, comment) {
@@ -280,126 +333,6 @@ module.exports = function(io) {
             });
         });
 
-        // TODO
-        // change to vote
-        // -1 is down, 0 is none, 1 is up
-        socket.on('upvote', function(cid, question_id) {
-        
-            Course.Question.findById(question_id, function(err, question) {
-            
-            // toggle: remove from upvote
-                if (isIdInArray(socket.request.user._id, question.upvotes)) {
-                // remove from upvote
-                    question.upvotes = question.upvotes.filter(function(user) {
-                        return user !== socket.request.user._id;
-                    });
-                }
-                // remove from downvote and add to upvote
-                else if (isIdInArray(socket.request.user._id, question.downvotes)) {
-
-                // remove from downvote
-                    question.downvotes = question.downvotes.filter(function(user) {
-                        return user !== socket.request.user._id;
-                    });
-                    // add to upvote
-                    question.upvotes.push(socket.request.user._id);
-                }
-                // add to upvote
-                else 
-                    question.upvotes.push(socket.request.user._id);
-
-                // update
-                question.save();
-
-                // TODO
-                // verfiy it works
-
-                io.in(cid).emit('upvoted', question_id, socket.request.user._id);
-            });
-        });
-
-        socket.on('downvote', function(cid, question_id) {
-        
-            Course.Question.findById(question_id, function(err, question) {
-            
-            // toggle: remove from downvote
-                if (isIdInArray(socket.request.user._id, question.downvotes)) {
-                // remove from downvote
-                    question.downvotes = question.downvotes.filter(function(user) {
-                        return user !== socket.request.user._id;
-                    });
-                }
-                // remove from upvote and add to downvote
-                else if (isIdInArray(socket.request.user._id, question.downvotes)) {
-
-                // remove from upvote
-                    question.upvotes = question.upvotes.filter(function(user) {
-                        return user !== socket.request.user._id;
-                    });
-                    // add to downvote
-                    question.downvotes.push(socket.request.user._id);
-                }
-                // add to downvote
-                else 
-                    question.downvotes.push(socket.request.user._id);
-
-                // update
-                question.save();
-
-                // TODO
-                // verfiy it works
-                
-                io.in(cid).emit('downvoted', question_id, socket.request.user._id);
-            });
-        });
-    
-        socket.on('deleteQuestion', function(cid, session_id, question_id) {
-            console.log(question_id);
-        // remove association of question in session
-            Course.Session.findByIdAndUpdate(session_id, {$pullAll: {questions: [question_id]}}, function(err) {
-                if (err) throw err;
-            });
-
-            // remove comments associated with question
-            Course.Question.findById(question_id, function(err, question) {
-
-                if (err) throw err;
-
-                if (question) {
-                    for (let i = 0; i < question.comments.length; i++) {
-                    // destroy comment
-                        Course.Comment.findByIdAndRemove(question.comments[i]._id, function(err) {
-                            if (err) throw err;
-                        });
-                    }
-                }
-            });
-
-            // destroy question
-            Course.Question.findByIdAndRemove(question_id, function(err) {
-                if (err) throw err;
-                // TODO
-                // verfiy it works
-                io.in(cid).emit('deletedQuestion', session_id, question_id);
-            });
-        });
-
-        socket.on('getSession', function(session_id, cb) {
-
-            Course.Session.
-                findById(session_id).
-                populate('questions').
-                populate('questions.upvotes').
-                populate('questions.downvotes').
-                populate('questions.comments').
-                exec(function(err, session) {
-                    if (err) throw err;
-                
-                    cb(JSON.parse(JSON.stringify(session.questions)));
-                });
-
-        });
-
         socket.on('addSession', function(class_id, session) {
 
             let s = new Course.Session({
@@ -412,6 +345,27 @@ module.exports = function(io) {
 
                 course.sessions.push(s._id);
                 course.save();
+            });
+        });
+        
+        socket.on('getSession', function(session_id, cb) {
+
+            Course.Session.
+                findById(session_id).
+                populate('questions').
+                populate('questions.comments').
+                exec(function(err, session) {
+                    if (err) throw err;
+                
+                    cb(JSON.parse(JSON.stringify(session.questions)));
+                });
+
+        });
+
+        socket.on('toggleSession', function(cid, session_id, state) {
+            Course.Session.findByIdAndUpdate(session_id, {isLive: state}, function(err) {
+                if (err) throw err;
+                io.in(cid).emit('toggledSession', session_id, state);
             });
         });
     
