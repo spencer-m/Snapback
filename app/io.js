@@ -241,17 +241,20 @@ module.exports = function(io) {
         socket.on('getSections', function(cid, cb) {
 
             Course.Course.
-                findById(cid).
-                populate({
-                    path: 'lectures',
-                    populate: {path: 'files'}
-                }).
-                exec(function(err, course) {
-                    if (err) throw err;
+            findById(cid).
+            populate({
+                path: 'lectures',
+                populate: {path: 'files'}
+            }).
+            exec(function(err, course) {
+                if (err) throw err;
+
+                if (course) {
 
                     let s = JSON.parse(JSON.stringify(course.lectures));
                     cb(s);
-                });
+                }
+            });
         });
 
         socket.on('addFile', function(cid, sectionName, file, cb) {
