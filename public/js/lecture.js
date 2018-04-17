@@ -136,6 +136,31 @@ function course(lectureName, isProfessor, regCode) {
       ($('.main-content').append(navTabs).append(tabContent)).fadeIn(1000);
 
       ($("#questions").append($("<div>").addClass("sessions-list"))).append($("<div>").addClass("questions-list"));
+
+      ($('.main-content').append(
+          $('<div>').addClass("modal fade").attr("id", "addFileModal")
+              .append($('<div>').addClass("modal-dialog h-100 d-flex flex-column justify-content-center my-0")
+                  .append(($("<div>").addClass("modal-content")
+                      .append($('<div>').addClass("modal-header")
+                          .append($("<h5>").addClass("modal-title").text("Upload a file!"))))
+                      .append($("<div>").addClass("modal-body")
+                          .append($("<label>").addClass("section-file-upload").attr("for", "fileInput")
+                              .text("Choose the files you want!").css("text-align", "center")
+                              .append($("<i>").addClass("fa fa-upload").css("width", "100%")))
+                          .append($("<input>").addClass("form-control-file")
+                              .attr("id", "fileInput").attr("type", "file").attr("name", "fileInput")))
+                      .append($("<div>").addClass("modal-footer")
+                          .append($("<button>").addClass("btn btn-blue").attr("data-dismiss", "modal").text("Close"))
+                          .append($("<button>").addClass("btn btn-blue").text("Add File!")
+                              .attr("type", "submit").attr("id", "addFileButton").attr("data-dismiss", "modal").data('section', "")
+                              .on("click", function(){          // GO HERE FOR THE BUTTON FUNCTIONALITY OF ADD-FILE
+                                  console.log($(this).data("section"));
+                                  atUpload($(this).data("section"));
+                              })
+                          ))
+                  )
+              )
+      )).fadeIn(1000);
   }
 
 }
@@ -207,60 +232,31 @@ let addSectionModalMessage = function(message) {
 let createSection = function(sectionName) {
     // Forms the new section
 
-    console.log("hello");
-
-    let buttonID = sectionName + "UpButton";
+    let sectionSmushed = sectionName.replace(/ /g, '');
 
     // contains a section's parts, including the button which triggers their particular modal
     let newHeader = (($('<div>')
         .addClass("card-header")
-        .attr("data-toggle", "collapse").attr("href", "#collapse-" + sectionName))
-        .append($('<a>').addClass("card-link").html(sectionName)))
+        .attr("data-toggle", "collapse").attr("href", "#collapse-" + sectionSmushed))
+        .append($('<a>').addClass("card-link").html(sectionName)));
     if (client.isProfessor) {
         newHeader.append($('<button>')
             .addClass('btn btn-blue').text('Upload')
-            .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', "#-" + sectionName + "-addFileModal")
-            .css('float', 'right'));
+            .attr('id', sectionSmushed + "UpButton").attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', "#addFileModal")
+            .css('float', 'right')
+            .on("click", function(){
+              $('#addFileButton').data('section', sectionName);
+            }));
     }
 
     let newCollapse = $('<div>').addClass("collapse")
-        .attr("id", "collapse-" + sectionName).attr("data-parent", "#accordion")
+        .attr("id", "collapse-" + sectionSmushed).attr("data-parent", "#accordion")
         .append(($('<div>')
-                .addClass("card-body").attr("id", "body-" + sectionName))
-                .append("<ul>").addClass("list-group list-group-flush").attr("id", "list-" + sectionName));
+                .addClass("card-body").attr("id", "body-" + sectionSmushed))
+                .append("<ul>").addClass("list-group list-group-flush").attr("id", "list-" + sectionSmushed));
 
     $('#accordion').append($('<div>').addClass("card").append(newHeader).append(newCollapse));
 
-    if (client.isProfessor) {
-    // Need a to create a modal for upload button
-    ($('.main-content').append(
-        $('<div>').addClass("modal fade").attr("id", "-" + sectionName + "-addFileModal")
-            .append($('<div>').addClass("modal-dialog h-100 d-flex flex-column justify-content-center my-0")
-                .append(($("<div>").addClass("modal-content")
-                    .append($('<div>').addClass("modal-header")
-                        .append($("<h5>").addClass("modal-title").text("Upload a file!"))))
-                    .append($("<div>").addClass("modal-body")
-                        .append($("<label>").addClass("section-file-upload").attr("for", "fileInput")
-                            .text("Choose the files you want!").css("text-align", "center")
-                            .append($("<i>").addClass("fa fa-upload").css("width", "100%")))
-                        .append($("<input>").addClass("form-control-file")
-                            .attr("id", "fileInput").attr("type", "file").attr("name", "fileInput")))
-                    .append($("<div>").addClass("modal-footer")
-                        .append($("<button>").addClass("btn btn-blue").attr("data-dismiss", "modal").text("Close"))
-                        .append($("<button>").addClass("btn btn-blue").text("Add File!")
-                            .attr("type", "submit").attr("id", "addFileButton").attr("data-dismiss", "modal")
-                            .on("click", function(){          // GO HERE FOR THE BUTTON FUNCTIONALITY OF ADD-FILE
-
-                                let buttonID = ($(this).closest(".modal")).attr("id");
-                                let sectionName = buttonID.split("-")[1];
-
-                                atUpload(sectionName);
-                            })
-                        ))
-                )
-            )
-    )).fadeIn(1000);
-  }
 
 };
 
@@ -273,7 +269,6 @@ function addSection() {
       addSectionModalMessage("Section already exists!");
     }
     else if (response.status === 'success') {
-        console.log("yay");
       createSection(sectionName);
       addSectionModalMessage("Section added successfully!");
     }
@@ -299,7 +294,6 @@ function createLectureQuestionView(regCode){
         view.load();
 
         for(let s of section) {
-            console.log(s.name);
 
             createSection(s.name);
 

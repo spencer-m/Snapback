@@ -67,8 +67,6 @@ let getAvailableSemester = function(date){
 
 let createClassCard = function(courseCode, courseName, regCode){
 
-    console.log('hello');
-
     let classCards = $(".main-content");
 
     // once you reach 3 items in the last row, make a new row
