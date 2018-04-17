@@ -1,7 +1,7 @@
 // on ready()
-$(function(){
+socket = io();
 
-    let socket = io();
+$(function(){
     let userInfo = {};
     let currSemester = "";
 
