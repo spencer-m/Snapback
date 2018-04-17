@@ -93,7 +93,7 @@ function course(lectureName, isProfessor) {
           $('#addSectionInnerButton').show();
           modalBody.empty();
           modalBody.append($('<input>').addClass('form-control')
-              .prop('id', "sectionInput").prop("type", "text").prop("placeholder", "Enter section name"));
+              .attr('id', "sectionInput").attr("type", "text").attr("placeholder", "Enter section name"));
       });
       addSectionButton.innerHTML = "Add Section";
 
@@ -198,46 +198,27 @@ function mahfunction() {
 }
 
 let createFileUploadModal = function(id){
-  $('#content').append(
-      $('<div>').addClass("modal fade d-flex h-100 align-self-center justify-content-center")
-          .prop("id", "addFileModal").prop("tabindex", "-1").prop("aria-hidden", "true")
-          .append($('<div>').addClass("modal-dialogue")
+  $('#content').prepend(
+      $('<div>').addClass("modal hide fade d-flex h-100 align-self-center justify-content-center")
+          .attr("id", "addFileModal").attr("role", "dialog")
+          .append($('<div>').addClass("modal-dialogue").attr("role", "document")
               .append((($('<div>').addClass("modal-content")
                   .append($('<div>').addClass("modal-header")
                       .append($('<h5>').addClass("modal-title").text("Upload a file!"))))
                   .append($('<div>').addClass("modal-body")
                       .append($("<input>").addClass("form-control")
-                          .prop("id","fileInput").prop("type", "text").prop("placeholder", "Choose file"))))
-                  .append($("<div>").addClass("modal-footer")
-                      .append($("<button>").addClass("btn btn-secondary")
-                          .prop("type", "button").prop("data-dismiss", "modal").text("Close"))
+                          .attr("id","fileInput").attr("type", "text").attr("placeholder", "Choose file"))))
+                  .append(($("<div>").addClass("modal-footer")
+                      .append($("<button>").addClass("btn btn-secondary").text("Close")
+                          .attr("type", "button").attr("data-dismiss", "modal").attr("data-target", "#addFileModal").attr("z-index", "2")))
                       .append($("<button>").addClass("btn btn-primary").text("Add file")
-                          .prop("type", "submit").prop("id", "addFileButton")
+                          .attr("type", "submit").attr("id", "addFileButton")
                           .on("click", function(){}))
                   )
               )
           )
   );
 
-/*
-<div class="modal fade" id="addSectionModal" tabindex="-1">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="addSectionLabel">Add a New Sections</h5>
-    </div>
-
-    <div class="modal-body">
-        <input type="text" class="form-control" id="sectionInput" placeholder="Enter section name">
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="addSectionInnerButton" onclick="addSection();" >Add Sections</button>
-    </div>
-    </div>
-    </div>
-    </div>
-  */
 };
 
 let addSectionModalMessage = function(message) {
@@ -257,7 +238,7 @@ let createSection = function(sectionName) {
 
     let newHeader = (($('<div>')
         .addClass("card-header")
-        .prop("data-toggle", "collapse").prop("href", "#collapse-" + sectionName))
+        .attr("data-toggle", "collapse").attr("href", "#collapse-" + sectionName))
         .append($('<a>').addClass("card-link").html(sectionName)))
         .append($('<button>')
             .addClass('btn btn-outline-primary').text('Upload')
@@ -269,10 +250,10 @@ let createSection = function(sectionName) {
             }).css('float', 'right'));
 
     let newCollapse = $('<div>').addClass("collapse")
-        .prop("id", "collapse-" + sectionName).prop("data-parent", "#accordion")
+        .attr("id", "collapse-" + sectionName).attr("data-parent", "#accordion")
         .append(($('<div>')
-                .addClass("card-body").prop("id", "body-" + sectionName))
-                .append("<ul>").addClass("list-group list-group-flush").prop("id", "list-" + sectionName));
+                .addClass("card-body").attr("id", "body-" + sectionName))
+                .append("<ul>").addClass("list-group list-group-flush").attr("id", "list-" + sectionName));
 
     $('#accordion').append($('<div>').addClass("card").append(newHeader).append(newCollapse));
 
