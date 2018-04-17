@@ -242,7 +242,10 @@ module.exports = function(io) {
 
             Course.Course.
                 findById(cid).
-                populate('lectures').
+                populate({
+                    path: 'lectures',
+                    populate: {path: 'files'}
+                }).
                 exec(function(err, course) {
                     if (err) throw err;
 
