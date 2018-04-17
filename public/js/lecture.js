@@ -29,12 +29,11 @@ function file(section, fileName) {
     var listElement = document.createElement("li");
     listElement.className = "list-group-item";
     var link = document.createElement("a");
-    link.setAttribute("href", "#");
-    link.setAttribute("download", fileName);
+    link.setAttribute("href", "javascript:void(0)");
+    let downloadLink = 'atDownload("' + section + '", "' + fileName + '")';
+    link.setAttribute("onclick", downloadLink);
 
     link.innerHTML = fileName;
-
-    console.log(link);
 
     listElement.append(link);
 
@@ -45,7 +44,6 @@ function file(section, fileName) {
 }
 
 function course(lectureName, isProfessor) {
-
 
   this.load = function load() {
     $('#content').empty();
@@ -232,16 +230,17 @@ function atUpload(sectionName) {
           
           if (response.status === 'success') {
             // TODO
-            window.alert("fileupload success");
+            window.alert("File Upload: Success");
           } 
           else if(response.status === 'exists') {
             // TODO
-            window.alert("fileupload EXISTS");
+            window.alert("File Upload: Sorry the file exists.");
           }
           else if (response.status === 'filetoobig') {
             // TODO
-            window.alert("fileupload too big");
+            window.alert("File Upload: Sorry the file is too big (MAX 10MB)");
           }
+          document.getElementById("fileInput").value = "";
         });
       };
       reader.onerror = function (error) {
@@ -250,6 +249,14 @@ function atUpload(sectionName) {
     }
   }
 }
+
+let addSectionModalMessage = function(message) {
+  let modalBody = $("#addSectionModal .modal-body");
+
+  $('#addSectionInnerButton').hide();
+  modalBody.empty();
+  modalBody.text(message);
+};
 
 // creates individual sections
 let createSection = function(sectionName) {
@@ -354,11 +361,20 @@ $(document).ready(function() {
 
             for(let f of s.files) {
                 let newFile = new file(s.name, f.name);
-                newFile.addFile;
+                newFile.addFile();
             }
         }
     });
 
+  });
+
+  socket.on('addedFile', function(sectionName, filename) {
+    let newFile = new file(sectionName, filename);
+    newFile.addFile();
+  });
+
+  socket.on('addedSection', function(sectionName) {
+    createSection(sectionName);
   });
 
   var seng = new course("SENG 513", true);

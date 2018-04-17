@@ -232,7 +232,7 @@ module.exports = function(io) {
                         s.save();
                         course.lectures.push(s._id);
                         course.save();
-                        io.in(cid).emit('addedSection');
+                        io.in(cid).emit('addedSection', sectionName);
                         cb({status: 'success'});
                     }
                 });
@@ -304,7 +304,7 @@ module.exports = function(io) {
                                         f.save();
                                         section.files.push(f._id);
                                         section.save();
-                                        io.in(cid).emit('addedFile');
+                                        io.in(cid).emit('addedFile', section.name, file.name);
                                         cb({status: 'success'});
                                     }
                                 });
