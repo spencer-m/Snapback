@@ -117,8 +117,6 @@ function course(lectureName, isProfessor, regCode) {
     navTabs.append(lecTab);
     navTabs.append(qstTab);
 
-
-
     // Forms the accordion to place all the sections
     let accordion = document.createElement("div");
     accordion.setAttribute("id","accordion");
@@ -130,6 +128,8 @@ function course(lectureName, isProfessor, regCode) {
 
     // Appending all the created content to the "content" div in lecture.html
       ($('.main-content').append(navTabs).append(tabContent)).fadeIn(1000);
+
+      ($("#questions").append($("<div>").addClass("sessions-list"))).append($("<div>").addClass("questions-list"));
   }
 
 }
