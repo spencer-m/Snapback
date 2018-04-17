@@ -249,8 +249,11 @@ module.exports = function(io) {
                 exec(function(err, course) {
                     if (err) throw err;
 
-                    let s = JSON.parse(JSON.stringify(course.lectures));
-                    cb(s);
+                    if (course) {
+
+                        let s = JSON.parse(JSON.stringify(course.lectures));
+                        cb(s);
+                    }
                 });
         });
 
@@ -279,27 +282,29 @@ module.exports = function(io) {
 
                                 if (err) throw err;
 
+                                if (section) {
                                 // check if file name is already in the section
-                                let exists = false;
-                                for (let i = 0; i < section.files.length; i++) {
-                                    if (section.files[i].name === file.name) {
-                                        exists = true;
-                                        break;
+                                    let exists = false;
+                                    for (let i = 0; i < section.files.length; i++) {
+                                        if (section.files[i].name === file.name) {
+                                            exists = true;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (exists)
-                                    cb({status: 'exists'});
-                                else {
-                                    let f = Course.File({
-                                        name: file.name,
-                                        data: file.data
-                                    });
-                                    f.save();
-                                    section.files.push(f._id);
-                                    section.save();
-                                    io.in(cid).emit('addedFile');
-                                    cb({status: 'success'});
+                                    if (exists)
+                                        cb({status: 'exists'});
+                                    else {
+                                        let f = Course.File({
+                                            name: file.name,
+                                            data: file.data
+                                        });
+                                        f.save();
+                                        section.files.push(f._id);
+                                        section.save();
+                                        io.in(cid).emit('addedFile');
+                                        cb({status: 'success'});
+                                    }
                                 }
                             });
                     }

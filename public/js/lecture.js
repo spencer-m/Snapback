@@ -1,11 +1,13 @@
 socket = io();
 
-client = null;
+client = {};
 courseID = null;
 sectionName = null;
 fileName = null;
 sectionFiles = [];
-regCode = null;
+//regCode = null;
+
+regCode = "3IV2WV";
 
 /*
 function course(id) {
@@ -161,8 +163,34 @@ function course(lectureName, isProfessor) {
     content.append(navTabs);
     content.append(tabContent);
 
+    //mine-spencer
+    var fileupd = document.createElement("button");
+    fileupd.className = "btn btn-secondary";
+    fileupd.setAttribute("id", "uploadFileFile");
+    fileupd.setAttribute("type", "button");
+    fileupd.setAttribute("onclick", "mahfunction()");
+    fileupd.innerHTML = "MahButton";
+    content.append(fileupd);
+
   }
 
+}
+
+function mahfunction() {
+  console.log('mahfunc', courseID);
+  console.log('mahfunc', sectionName);
+  let file = {
+    name: 'testfile',
+    data: 'foobar'
+  };
+  // file has name and data, filename is unique
+  socket.emit('addFile', courseID, sectionName, file, function(response) {
+    
+    
+    if (response.status === 'error') {
+      //do Something;
+    }
+  });
 }
 
 // Adds new section to the lecture contents
@@ -258,17 +286,12 @@ function handleTestFiles() {
 
 $(document).ready(function() {
 
-  let regCode = "3IV2WV";
-  let client = {};
-  let courseID = null;
-
   socket.emit('loadClass', regCode, function(userinfo, courseinfo) {
     //userInfo.isProfessor;
     client = userinfo;
     courseID = courseinfo._id;
-    courseinfo.lectures.section.files;
+    //courseinfo.lectures.section.files;
   });
-
 
   // refresh section div
   socket.on('addedSection', function() {
@@ -286,12 +309,14 @@ $(document).ready(function() {
   });
 
 
+
 // file has name and data, filename is unique
   socket.emit('addFile', courseID, sectionName, file, function(response) {
+    
+    
     if (response.status === 'error') {
       //do Something;
     }
-
   });
 
   /*
