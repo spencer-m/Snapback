@@ -478,7 +478,7 @@ module.exports = function(io) {
             });
         });
 
-        socket.on('addSession', function(class_id, session, cb) {
+        socket.on('addSession', function(cid, session, cb) {
 
             let s = new Course.Session({
                 name: session.name,
@@ -486,13 +486,13 @@ module.exports = function(io) {
             });
             s.save();
 
-            Course.Course.findById(class_id, function(err, course) {
+            Course.Course.findById(cid, function(err, course) {
                 if (err) throw err;
                 
                 course.sessions.push(s._id);
                 course.save();
                 session._id = s._id;
-                io.in(cid).emit('addedSession', class_id, session);
+                io.in(cid).emit('addedSession', cid, session);
                 cb('success');
             });
         });
