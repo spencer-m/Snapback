@@ -203,12 +203,12 @@ let createSection = function(sectionName) {
         .prop("data-toggle", "collapse").prop("href", "#collapse-" + sectionName))
         .append($('<a>').addClass("card-link").html(sectionName)))
         .append($('<button>')
-            .addClass('btn btn-outline-primary').text('Upload')).css('float', 'right')
+            .addClass('btn btn-outline-primary').text('Upload')
             .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
             .on('click', function(){
                 event.stopPropagation();
                 $(modalID).modal('show');
-            });
+            }).css('float', 'right'));
 
     let newCollapse = $('<div>').addClass("collapse")
         .prop("id", "collapse-" + sectionName).prop("data-parent", "#accordion")
