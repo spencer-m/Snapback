@@ -1,12 +1,9 @@
-socket = io();
-
 courseID = null;
 
 client = null;
 sessions = [];
 clientQuestions = [];
 clientSession = null;
-
 
 
 function session(_id,isLive,name,questions){
@@ -161,7 +158,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
 
         commentList = $("<div>").attr("class","comments-list");
         if(!showCommentList){
-            commentList.toggle();
+            commentList.hide();
         }
 
         comments.forEach(comment => {
@@ -208,9 +205,9 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     
         
         let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
-        rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
+        rowComment.append($("<div>").attr("class","col-md-12 col-lg-2 author").text(comment.author));
         if(client.email.split("@")[0] == comment.author || client.isProfessor ){
-            rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
+            rowComment.append($("<div>").attr("class","col-md-12 col-lg-10").text(comment.message)
             .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
         }else{
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message));
@@ -274,7 +271,7 @@ function questionsView(){
             )
         );
     }else{
-        $(".questions-list").append($("<div").attr("class","row navigation")
+        $(".questions-list").append($("<div>").attr("class","row navigation")
             .append($(`<div class="col-6">`)
                 .append($(`<button class="btn btn-dark btn-sm">Back</button>`).click(sessionsView))));
     }
@@ -336,67 +333,74 @@ function sessionsView(regcode){
         savedregcode = courseID.regcode;
     }
 
-    $(".sessions-list").append($(`<div class="col-12 navigation">`)
-        .append($("<button>").attr("class","btn btn-dark btn-sm")
-                            .text("Add Session")
-                            .attr("type","button")
-                            .attr("data-toggle","modal")
-                            .attr("data-target","#add-session-modal")
-                            .click(function(){
-                                $("#question-modal-content").empty();
-                                $("#question-modal-content").append($(`
-                                <div class="modal-header">
-                                    <h3 class="modal-title">Make New Session</h3>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <p>Please Enter Session Name</p>
-                                        <input class="form-control" id="session-name" placeholder="eg. Session #1">
+    //Adding Section button
+    if(client.isProfessor){
+        
+        $(".sessions-list").append($(`<div class="col-12 navigation">`)
+            .append($("<button>").attr("class","btn btn-dark btn-sm")
+                                .text("Add Session")
+                                .attr("type","button")
+                                .attr("data-toggle","modal")
+                                .attr("data-target","#add-session-modal")
+                                .click(function(){
+                                    $("#question-modal-content").empty();
+                                    $("#question-modal-content").append($(`
+                                    <div class="modal-header">
+                                        <h3 class="modal-title">Make New Session</h3>
                                     </div>
-                                    <div>
-                                        <p>Make session live?</p>
-                                        <select class="form-control" id="session-isLive" name="semesters" form="semesterForm">
-                                        <option value="True">True</option>
-                                        <option value="False">False</option>
-                                        </select>
+                                    <div class="modal-body">
+                                        <div>
+                                            <p>Please Enter Session Name</p>
+                                            <input class="form-control" id="session-name" placeholder="eg. Session #1">
+                                        </div>
+                                        <div>
+                                            <p>Make session live?</p>
+                                            <select class="form-control" id="session-isLive" name="semesters" form="semesterForm">
+                                            <option value="True">True</option>
+                                            <option value="False">False</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div id ="question-modal-footer" class="modal-footer">                                   
-                                </div>`));
-                                let submit = $(`<button type="button" id="session-submit-button" class="btn btn-blue">Submit</button>`).click(function(){
-                                    
-                                    let newSession = new session(null,$("#session-isLive").val() === "True",$('#session-name').val(),[]);
-                                    socket.emit("addSession",courseID._id,newSession,function(state){
-                                        if(state ==="success"){
-                                            $("#question-modal-content").empty();
-                                            $("#question-modal-content").append($(`
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title">Success!</h3>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div>
-                                                        <p>Making the session was a success</p>
+                                    <div id ="question-modal-footer" class="modal-footer">                                   
+                                    </div>`));
+                                    let submit = $(`<button type="button" id="session-submit-button" class="btn btn-blue">Submit</button>`).click(function(){
+                                        
+                                        let newSession = new session(null,$("#session-isLive").val() === "True",$('#session-name').val(),[]);
+                                        socket.emit("addSession",courseID._id,newSession,function(state){
+                                            if(state ==="success"){
+                                                $("#question-modal-content").empty();
+                                                $("#question-modal-content").append($(`
+                                                    <div class="modal-header">
+                                                        <h3 class="modal-title">Success!</h3>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" id="session-cancel-button" class="btn btn-blue" data-dismiss="modal">Close</button>
-                                                </div>
-                                            `));
-                                        }
+                                                    <div class="modal-body">
+                                                        <div>
+                                                            <p>Making the session was a success</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" id="session-cancel-button" class="btn btn-blue" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                `));
+                                            }
+                                        });
+                                
                                     });
-                             
-                                });
-                                let close = $(`<button type="button" id="session-cancel-button" class="btn btn-blue" data-dismiss="modal">Close</button>`);
-                                $("#question-modal-footer").append(submit).append(close);
-                            })));
+                                    let close = $(`<button type="button" id="session-cancel-button" class="btn btn-blue" data-dismiss="modal">Close</button>`);
+                                    $("#question-modal-footer").append(submit).append(close);
+                                })));
 
-    $(".sessions-list").append($(`
-    <div class="modal fade" id="add-session-modal">
-        <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
-            <div id ="question-modal-content" class="modal-content">
+        $(".sessions-list").append($(`
+        <div class="modal fade" id="add-session-modal">
+            <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
+                <div id ="question-modal-content" class="modal-content">
+                </div>
             </div>
-        </div>
-    </div>`));
+        </div>`));
+    }
+
+
+
 
     socket.emit("loadClass",savedregcode,function(userinfo,classinfo){
         console.log(classinfo);
@@ -416,5 +420,89 @@ function sessionsView(regcode){
 }
 
 
-//Impelement add session
+$(document).ready(function(){
+    socket.on("addedQuestion",function(session_id,addQuestion){
+        console.log(addQuestion._id);
+        if(session_id == clientSession._id){
+            if($('.sessions-list').is(':empty')){
+                let newQuestion = new question(addQuestion._id,addQuestion.question,addQuestion.author,addQuestion.date,addQuestion.upvotes,addQuestion.downvotes,addQuestion.comments)
+                clientQuestions.push(newQuestion);
+                $(".questions-list").append(newQuestion.view());
+            }
+        }
+    });
+
+
+    socket.on("addedComment",function(question_id,addcomment){
+
+        var question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        });
+
+        if(question){
+            newComment = new comment(addcomment._id,addcomment.author,addcomment.message);
+            question.comments.push(newComment);
+            question.addComment(newComment);
+
+        }
+    });
+
+
+    socket.on("deletedComment",function(question_id,comment){
+        var question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        });
+
+        if(question){
+            question.comments.splice(question.comments.indexOf(comment),1);
+            $("#"+comment._id).remove();
+        }
+    });
+
+    socket.on("voted",function(question_id,user,position){
+        var question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        });
+
+        if(question){
+            question.vote(user,position);
+        }
+    });
+
+
+    socket.on("deletedQuestion",function(session_id,question_id){
+        if(session_id == clientSession._id){
+            var question = clientQuestions.find(function(question){
+                return question._id == question_id;
+            });
+            clientQuestions.splice(clientQuestions.indexOf(question),1);
+            $("#"+question_id).remove();
+
+        }
+
+    });
+
+    socket.on("toggledSession",function(session_id,bool){
+        if(clientSession._id = session_id){
+            clientSession.isLive = bool;
+            $("#isLive").prop('checked', bool);
+        }
+        if(bool){
+            $(".questions-list").addClass("live");
+        }else{
+            $(".questions-list").removeClass("live");
+        }
+    });
+
+    socket.on("addedSession",function(course_id,addSession){
+        if(courseID._id = course_id){
+            if($('.questions-list').is(':empty')){
+                let newSession = new session(addSession._id,addSession.isLive,addSession.name,addSession.questions);
+                sessions.push(newSession);
+                $(".sessions-list").append(newSession.view());
+            }
+        }
+
+    });
+})
 

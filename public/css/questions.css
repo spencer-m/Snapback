@@ -142,7 +142,7 @@ input:checked + .slider:before {
 
 
 .sessions-list .card.live, .live{
-    border: 2px solid red;
+    border: 2px solid #72d4e5;
 }
 
 .questions-list .navigation{
