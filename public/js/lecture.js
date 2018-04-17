@@ -50,6 +50,27 @@ function course(lectureName, isProfessor) {
   this.load = function load() {
     $('#content').empty();
 
+    $('#content').prepend(
+        $('<div>').addClass("modal hide fade d-flex h-100 align-self-center justify-content-center")
+            .attr("id", "addFileModal").attr("role", "dialog")
+            .append($('<div>').addClass("modal-dialogue").attr("role", "document")
+                .append((($('<div>').addClass("modal-content")
+                    .append($('<div>').addClass("modal-header")
+                        .append($('<h5>').addClass("modal-title").text("Upload a file!"))))
+                    .append($('<div>').addClass("modal-body")
+                        .append($("<input>").addClass("form-control")
+                            .attr("id","fileInput").attr("type", "text").attr("placeholder", "Choose file"))))
+                    .append(($("<div>").addClass("modal-footer")
+                        .append($("<button>").addClass("btn btn-secondary").text("Close")
+                            .attr("type", "button").attr("data-dismiss", "modal").attr("data-target", "#addFileModal").attr("z-index", "2")))
+                        .append($("<button>").addClass("btn btn-primary").text("Add file")
+                            .attr("type", "submit").attr("id", "addFileButton")
+                            .on("click", function(){}))
+                    )
+                )
+            )
+    );
+
     var navBar = document.createElement("nav");
     navBar.className = "navbar navbar-default";
 
@@ -87,20 +108,25 @@ function course(lectureName, isProfessor) {
       addSectionButton.setAttribute("style", "position: absolute; right: 10px;");
       addSectionButton.setAttribute("data-toggle", "modal");
       addSectionButton.setAttribute("data-target", "#addSectionModal");
+      addSectionButton.addEventListener("click", function(){
+          let modalBody = $('#addSectionModal .modal-body');
+
+          $('#addSectionInnerButton').show();
+          modalBody.empty();
+          modalBody.append($('<input>').addClass('form-control')
+              .attr('id', "sectionInput").attr("type", "text").attr("placeholder", "Enter section name"));
+      });
       addSectionButton.innerHTML = "Add Section";
 
       navBar.append(addSectionButton);
 
       var addSectionModal = document.createElement("div");
 
-      addSectionModal.innerHTML = `<div class="modal fade" id="addSectionModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
+      addSectionModal.innerHTML = `<div class="modal fade" id="addSectionModal" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="addSectionLabel">Add a New Sections</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title" id="addSectionLabel">Add a New Section</h5>
                       </div>
 
                       <div class="modal-body">
@@ -108,7 +134,7 @@ function course(lectureName, isProfessor) {
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="addSection(accordion);" >Add Sections</button>
+                        <button type="submit" class="btn btn-primary" id="addSectionInnerButton" onclick="addSection();" >Add Sections</button>
                       </div>
                     </div>
                   </div>
@@ -253,21 +279,20 @@ let createSection = function(sectionName) {
 
     let newHeader = (($('<div>')
         .addClass("card-header")
-        .prop("data-toggle", "collapse").prop("href", "#collapse-" + sectionName))
+        .attr("data-toggle", "collapse").attr("href", "#collapse-" + sectionName))
         .append($('<a>').addClass("card-link").html(sectionName)))
         .append($('<button>')
-            .addClass('btn btn-outline-primary').text('Upload')).css('float', 'right')
-            .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
+            .addClass('btn btn-outline-primary').text('Upload')
+            .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', "#addFileModal")
             .on('click', function(){
-                event.stopPropagation();
-                $(modalID).modal('show');
-            });
+              //  $('#addFileModal').show();
+            }).css('float', 'right'));
 
     let newCollapse = $('<div>').addClass("collapse")
-        .prop("id", "collapse-" + sectionName).prop("data-parent", "#accordion")
+        .attr("id", "collapse-" + sectionName).attr("data-parent", "#accordion")
         .append(($('<div>')
-                .addClass("card-body").prop("id", "body-" + sectionName))
-                .append("<ul>").addClass("list-group list-group-flush").prop("id", "list-" + sectionName));
+                .addClass("card-body").attr("id", "body-" + sectionName))
+                .append("<ul>").addClass("list-group list-group-flush").attr("id", "list-" + sectionName));
 
     $('#accordion').append($('<div>').addClass("card").append(newHeader).append(newCollapse));
 
@@ -281,17 +306,14 @@ function addSection() {
   let sectionName = $('#sectionInput').val();
 
   socket.emit('addSection', courseID, sectionName, function(response) {
-
     if (response.status === 'exists'){
-      window.alert("Section already exists!");
-      return;
+      addSectionModalMessage("Section already exists!");
     }
     else if (response.status === 'success') {
       createSection(sectionName);
+      addSectionModalMessage("Section added successfully!");
     }
   });
-
-  window.alert("Successfully added section!");
 
 }
 
@@ -313,7 +335,6 @@ function handleTestFiles() {
 
 $(document).ready(function() {
 
-
   socket.emit('loadClass', regCode, function(userinfo, courseinfo) {
     //userInfo.isProfessor;
     client = userinfo;
@@ -321,7 +342,6 @@ $(document).ready(function() {
     /*courseinfo.lectures.section.files;*/
 
     socket.emit('getSections', courseID, function(section) {
-        console.log('hello');
 
         for(let s of section) {
             createSection(s.name);
@@ -343,6 +363,14 @@ $(document).ready(function() {
 
   });
 
+
+// file has name and data, filename is unique
+  socket.emit('addFile', courseID, sectionName, file, function(response) {
+    if (response.status === 'error') {
+      //do Something;
+    }
+
+  });
 
   /*
   socket.on('addedFile', )
