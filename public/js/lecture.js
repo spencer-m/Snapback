@@ -165,29 +165,6 @@ function course(lectureName, isProfessor) {
     content.append(navTabs);
     content.append(tabContent);
 
-    //mine-spencer
-
-    var filedl = document.createElement("button");
-    filedl.className = "btn btn-secondary";
-    filedl.setAttribute("id", "downloadFilefile");
-    filedl.setAttribute("type", "button");
-    filedl.setAttribute("onclick", "mahfunctiond()");
-    filedl.innerHTML = "DOWNLOAD";
-    content.append(filedl);
-
-    var fileinlabel = document.createElement("label");
-    fileinlabel.setAttribute("for", "inputtfilee");
-    fileinlabel.innerHTML = "give me a file";
-    content.append(fileinlabel);
-
-    var filein = document.createElement("input");
-    filein.setAttribute("id", "inputtfilee");
-    filein.setAttribute("name", "inputtfilee");
-    filein.setAttribute("type", "file");
-    filein.setAttribute("onchange", "mahfunctioninput()");
-    content.append(filein);
-
-
   }
 
 }
