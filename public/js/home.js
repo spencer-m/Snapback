@@ -274,24 +274,23 @@ $(function(){
      * **/
     $('#class-submit-button').on('click', function(){
 
-        /*info = need code, name and year*/
         let info = {'code':"", 'name':"", 'year':""};
+
+        info.code = $('#course-code-input').val();
+        info.name = $('#course-name-input').val();
+        info.year = $('#course-date-input').val();
 
         /** if professor **/
         if (userInfo.isProfessor) {
-            info.code = $('#course-code-input').val();
-            info.name = $('#course-name-input').val();
-            info.year = $('#course-date-input').val();
 
             socket.emit('addNewClass', info, function (response) {
-                let modal = $('#class-card .modal-body');
 
-                console.log('creating a class...');
+                let modal = $('#class-card .modal-body');
 
                 if (response.status === 'success') {
                     let registrationCode = response.regcode;
 
-                    socket.emit('getinfo', function (newInfo) {
+                    socket.emit('getInfo', function (newInfo) {
                         userInfo = newInfo;
                     });
 
@@ -300,12 +299,8 @@ $(function(){
                     (modal.append($('<p>').text("Give your students the join code below")))
                         .append($('<p>').addClass('join-code-text').text(registrationCode));
 
-                    let lastCourse = userInfo.courses[userInfo.courses.length - 1];
-                    let courseName = lastCourse.name;
-                    let courseCode = lastCourse.code;
-
                     if (info.year === currSemester)
-                        createClassCard(courseCode, courseName, response.regcode);
+                        createClassCard(info.code, info.name, response.regcode);
                     setupAllCourseModal(userInfo.courses);
 
                     console.log('class creation success');
