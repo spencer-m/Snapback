@@ -99,15 +99,34 @@ a, a:hover, a:focus {
     border-bottom: 1px solid #72d4e5;
 }
 
+#sidebar ul {
+    width: 100%;
+}
+
 #sidebar ul p {
     color: #fff;
     padding: 10px;
 }
 
 #sidebar ul li {
-    padding: 10px;
     font-size: 1.1em;
     display: block;
+    width: 100%;
+}
+
+#sidebar ul li a {
+    display: block;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+#sidebar .sidebar-clickable {
+    cursor: pointer;
+    color: white;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 /* moves button to the right if sidebar is collapsed */
@@ -116,11 +135,8 @@ a, a:hover, a:focus {
     display: none;
 }
 
-#sidebar .sidebar-clickable {
-    cursor: pointer;
-    color: white;
-    -moz-user-select: none;
-    user-select: none;
+#sidebar .sidebar-clickable div, #sidebar .sidebar-clickable a {
+    padding: 10px 10px;
 }
 
 #sidebar .navbar-dropdown, #sidebar #dropdown-content, #sidebar .dropdown-class{
@@ -135,7 +151,6 @@ a, a:hover, a:focus {
 
 #sidebar .sidebar-clickable:hover, #sidebar .dropdown-class:hover {
     background-color: #9ae7f4;
-
 }
 
 #sidebar-collapse-button {
