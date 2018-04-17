@@ -87,6 +87,14 @@ function course(lectureName, isProfessor) {
       addSectionButton.setAttribute("style", "position: absolute; right: 10px;");
       addSectionButton.setAttribute("data-toggle", "modal");
       addSectionButton.setAttribute("data-target", "#addSectionModal");
+      addSectionButton.addEventListener("click", function(){
+          let modalBody = $('#addSectionModal .modal-body');
+
+          $('#addSectionInnerButton').show();
+          modalBody.empty();
+          modalBody.append($('<input>').addClass('form-control')
+              .prop('id', "sectionInput").prop("type", "text").prop("placeholder", "Enter section name"));
+      });
       addSectionButton.innerHTML = "Add Section";
 
       navBar.append(addSectionButton);
@@ -108,7 +116,7 @@ function course(lectureName, isProfessor) {
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="addSection(accordion);" >Add Sections</button>
+                        <button type="submit" class="btn btn-primary" id="addSectionInnerButton" onclick="addSection();" >Add Sections</button>
                       </div>
                     </div>
                   </div>
@@ -192,6 +200,15 @@ function mahfunction() {
   });
 }
 
+let addSectionModalMessage = function(message) {
+  let modalBody = $("#addSectionModal .modal-body");
+
+
+  $('#addSectionInnerButton').hide();
+  modalBody.empty();
+  modalBody.text(message);
+};
+
 let createSection = function(sectionName) {
     // Forms the new section
 
@@ -228,17 +245,14 @@ function addSection() {
   let sectionName = $('#sectionInput').val();
 
   socket.emit('addSection', courseID, sectionName, function(response) {
-
     if (response.status === 'exists'){
-      window.alert("Section already exists!");
-      return;
+      addSectionModalMessage("Section already exists!");
     }
     else if (response.status === 'success') {
       createSection(sectionName);
+      addSectionModalMessage("Section added successfully!");
     }
   });
-
-  window.alert("Successfully added section!");
 
 }
 
@@ -260,7 +274,6 @@ function handleTestFiles() {
 
 $(document).ready(function() {
 
-
   socket.emit('loadClass', regCode, function(userinfo, courseinfo) {
     //userInfo.isProfessor;
     client = userinfo;
@@ -268,7 +281,6 @@ $(document).ready(function() {
     /*courseinfo.lectures.section.files;*/
 
     socket.emit('getSections', courseID, function(section) {
-        console.log('hello');
 
         for(let s of section) {
             createSection(s.name);
