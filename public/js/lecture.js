@@ -349,45 +349,6 @@ $(document).ready(function() {
 
   });
 
-  // refresh section div
-  socket.on('addedSection', function() {
-    // what do you want the server to give you
-    // ***Will need the files in that section***
-    // Gets the files in all the sections
-
-  });
-
-
-// file has name and data, filename is unique
-  socket.emit('addFile', courseID, sectionName, file, function(response) {
-    if (response.status === 'error') {
-      //do Something;
-    }
-
-  });
-
-  /*
-  socket.on('addedFile', )
-  */
-
-  // only emit when user clicks on a file
-  socket.emit('getFile', sectionName, fileName, function(response) {
-    if(response.status === 'success') {
-      // response.filedata <decode>
-    }
-  });
-
-
-  // TEST CLASS **************
   var seng = new course("SENG 513", true);
   seng.load();
-
-  // TEST FILES **************
-  var file1 = new file("lecture", "testFile.txt", "testFile");
-  var file2 = new file("lecture", "testFile.txt", "testFile2");
-  console.log(file);
-  file1.addFile;
-  file2.addFile;
-
-
 });
