@@ -101,14 +101,11 @@ function course(lectureName, isProfessor) {
 
       var addSectionModal = document.createElement("div");
 
-      addSectionModal.innerHTML = `<div class="modal fade" id="addSectionModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
+      addSectionModal.innerHTML = `<div class="modal fade" id="addSectionModal" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="addSectionLabel">Add a New Sections</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title" id="addSectionLabel">Add a New Section</h5>
                       </div>
 
                       <div class="modal-body">
@@ -200,6 +197,49 @@ function mahfunction() {
   });
 }
 
+let createFileUploadModal = function(id){
+  $('#content').append(
+      $('<div>').addClass("modal fade d-flex h-100 align-self-center justify-content-center")
+          .prop("id", "addFileModal").prop("tabindex", "-1").prop("aria-hidden", "true")
+          .append($('<div>').addClass("modal-dialogue")
+              .append((($('<div>').addClass("modal-content")
+                  .append($('<div>').addClass("modal-header")
+                      .append($('<h5>').addClass("modal-title").text("Upload a file!"))))
+                  .append($('<div>').addClass("modal-body")
+                      .append($("<input>").addClass("form-control")
+                          .prop("id","fileInput").prop("type", "text").prop("placeholder", "Choose file"))))
+                  .append($("<div>").addClass("modal-footer")
+                      .append($("<button>").addClass("btn btn-secondary")
+                          .prop("type", "button").prop("data-dismiss", "modal").text("Close"))
+                      .append($("<button>").addClass("btn btn-primary").text("Add file")
+                          .prop("type", "submit").prop("id", "addFileButton")
+                          .on("click", function(){}))
+                  )
+              )
+          )
+  );
+
+/*
+<div class="modal fade" id="addSectionModal" tabindex="-1">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="addSectionLabel">Add a New Sections</h5>
+    </div>
+
+    <div class="modal-body">
+        <input type="text" class="form-control" id="sectionInput" placeholder="Enter section name">
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="addSectionInnerButton" onclick="addSection();" >Add Sections</button>
+    </div>
+    </div>
+    </div>
+    </div>
+  */
+};
+
 let addSectionModalMessage = function(message) {
   let modalBody = $("#addSectionModal .modal-body");
 
@@ -223,8 +263,9 @@ let createSection = function(sectionName) {
             .addClass('btn btn-outline-primary').text('Upload')
             .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
             .on('click', function(){
-                event.stopPropagation();
-                $(modalID).modal('show');
+                createFileUploadModal(modalID);
+                //event.stopPropagation();
+                $("#addFileModal").modal('show');
             }).css('float', 'right'));
 
     let newCollapse = $('<div>').addClass("collapse")
