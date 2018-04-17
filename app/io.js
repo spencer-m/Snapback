@@ -185,6 +185,7 @@ module.exports = function(io) {
 
                         let cid = course._id;
 
+                        //populate lectures etc
                         User.findById(socket.request.user._id, function(err, user) {
                         
                             if (err) throw err;
@@ -208,6 +209,150 @@ module.exports = function(io) {
                     }
                 });
             }
+        });
+
+        socket.on('addSection', function(cid, sectionName, cb) {
+
+            Course.Course.
+                findById(cid).
+                populate('lectures').
+                exec(function(err, course) {
+                    if (err) throw err;
+                
+                    // check if section name is already in the course
+                    let exists = false;
+                    for (let i = 0; i < course.lectures.length; i++) {
+                        if (course.lectures[i].name === sectionName) {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (exists)
+                        cb({status: 'exists'});
+                    else {
+                        let s = Course.Section({
+                            name: sectionName
+                        });
+                        s.save();
+                        course.lectures.push(s._id);
+                        course.save();
+                        io.in(cid).emit('addedSection', sectionName);
+                        cb({status: 'success'});
+                    }
+                });
+        });
+
+        socket.on('getSections', function(cid, cb) {
+
+            Course.Course.
+                findById(cid).
+                populate({
+                    path: 'lectures',
+                    populate: {path: 'files'}
+                }).
+                exec(function(err, course) {
+                    if (err) throw err;
+
+                    if (course) {
+
+                        let s = JSON.parse(JSON.stringify(course.lectures));
+                        cb(s);
+                    }
+                });
+        });
+
+        socket.on('addFile', function(cid, sectionName, file, cb) {
+
+            if (file.size > 10000000)
+                cb({status: 'filetoobig'});
+            else {
+                Course.Course.
+                    findById(cid).
+                    populate('lectures').
+                    exec(function(err, course) {
+                        if (err) throw err;
+
+                        let sid;
+
+                        if (course) {
+                            for (let i = 0; i < course.lectures.length; i++) {
+                                if (course.lectures[i].name === sectionName) {
+                                    sid = course.lectures[i]._id;
+                                    break;
+                                }
+                            }
+
+                            Course.Section.
+                                findById(sid).
+                                populate('files').
+                                exec( function(err, section) {
+
+                                    if (err) throw err;
+
+                                    // check if file name is already in the section
+                                    let exists = false;
+                                    for (let i = 0; i < section.files.length; i++) {
+                                        if (section.files[i].name === file.name) {
+                                            exists = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (exists)
+                                        cb({status: 'exists'});
+                                    else {
+                                        let f = Course.Files({
+                                            name: file.name,
+                                            data: file.data
+                                        });
+                                        f.save();
+                                        section.files.push(f._id);
+                                        section.save();
+                                        io.in(cid).emit('addedFile', section.name, file.name);
+                                        cb({status: 'success'});
+                                    }
+                                });
+                        }
+                    });
+            }
+        });
+
+        socket.on('getFile', function(cid, sectionName, fileName, cb) {
+            
+            Course.Course.
+                findById(cid).
+                populate('lectures').
+                exec(function(err, course) {
+                    if (err) throw err;
+
+                    if (course) {
+                        let sid;
+                        
+                        for (let i = 0; i < course.lectures.length; i++) {
+                            if (course.lectures[i].name === sectionName) {
+                                sid = course.lectures[i]._id;
+                                break;
+                            }
+                        }
+                        
+                        Course.Section.findById(sid).populate('files').exec(function(err, section) {
+                            if (err) throw err;
+                        
+                            let fid;
+                            for (let i = 0; i < section.files.length; i++) {
+                                if (section.files[i].name === fileName) {
+                                    fid = section.files[i]._id;
+                                    break;
+                                }
+                            }
+                        
+                            Course.Files.findById(fid, function(err, file) {
+                                cb(file);
+                            });
+                        });
+                    }
+                });
         });
 
         /**
@@ -338,7 +483,7 @@ module.exports = function(io) {
             });
         });
 
-        socket.on('addSession', function(class_id, session) {
+        socket.on('addSession', function(cid, session, cb) {
 
             let s = new Course.Session({
                 name: session.name,
@@ -346,10 +491,14 @@ module.exports = function(io) {
             });
             s.save();
 
-            Course.Course.findById(class_id, function(err, course) {
-
+            Course.Course.findById(cid, function(err, course) {
+                if (err) throw err;
+                
                 course.sessions.push(s._id);
                 course.save();
+                session._id = s._id;
+                io.in(cid).emit('addedSession', cid, session);
+                cb('success');
             });
         });
         
