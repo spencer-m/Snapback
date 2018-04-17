@@ -1,3 +1,11 @@
+socket = io();
+
+client = null;
+courseID = null;
+sectionName = null;
+fileName = null;
+regCode = null
+
 function course(id) {
   this.id = id;
 
@@ -9,7 +17,7 @@ function File(section, filePath, fileName) {
   this.fileName = fileName;
 
 
-  this.view = function view() {
+  this.addFile = function () {
 
     var content = document.getElementById("list-" + section);
 
@@ -31,10 +39,13 @@ function File(section, filePath, fileName) {
 
 }
 
-function course(lectureName, userType) {
+function course(lectureName, isProfessor) {
 
 
   this.load = function load() {
+    $('#content').empty();
+    console.log("asdasd");
+
     var navBar = document.createElement("nav");
     navBar.className = "navbar navbar-default";
 
@@ -123,7 +134,7 @@ function course(lectureName, userType) {
     lecList.setAttribute("id", "list-lecture");
 
     // Checks that the user is a professor before creating upload buttons
-    if(userType === "professor") {
+    if(isProfessor) {
       // Upload button for lecture section
       var lecUpButton = document.createElement("button");
       lecUpButton.className = "btn btn-outline-primary";
@@ -168,9 +179,17 @@ function course(lectureName, userType) {
     lecCollapse.append(lecBody);
     lecHeader.append(lecLink);
 
-
     lecSection.append(lecHeader);
     lecSection.append(lecCollapse);
+
+    socket.emit('addSection', courseID, "Lecture Notes", function(response) {
+      if (response.status === 'exists'){
+        window.alert("Section already exists!");
+      }
+      else if (respose.status === 'success') {
+        //section created (MAY NOT NEED)
+      }
+    });
 
 
     // Assignment section content
@@ -192,7 +211,7 @@ function course(lectureName, userType) {
     assignList.className = "list-group list-group-flush";
     assignList.setAttribute("id", "list-assignment");
 
-    if(userType === "professor") {
+    if(isProfessor) {
       // Upload button for assignment section
       var assignUpButton = document.createElement("button");
       assignUpButton.className = "btn btn-outline-primary";
@@ -230,7 +249,6 @@ function course(lectureName, userType) {
 
       lecContent.append(assignUploadModal);
       assignHeader.append(assignUpButton);
-
     }
 
     assignBody.append(assignList);
@@ -239,6 +257,15 @@ function course(lectureName, userType) {
 
     assignSection.append(assignHeader);
     assignSection.append(assignCollapse);
+
+    socket.emit('addSection', courseID, "Assignments", function(response) {
+      if (response.status === 'exists'){
+        window.alert("Section already exists!");
+      }
+      else if (respose.status === 'success') {
+        //section created (MAY NOT NEED)
+      }
+    });
 
     // Test section content
     var testHeader = document.createElement("div");
@@ -260,7 +287,7 @@ function course(lectureName, userType) {
     testList.setAttribute("id", "list-test");
 
 
-    if(userType === "professor") {
+    if(isProfessor) {
       // Upload button for test section
       var testUpButton = document.createElement("button");
       testUpButton.className = "btn btn-outline-primary";
@@ -308,6 +335,15 @@ function course(lectureName, userType) {
     testSection.append(testHeader);
     testSection.append(testCollapse);
 
+    socket.emit('addSection', courseID, "Test Material", function(response) {
+      if (response.status === 'exists'){
+        window.alert("Section already exists!");
+      }
+      else if (respose.status === 'success') {
+        //section created (MAY NOT NEED)
+      }
+    });
+
 
     accordion.append(lecSection);
     accordion.append(assignSection);
@@ -342,47 +378,45 @@ function handleTestFiles() {
   console.log(file.name);
 }
 
+var regcode;
 
 $(document).ready(function() {
-(
-  socket = io();
 
   socket.emit('loadClass', regcode, function(userinfo, courseinfo) {
-    userinfo.isProfessor
-    // store regcode somewhere, we'll figure it out at merge
-    courseinfo._id <- courseID
-    courseinfo.lectures.section.files
+    //userInfo.isProfessor;
+    client = userinfo;
+    this.regCode = regcode;
+    courseID = courseInfo._id;
+    courseinfo.lectures.section.files;
   });
 
-  //section has a name
-  // section name has to be unique in a class
-  socket.emit('addSection', courseID, section, function(response) {
-    if (response.status === 'exists'){
-      sorry section name already exxists
-    }
-    else if (respose.status === 'success')
-      section created
-  });
 
   // refresh section div
   socket.on('addedSection', function() {
     // what do you want the server to give you
-    socket.emit('getSections')
+    // ***Will need the files in that section***
+    socket.emit('getSections', courseinfo.lectures.section.files);
+
+    // Add files to section
+
   });
 
 
 // file has name and data, filename is unique
-  socket.emit('addFile', courseID, sectionname, file, function(response) {
-    if response.stastus === error
-    do Something;
+  socket.emit('addFile', courseID, sectionName, file, function(response) {
+    if (response.stastus === error) {
+      //do Something;
+    }
+
   });
 
   socket.on('addedFile', )
 
   // only emit when user clicks on a file
-  socket.emit('getFile', sectionname, fileName, function(response) {
-    response.status === success
-      response.filedata <decode>
+  socket.emit('getFile', sectionName, fileName, function(response) {
+    if(response.status === success) {
+      // response.filedata <decode>
+    }
   });
 
   // TEST CLASS **************
@@ -392,8 +426,8 @@ $(document).ready(function() {
   var file = new File("lecture", "testFile.txt", "testFile");
   var file2 = new File("lecture", "testFile.txt", "testFile2");
   console.log(file);
-  file.view();
-  file2.view();
+  file.addFile();
+  file2.addFile();
 
 
   // Opens the lecture upload moda
