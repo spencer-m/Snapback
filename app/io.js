@@ -238,7 +238,7 @@ module.exports = function(io) {
                 });
         });
 
-        socket.on('getSections', function(cid) {
+        socket.on('getSections', function(cid, cb) {
 
             Course.Course.
                 findById(cid).
@@ -250,7 +250,7 @@ module.exports = function(io) {
                     if (err) throw err;
 
                     let s = JSON.parse(JSON.stringify(course.lectures));
-                    // return s
+                    cb(s);
                 });
         });
 
