@@ -139,3 +139,19 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+.sessions-list .card.live, .live{
+    border: 2px solid red;
+}
+
+.questions-list .navigation{
+    margin: 20px;
+}
+.questions-list .navigation .col-6{
+    padding: 0;
+}
+
+.sessions-list .navigation{
+    margin: 20px 20px 0 20px;
+}
