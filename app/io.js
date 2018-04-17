@@ -206,7 +206,7 @@ module.exports = function(io) {
             }
         });
 
-        socket.on('addSection', function(cid, section, cb) {
+        socket.on('addSection', function(cid, sectionName, cb) {
 
             Course.Course.
                 findById(cid).
@@ -217,7 +217,7 @@ module.exports = function(io) {
                     // check if section name is already in the course
                     let exists = false;
                     for (let i = 0; i < course.lectures.length; i++) {
-                        if (course.lectures[i].name === section.name) {
+                        if (course.lectures[i].name === sectionName) {
                             exists = true;
                             break;
                         }
@@ -227,7 +227,7 @@ module.exports = function(io) {
                         cb({status: 'exists'});
                     else {
                         let s = Course.Section({
-                            name: section.name
+                            name: sectionName
                         });
                         s.save();
                         course.lectures.push(s._id);
