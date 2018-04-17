@@ -254,15 +254,21 @@ function handleTestFiles() {
   console.log(file.name);
 }
 
+regCode = '3IV2WV';
+courseID = null;
+
 $(document).ready(function() {
 
   socket.emit('loadClass', regCode, function(userinfo, courseinfo) {
-    //userInfo.isProfessor;
-    client = userinfo;
-    this.regCode = regcode;
+    userInfo.isProfessor;
     courseID = courseInfo._id;
-    courseinfo.lectures.section.files;
   });
+
+  console.log('datadatadata');
+  console.log(client);
+  console.log(regCode);
+  console.log(courseID);
+
 
 
   // refresh section div
