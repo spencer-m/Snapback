@@ -4,16 +4,17 @@ client = null;
 courseID = null;
 sectionName = null;
 fileName = null;
-regCode = null
+sectionFiles = [];
+regCode = null;
 
 function course(id) {
   this.id = id;
 
 }
 
-function File(section, filePath, fileName) {
+function file(section, fileName) {
   this.section = section;
-  this.filePath = filePath;
+  //this.filePath = filePath;
   this.fileName = fileName;
 
 
@@ -24,7 +25,7 @@ function File(section, filePath, fileName) {
     var listElement = document.createElement("li");
     listElement.className = "list-group-item";
     var link = document.createElement("a");
-    link.setAttribute("href", filePath);
+    link.setAttribute("href", "#");
     link.setAttribute("download", fileName);
 
     link.innerHTML = fileName;
@@ -378,8 +379,6 @@ function handleTestFiles() {
   console.log(file.name);
 }
 
-var regcode;
-
 $(document).ready(function() {
 
   socket.emit('loadClass', regcode, function(userinfo, courseinfo) {
@@ -395,10 +394,15 @@ $(document).ready(function() {
   socket.on('addedSection', function() {
     // what do you want the server to give you
     // ***Will need the files in that section***
-    socket.emit('getSections', courseinfo.lectures.section.files);
-
-    // Add files to section
-
+    // Gets the files in all the sections
+    socket.emit('getSections', courseID, function(section) {
+      for(let s of section) {
+        for(let f of s.files) {
+          let newFile = new file(s.name, f.name);
+          newFile.addFile();
+        }
+      }
+    });
   });
 
 
@@ -423,14 +427,14 @@ $(document).ready(function() {
   var seng = new course("SENG 513", "professor");
   seng.load();
   // TEST FILES **************
-  var file = new File("lecture", "testFile.txt", "testFile");
-  var file2 = new File("lecture", "testFile.txt", "testFile2");
+  var file1 = new file("lecture", "testFile.txt", "testFile");
+  var file2 = new file("lecture", "testFile.txt", "testFile2");
   console.log(file);
   file.addFile();
   file2.addFile();
 
 
-  // Opens the lecture upload moda
+  // Opens the lecture upload modal
   $('#lecUpButton').bind('click', function(e) {
     $('#lecUploadModal').modal("show");
     e.stopPropagation();
