@@ -78,15 +78,15 @@
 						<div class="form-group">
 
                             <% if (error && error.length > 0) { %>
-                            <input type="email" name="email" id="email" class="form-control is-invalid" placeholder="Email" required autofocus>
-                            <br>
-                            <input type="password" name="password" id="password" class="form-control is-invalid" placeholder="Password" required autofocus>
-                            <small id="errorMsg" class="form-text text-muted">Wrong login credentials</small>
-                                <%= error %>
+                                <input type="email" name="email" id="email" class="form-control is-invalid" placeholder="Email" required autofocus>
+                                <br>
+                                <input type="password" name="password" id="password" class="form-control is-invalid" placeholder="Password" required autofocus>
+                                <small id="errorMsg" class="form-text text-muted">Wrong login credentials</small>
                             <% } else { %>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
                                 <br>
                                 <input type="password" name="password" id="password" class="form-control" placeholder="Password" required autofocus>
+                                <small class="form-text" style="color: white; user-select: none; -moz-user-select: none;">Empty</small>
                             <% } %>
                             <br>
 
