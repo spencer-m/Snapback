@@ -7,10 +7,12 @@ fileName = null;
 sectionFiles = [];
 regCode = null;
 
+/*
 function course(id) {
   this.id = id;
 
 }
+*/
 
 function file(section, fileName) {
   this.section = section;
@@ -125,7 +127,7 @@ function course(lectureName, isProfessor) {
     lecTabLink.className = "nav-link active";
     lecTabLink.setAttribute("data-toggle", "tab");
     lecTabLink.setAttribute("href", "#lecture");
-    lecTabLink.innerHTML = "Lecture"
+    lecTabLink.innerHTML = "Lecture";
     lecTab.append(lecTabLink);
 
     var qstTab = document.createElement("li");
@@ -134,7 +136,7 @@ function course(lectureName, isProfessor) {
     qstLink.className = "nav-link";
     qstLink.setAttribute("data-toggle", "tab");
     qstLink.setAttribute("href", "#questions");
-    qstLink.innerHTML = "Questions"
+    qstLink.innerHTML = "Questions";
     qstTab.append(qstLink);
 
 
@@ -254,21 +256,18 @@ function handleTestFiles() {
   console.log(file.name);
 }
 
-regCode = '3IV2WV';
-courseID = null;
-
 $(document).ready(function() {
 
+  let regCode = "3IV2WV";
+  let client = {};
+  let courseID = null;
+
   socket.emit('loadClass', regCode, function(userinfo, courseinfo) {
-    userInfo.isProfessor;
-    courseID = courseInfo._id;
+    //userInfo.isProfessor;
+    client = userinfo;
+    courseID = courseinfo._id;
+    courseinfo.lectures.section.files;
   });
-
-  console.log('datadatadata');
-  console.log(client);
-  console.log(regCode);
-  console.log(courseID);
-
 
 
   // refresh section div
@@ -289,30 +288,33 @@ $(document).ready(function() {
 
 // file has name and data, filename is unique
   socket.emit('addFile', courseID, sectionName, file, function(response) {
-    if (response.stastus === error) {
+    if (response.status === 'error') {
       //do Something;
     }
 
   });
 
+  /*
   socket.on('addedFile', )
+  */
 
   // only emit when user clicks on a file
   socket.emit('getFile', sectionName, fileName, function(response) {
-    if(response.status === success) {
+    if(response.status === 'success') {
       // response.filedata <decode>
     }
   });
 
 
   // TEST CLASS **************
-  var seng = new course("SENG 513", "professor");
+  var seng = new course("SENG 513", true);
   seng.load();
+
   // TEST FILES **************
   var file1 = new file("lecture", "testFile.txt", "testFile");
   var file2 = new file("lecture", "testFile.txt", "testFile2");
   console.log(file);
-  file.addFile;
+  file1.addFile;
   file2.addFile;
 
 
