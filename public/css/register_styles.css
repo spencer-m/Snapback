@@ -54,6 +54,12 @@ img {
     margin-top: 20px;
 }
 
+#backBtn a {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+}
+
+
 /* get rid of the divider for mobile views -> looks nicer! */
 @media only screen and (max-width: 1200px) {
     .forms {
