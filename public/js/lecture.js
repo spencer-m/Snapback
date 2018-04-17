@@ -1,6 +1,6 @@
 socket = io();
 
-client = {};
+client = null;
 courseID = null;
 sectionName = null;
 fileName = null;
@@ -49,7 +49,6 @@ function course(lectureName, isProfessor) {
 
   this.load = function load() {
     $('#content').empty();
-    console.log("asdasd");
 
     var navBar = document.createElement("nav");
     navBar.className = "navbar navbar-default";
@@ -193,80 +192,100 @@ function mahfunction() {
   });
 }
 
+let createSection = function(sectionName) {
+    // Forms the new section
+
+    var newSection = document.createElement("div");
+    newSection.className = "card";
+
+
+    // New section content
+    var newHeader = document.createElement("div");
+    newHeader.className = "card-header";
+    newHeader.setAttribute("data-toggle", "collapse");
+    newHeader.setAttribute("href", "#collapse-" + sectionName);
+    var newLink = document.createElement("a");
+    newLink.className = "card-link";
+    newLink.innerHTML = sectionName;
+    var newCollapse = document.createElement("div");
+    newCollapse.className = "collapse";
+    newCollapse.setAttribute("id", "collapse-" + sectionName);
+    newCollapse.setAttribute("data-parent", "#accordion");
+    var newBody = document.createElement("div");
+    newBody.className = "card-body";
+    newBody.setAttribute("id", "body-" + sectionName);
+    var newList = document.createElement("ul");
+    newList.className = "list-group list-group-flush";
+    newList.setAttribute("id", "list-" + sectionName);
+
+    newBody.append(newList);
+    newCollapse.append(newBody);
+    newHeader.append(newLink);
+
+    newSection.append(newHeader);
+    newSection.append(newCollapse);
+
+    $('#accordion').append(newSection);
+
+    /*
+    // New upload file button for section
+    let modalID = "#" + sectionName + "UploadModal";
+    let buttonID = sectionName + "UpButton";
+*/
+
+
+
+    var newUpButton = document.createElement("button");
+    var modalID = "#" + sectionName + "UploadModal";
+    var buttonID = sectionName + "UpButton";
+    //bconsole.log(buttonID);
+    newUpButton.className = "btn btn-outline-primary";
+    newUpButton.setAttribute("id", buttonID);
+    newUpButton.setAttribute("type", "button");
+    newUpButton.setAttribute("style", "float: right;");
+    newUpButton.setAttribute("data-toggle", "modal");
+    newUpButton.setAttribute("data-target", "#" + sectionName + "UploadModal");
+    newUpButton.setAttribute("onclick", "event.stopPropagation(); $(modalID).modal('show');");
+    newUpButton.innerHTML = "Upload";
+
+/*
+    // Need a to create a modal for upload button
+    //lecContent.append(lecUploadModal);
+    newHeader.append( $('<button>')
+        .addClass('btn btn-outline-primary')
+        .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
+        .css('float', 'right')
+        .on('click', function(){
+            event.stopPropagation();
+            $(modalID).modal('show');
+        })
+        .text('Upload'));
+
+        */
+
+  newHeader.append(newUpButton);
+};
+
 // Adds new section to the lecture contents
-function addSection(accordion) {
-  var sectionName = document.getElementById("sectionInput").value;
+function addSection() {
+  let sectionName = $('#sectionInput').val();
 
   socket.emit('addSection', courseID, sectionName, function(response) {
+
     if (response.status === 'exists'){
       window.alert("Section already exists!");
       return;
     }
     else if (response.status === 'success') {
 
-
     }
   });
 
-  // Forms the new section
-
-  var newSection = document.createElement("div");
-  newSection.className = "card";
-
-
-  // New section content
-  var newHeader = document.createElement("div");
-  newHeader.className = "card-header";
-  newHeader.setAttribute("data-toggle", "collapse");
-  newHeader.setAttribute("href", "#collapse-" + sectionName);
-  var newLink = document.createElement("a");
-  newLink.className = "card-link";
-  newLink.innerHTML = sectionName;
-  var newCollapse = document.createElement("div");
-  newCollapse.className = "collapse";
-  newCollapse.setAttribute("id", "collapse-" + sectionName);
-  newCollapse.setAttribute("data-parent", "#accordion");
-  var newBody = document.createElement("div");
-  newBody.className = "card-body";
-  newBody.setAttribute("id", "body-" + sectionName);
-  var newList = document.createElement("ul");
-  newList.className = "list-group list-group-flush";
-  newList.setAttribute("id", "list-" + sectionName);
-
-  newBody.append(newList);
-  newCollapse.append(newBody);
-  newHeader.append(newLink);
-
-  newSection.append(newHeader);
-  newSection.append(newCollapse);
-
-  accordion.append(newSection);
-
-  // New upload file button for section
-  var newUpButton = document.createElement("button");
-  var modalID = "#" + sectionName + "UploadModal";
-  var buttonID = sectionName + "UpButton";
-  console.log(buttonID);
-  newUpButton.className = "btn btn-outline-primary";
-  newUpButton.setAttribute("id", buttonID);
-  newUpButton.setAttribute("type", "button");
-  newUpButton.setAttribute("style", "float: right;");
-  newUpButton.setAttribute("data-toggle", "modal");
-  newUpButton.setAttribute("data-target", "#" + sectionName + "UploadModal");
-  newUpButton.setAttribute("onclick", "event.stopPropagation(); $(modalID).modal('show');");
-  newUpButton.innerHTML = "Upload";
-
-
-  // Need a to create a modal for upload button
-  //lecContent.append(lecUploadModal);
-  newHeader.append(newUpButton);
+  createSection(sectionName);
 
   window.alert("Successfully added section!");
 
-
-
 }
-
 
 // Handles files from lecture upload modal
 function handleLecFiles() {
@@ -286,11 +305,29 @@ function handleTestFiles() {
 
 $(document).ready(function() {
 
+
+
   socket.emit('loadClass', regCode, function(userinfo, courseinfo) {
     //userInfo.isProfessor;
     client = userinfo;
     courseID = courseinfo._id;
-    //courseinfo.lectures.section.files;
+    /*courseinfo.lectures.section.files;*/
+  });
+
+
+  socket.emit('getSections', courseID, function(section) {
+    console.log('hello');
+
+    for(let s of section) {
+        console.log(s);
+        console.log(s.name);
+        createSection(s.name);
+
+        for(let f of s.files) {
+            let newFile = new file(s.name, f.name);
+            newFile.addFile;
+        }
+    }
   });
 
   // refresh section div
@@ -298,25 +335,16 @@ $(document).ready(function() {
     // what do you want the server to give you
     // ***Will need the files in that section***
     // Gets the files in all the sections
-    socket.emit('getSections', courseID, function(section) {
-      for(let s of section) {
-        for(let f of s.files) {
-          let newFile = new file(s.name, f.name);
-          newFile.addFile;
-        }
-      }
-    });
-  });
 
+  });
 
 
 // file has name and data, filename is unique
   socket.emit('addFile', courseID, sectionName, file, function(response) {
-    
-    
     if (response.status === 'error') {
       //do Something;
     }
+
   });
 
   /*
