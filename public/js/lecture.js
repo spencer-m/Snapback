@@ -189,35 +189,7 @@ function course(lectureName, isProfessor) {
     filein.setAttribute("onchange", "mahfunctioninput()");
     content.append(filein);
 
-    // creates modal for adding files
-    $('#content').append(
-        $('<div>').addClass("modal fade").attr("id", "addFileModal")
-            .append($('<div>').addClass("modal-dialog")
-                    .append(($("<div>").addClass("modal-content")
-                        .append($('<div>').addClass("modal-header")
-                            .append($("<h5>").addClass("modal-title").text("Upload a file!"))))
-                        .append($("<div>").addClass("modal-body")
-                            .append($("<label>").addClass("section-file-upload").attr("for", "fileInput")
-                                .text("Choose the files you want!").css("text-align", "center")
-                                .append($("<i>").addClass("fa fa-upload").css("width", "100%")))
-                            .append($("<input>").addClass("form-control-file")
-                                .attr("id", "fileInput").attr("type", "file").attr("name", "fileInput")))
-                        .append($("<div>").addClass("modal-footer")
-                            .append($("<button>").addClass("btn btn-secondary").attr("data-dismiss", "modal").text("Close"))
-                            .append($("<button>").addClass("btn btn-primary").text("Add File!")
-                                .attr("type", "submit").attr("id", "addFileButton").attr("data-dismiss", "modal")
-                                .on("click", function(){          // GO HERE FOR THE BUTTON FUNCTIONALITY OF ADD-FILE
-                                  console.log("hello");
 
-                                  let buttonID = $(this).attr("id");
-                                  let sectionName = buttonID.split("-")[1];
-
-                                  atUpload(sectionName);
-                                })
-                            ))
-                    )
-            )
-    );
   }
 
 }
@@ -240,9 +212,11 @@ function atDownload(sectionName, filename) {
 
 // upload file
 function atUpload(sectionName) {
-  sectionName = 'test';
-  // inputtfilee <- name and id of input
-  let file = document.getElementById('inputtfilee').files[0];
+  console.log("Section name atUpload: " + sectionName);
+
+  // fileInput <- name and id of input
+  let file = document.getElementById('fileInput').files[0];
+
   if (file) {
     if (file.size < 10000000) {
       let reader = new FileReader();
@@ -301,8 +275,35 @@ let createSection = function(sectionName) {
 
     $('#accordion').append($('<div>').addClass("card").append(newHeader).append(newCollapse));
 
+
     // Need a to create a modal for upload button
-    //lecContent.append(lecUploadModal);
+    $('#content').append(
+        $('<div>').addClass("modal fade").attr("id", "-" + sectionName + "-addFileModal")
+            .append($('<div>').addClass("modal-dialog")
+                .append(($("<div>").addClass("modal-content")
+                    .append($('<div>').addClass("modal-header")
+                        .append($("<h5>").addClass("modal-title").text("Upload a file!"))))
+                    .append($("<div>").addClass("modal-body")
+                        .append($("<label>").addClass("section-file-upload").attr("for", "fileInput")
+                            .text("Choose the files you want!").css("text-align", "center")
+                            .append($("<i>").addClass("fa fa-upload").css("width", "100%")))
+                        .append($("<input>").addClass("form-control-file")
+                            .attr("id", "fileInput").attr("type", "file").attr("name", "fileInput")))
+                    .append($("<div>").addClass("modal-footer")
+                        .append($("<button>").addClass("btn btn-secondary").attr("data-dismiss", "modal").text("Close"))
+                        .append($("<button>").addClass("btn btn-primary").text("Add File!")
+                            .attr("type", "submit").attr("id", "addFileButton").attr("data-dismiss", "modal")
+                            .on("click", function(){          // GO HERE FOR THE BUTTON FUNCTIONALITY OF ADD-FILE
+
+                                let buttonID = ($(this).closest(".modal")).attr("id");
+                                let sectionName = buttonID.split("-")[1];
+
+                                atUpload(sectionName);
+                            })
+                        ))
+                )
+            )
+    );
 
 };
 
