@@ -276,6 +276,11 @@ a, a:hover, a:focus {
 .modal-body {
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+}
+
+#allclass-card-modal {
+    max-height: 80%;
 }
 
 .btn-blue:hover {
