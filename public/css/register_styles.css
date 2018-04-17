@@ -37,6 +37,10 @@ img {
     color: lightgray;
 }
 
+#regBox option {
+    color: black;
+}
+
 #regBox input::placeholder {
     color: lightgray;
 }
