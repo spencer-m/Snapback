@@ -203,27 +203,20 @@ let createSection = function(sectionName) {
         .prop("data-toggle", "collapse").prop("href", "#collapse-" + sectionName))
         .append($('<a>').addClass("card-link").html(sectionName)))
         .append($('<button>')
-            .addClass('btn btn-outline-primary')
+            .addClass('btn btn-outline-primary').text('Upload')).css('float', 'right')
             .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
-            .css('float', 'right')
             .on('click', function(){
                 event.stopPropagation();
                 $(modalID).modal('show');
-            })
-            .text('Upload'));
+            });
 
     let newCollapse = $('<div>').addClass("collapse")
         .prop("id", "collapse-" + sectionName).prop("data-parent", "#accordion")
-        .append(
-            ($('<div>')
+        .append(($('<div>')
                 .addClass("card-body").prop("id", "body-" + sectionName))
                 .append("<ul>").addClass("list-group list-group-flush").prop("id", "list-" + sectionName));
 
-    let newSection = $('<div>').addClass("card")
-        .append(newHeader)
-        .append(newCollapse);
-
-    $('#accordion').append(newSection);
+    $('#accordion').append($('<div>').addClass("card").append(newHeader).append(newCollapse));
 
     // Need a to create a modal for upload button
     //lecContent.append(lecUploadModal);
@@ -241,11 +234,9 @@ function addSection() {
       return;
     }
     else if (response.status === 'success') {
-
+      createSection(sectionName);
     }
   });
-
-  createSection(sectionName);
 
   window.alert("Successfully added section!");
 
