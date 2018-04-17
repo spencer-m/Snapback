@@ -2,30 +2,6 @@ socket = io();
 
 courseID = null;
 
-
-
-// question1 = [new question("What is life?","Kourosh","April 16th 2017",["Jake"],[client.email.split("@")[0]],
-//     [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
-//     new comment("Jerry","I like you."),
-//     new comment("Swagmaster","Swag is All i care about"),
-//     ]),
-//     new question("This is another question I AM FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
-//     [new comment("Jerry","I don't like you."),
-//     new comment("Jebrone","Wow such nice comments."),
-//     ]),
-//     new question("asfdhadfjhkanothdskjfdoaijfoewjrfoejrdsafdsa FOJAFOIJEOIHJF:OAHC:HDS:IHF","Kouroshb26","April 7th 2017",["Kouroshb26"],[],
-//     [new comment("Jerry","I don't like you."),
-//     new comment("Jebrone","Wow such nice comments."),
-//     ]),
-// ];
-
-// question2 =[new question("This is the second session","Kourosh","April 16th 2017",["Jake"],[client.email.split("@")[0]],
-// [new comment("Hello123sasasasassaasassa","I like you. Don't hurt me"),
-// new comment("Jerry","I like you."),
-// new comment("Swagmaster","Swag is All i care about"),
-// ])]
-
-// sessions = [new session(123,true,"Session1",question1),new session(123,true,"Session5",question2)]
 client = null;
 sessions = [];
 clientQuestions = [];
@@ -44,7 +20,7 @@ function session(_id,isLive,name,questions){
     this.expand = function(){
         clientSession = session;
         questionsView();
-    }
+    };
 
     this.view = function(){
         var card = $("<div>").attr("class","card")
@@ -85,7 +61,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         }
         console.log("position: "+position);
         socket.emit("vote",courseID._id,question._id,position);
-    }
+    };
 
     this.downArrowClick = function(){
         let position = 0;
@@ -95,12 +71,12 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         console.log("position: "+position);
         socket.emit("vote",courseID._id,question._id,position);
 
-    }
+    };
     this.vote = function(user,position){
         console.log("Position",position);
         let filterFunction = function(aUser){
             aUser != user;
-        } 
+        };
         this.downvotes = this.downvotes.filter(filterFunction);
         this.upvotes = this.upvotes.filter(filterFunction);
 
@@ -116,16 +92,16 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         upArrow.attr("src",(this.upvotes.includes(client._id)?"img/upArrowVoted.svg":"img/upArrow.svg"));
         downArrow.attr("src",(this.downvotes.includes(client._id)?"img/downArrowVoted.svg":"img/downArrow.svg"));
         scoreBox.text("Score: "+this.score());
-    }
+    };
 
     this.deleteQuestion = function(){
         socket.emit("deleteQuestion",courseID._id,clientSession._id,question._id);
-    }
+    };
 
     this.toggleComments = function(){
         showCommentList = ! showCommentList;
         commentList.toggle();
-    }
+    };
 
     this.reply = function(){
     
@@ -136,11 +112,11 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
             socket.emit("addComment",courseID._id,question._id,newComment);
         }
         return false;
-    }
+    };
 
     this.score = function(){
         return(this.upvotes.length - this.downvotes.length);
-    }
+    };
 
     this.view = function view(){
         var card = $("<div>")
@@ -193,7 +169,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
             this.deleteComment = function(){
 
                 socket.emit("deleteComment",courseID._id,question._id,comment);
-            }
+            };
         
             
             let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
@@ -221,14 +197,14 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         commentList.append(replyForm);
         card.append(commentList);
         return(card);
-    }
+    };
 
     this.addComment = function(comment){
         
         this.deleteComment = function(){
 
             socket.emit("deleteComment",courseID._id,question._id,comment);
-        }
+        };
     
         
         let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
@@ -279,7 +255,7 @@ function questionsView(){
   
     toggleLive = function(){
         socket.emit("toggleSession",courseID._id,clientSession._id,this.checked);
-    }
+    };
 
     if(clientSession.isLive){
         checkBox.prop('checked', true);
@@ -328,7 +304,6 @@ function questionsView(){
             
     );
     
-
 
     socket.emit("getSession",clientSession._id,function(questions){
         clientQuestions = [];
@@ -439,99 +414,6 @@ function sessionsView(regcode){
         })
     })
 }
-
-$(document).ready(function(){
-
-
-    socket.on("addedQuestion",function(session_id,addQuestion){
-        console.log(addQuestion._id);
-        if(session_id == clientSession._id){
-            if($('.sessions-list').is(':empty')){
-                let newQuestion = new question(addQuestion._id,addQuestion.question,addQuestion.author,addQuestion.date,addQuestion.upvotes,addQuestion.downvotes,addQuestion.comments)
-                clientQuestions.push(newQuestion);
-                $(".questions-list").append(newQuestion.view());
-            }
-        }
-    });
-
-
-    socket.on("addedComment",function(question_id,addcomment){
-        
-        var question = clientQuestions.find(function(question){
-            return question._id == question_id;
-        })
-
-        if(question){
-            newComment = new comment(addcomment._id,addcomment.author,addcomment.message);
-            question.comments.push(newComment);
-            question.addComment(newComment);
-
-        }        
-    })
-
-
-    socket.on("deletedComment",function(question_id,comment){
-        var question = clientQuestions.find(function(question){
-            return question._id == question_id;
-        })
-
-        if(question){
-            question.comments.splice(question.comments.indexOf(comment),1);
-            $("#"+comment._id).remove();
-        }
-    })
-
-    socket.on("voted",function(question_id,user,position){
-        var question = clientQuestions.find(function(question){
-            return question._id == question_id;
-        })
-
-        if(question){
-            question.vote(user,position);
-        }        
-    })
-
-
-    socket.on("deletedQuestion",function(session_id,question_id){
-        if(session_id == clientSession._id){
-            var question = clientQuestions.find(function(question){
-                return question._id == question_id;
-            })
-            clientQuestions.splice(clientQuestions.indexOf(question),1);
-            $("#"+question_id).remove();
-
-        }
-
-    })
-
-    socket.on("toggledSession",function(session_id,bool){
-        if(clientSession._id = session_id){
-            clientSession.isLive = bool;
-            $("#isLive").prop('checked', bool);
-        }
-        if(bool){
-            $(".questions-list").addClass("live");
-        }else{
-            $(".questions-list").removeClass("live");
-        }
-
-    });
-
-    socket.on("addedSession",function(course_id,addSession){
-        if(courseID._id = course_id){
-            if($('.questions-list').is(':empty')){
-                let newSession = new session(addSession._id,addSession.isLive,addSession.name,addSession.questions);
-                sessions.push(newSession);
-                $(".sessions-list").append(newSession.view());
-            }
-           
-
-        }
-
-    });
-    sessionsView("DT9OAY");
-
-});
 
 
 //Impelement add session

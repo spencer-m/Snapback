@@ -43,7 +43,7 @@ function file(section, fileName) {
 
 }
 
-function course(lectureName, isProfessor) {
+function course(lectureName, isProfessor, regCode) {
 
   this.load = function load() {
     $('.main-content').empty();
@@ -106,6 +106,9 @@ function course(lectureName, isProfessor) {
     qstLink.className = "nav-link";
     qstLink.setAttribute("data-toggle", "tab");
     qstLink.setAttribute("href", "#questions");
+    qstLink.addEventListener("click", function(){
+        sessionsView(regCode);
+    });
     qstLink.innerHTML = "Questions";
     qstTab.append(qstLink);
 
@@ -288,7 +291,7 @@ function createLectureQuestionView(regCode){
 
     socket.emit('getSections', courseID, function(section) {
 
-        let view = new course(courseInfo.code, info.isProfessor);
+        let view = new course(courseInfo.code, info.isProfessor, regCode);
         view.load();
 
         for(let s of section) {

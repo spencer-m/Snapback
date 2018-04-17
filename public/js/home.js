@@ -233,6 +233,90 @@ $(function(){
         createSection(sectionName);
     });
 
+    socket.on("addedQuestion",function(session_id,addQuestion){
+        console.log(addQuestion._id);
+        if(session_id == clientSession._id){
+            if($('.sessions-list').is(':empty')){
+                let newQuestion = new question(addQuestion._id,addQuestion.question,addQuestion.author,addQuestion.date,addQuestion.upvotes,addQuestion.downvotes,addQuestion.comments)
+                clientQuestions.push(newQuestion);
+                $(".questions-list").append(newQuestion.view());
+            }
+        }
+    });
+
+
+    socket.on("addedComment",function(question_id,addcomment){
+
+        var question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        });
+
+        if(question){
+            newComment = new comment(addcomment._id,addcomment.author,addcomment.message);
+            question.comments.push(newComment);
+            question.addComment(newComment);
+
+        }
+    });
+
+
+    socket.on("deletedComment",function(question_id,comment){
+        var question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        });
+
+        if(question){
+            question.comments.splice(question.comments.indexOf(comment),1);
+            $("#"+comment._id).remove();
+        }
+    });
+
+    socket.on("voted",function(question_id,user,position){
+        var question = clientQuestions.find(function(question){
+            return question._id == question_id;
+        });
+
+        if(question){
+            question.vote(user,position);
+        }
+    });
+
+
+    socket.on("deletedQuestion",function(session_id,question_id){
+        if(session_id == clientSession._id){
+            var question = clientQuestions.find(function(question){
+                return question._id == question_id;
+            });
+            clientQuestions.splice(clientQuestions.indexOf(question),1);
+            $("#"+question_id).remove();
+
+        }
+
+    });
+
+    socket.on("toggledSession",function(session_id,bool){
+        if(clientSession._id = session_id){
+            clientSession.isLive = bool;
+            $("#isLive").prop('checked', bool);
+        }
+        if(bool){
+            $(".questions-list").addClass("live");
+        }else{
+            $(".questions-list").removeClass("live");
+        }
+    });
+
+    socket.on("addedSession",function(course_id,addSession){
+        if(courseID._id = course_id){
+            if($('.questions-list').is(':empty')){
+                let newSession = new session(addSession._id,addSession.isLive,addSession.name,addSession.questions);
+                sessions.push(newSession);
+                $(".sessions-list").append(newSession.view());
+            }
+        }
+
+    });
+
     /**
      *  handles sidebar expansion and collapse
      **/
