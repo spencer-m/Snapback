@@ -312,30 +312,32 @@ module.exports = function(io) {
                 exec(function(err, course) {
                     if (err) throw err;
 
-                    let sid;
-
-                    for (let i = 0; i < course.lectures.length; i++) {
-                        if (course.lectures[i].name === sectionName) {
-                            sid = course.lectures[i]._id;
-                            break;
-                        }
-                    }
-
-                    Course.Section.findById(sid).populate('files').exec(function(err, section) {
-                        if (err) throw err;
-
-                        let fid;
-                        for (let i = 0; i < section.files.length; i++) {
-                            if (section.files[i].name === fileName) {
-                                fid = section.files[i]._id;
+                    if (course) {
+                        let sid;
+                        
+                        for (let i = 0; i < course.lectures.length; i++) {
+                            if (course.lectures[i].name === sectionName) {
+                                sid = course.lectures[i]._id;
                                 break;
                             }
                         }
-
-                        Course.Files.findById(fid, function(err, file) {
-                            cb(file);
+                        
+                        Course.Section.findById(sid).populate('files').exec(function(err, section) {
+                            if (err) throw err;
+                        
+                            let fid;
+                            for (let i = 0; i < section.files.length; i++) {
+                                if (section.files[i].name === fileName) {
+                                    fid = section.files[i]._id;
+                                    break;
+                                }
+                            }
+                        
+                            Course.Files.findById(fid, function(err, file) {
+                                cb(file);
+                            });
                         });
-                    });
+                    }
                 });
         });
 
