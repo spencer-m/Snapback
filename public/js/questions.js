@@ -344,7 +344,7 @@ function sessionsView(regcode){
                             .attr("data-target","#add-session-modal")
                             .click(function(){
                                 $("#question-modal-content").empty();
-                                $(".modal-content").append($(`
+                                $("#question-modal-content").append($(`
                                 <div class="modal-header">
                                     <h3 class="modal-title">Make New Session</h3>
                                 </div>

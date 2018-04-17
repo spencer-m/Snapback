@@ -97,6 +97,9 @@ function course(lectureName, isProfessor, regCode) {
     lecTabLink.className = "nav-link active";
     lecTabLink.setAttribute("data-toggle", "tab");
     lecTabLink.setAttribute("href", "#lecture");
+    lecTabLink.addEventListener("click", function(){
+       $('#addSectionButton').show();
+    });
     lecTabLink.innerHTML = "Lecture";
     lecTab.append(lecTabLink);
 
@@ -107,6 +110,7 @@ function course(lectureName, isProfessor, regCode) {
     qstLink.setAttribute("data-toggle", "tab");
     qstLink.setAttribute("href", "#questions");
     qstLink.addEventListener("click", function(){
+        $('#addSectionButton').hide();
         sessionsView(regCode);
     });
     qstLink.innerHTML = "Questions";
