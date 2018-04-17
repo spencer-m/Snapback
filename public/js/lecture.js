@@ -142,8 +142,6 @@ function course(lectureName, isProfessor, regCode) {
 
 // download file
 function atDownload(sectionName, filename) {
-  sectionName = 'test';
-  filename = 'test123.pdf';
   // file has name and data, filename is unique
   socket.emit('getFile', courseID, sectionName, filename, function(file) {
     var tempElem = document.createElement('a');
@@ -158,7 +156,6 @@ function atDownload(sectionName, filename) {
 
 // upload file
 function atUpload(sectionName) {
-  console.log("Section name atUpload: " + sectionName);
 
   // fileInput <- name and id of input
   let file = document.getElementById('fileInput').files[0];
@@ -290,17 +287,15 @@ function createLectureQuestionView(regCode){
   let courseInfo = {};
 
   socket.emit('loadClass', regCode, function(userinfo, courseinfo) {
-    info = userinfo;
     courseInfo = courseinfo;
-
-    //userInfo.isProfessor;
     client = userinfo;
     courseID = courseinfo._id;
-    /*courseinfo.lectures.section.files;*/
+    
+    console.log('loaded and joined class ', courseinfo.courseinfo);
 
     socket.emit('getSections', courseID, function(section) {
 
-        let view = new course(courseInfo.code, info.isProfessor, regCode);
+        let view = new course(courseInfo.code, client.isProfessor, regCode);
         view.load();
 
         for(let s of section) {

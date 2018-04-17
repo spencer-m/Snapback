@@ -219,26 +219,28 @@ module.exports = function(io) {
                 exec(function(err, course) {
                     if (err) throw err;
                 
-                    // check if section name is already in the course
-                    let exists = false;
-                    for (let i = 0; i < course.lectures.length; i++) {
-                        if (course.lectures[i].name === sectionName) {
-                            exists = true;
-                            break;
+                    if (course) {
+                        // check if section name is already in the course
+                        let exists = false;
+                        for (let i = 0; i < course.lectures.length; i++) {
+                            if (course.lectures[i].name === sectionName) {
+                                exists = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (exists)
-                        cb({status: 'exists'});
-                    else {
-                        let s = Course.Section({
-                            name: sectionName
-                        });
-                        s.save();
-                        course.lectures.push(s._id);
-                        course.save();
-                        io.in(cid).emit('addedSection', sectionName);
-                        cb({status: 'success'});
+                        if (exists)
+                            cb({status: 'exists'});
+                        else {
+                            let s = Course.Section({
+                                name: sectionName
+                            });
+                            s.save();
+                            course.lectures.push(s._id);
+                            course.save();
+                            io.in(cid).emit('addedSection', sectionName);
+                            cb({status: 'success'});
+                        }
                     }
                 });
         });
@@ -290,27 +292,29 @@ module.exports = function(io) {
 
                                     if (err) throw err;
 
-                                    // check if file name is already in the section
-                                    let exists = false;
-                                    for (let i = 0; i < section.files.length; i++) {
-                                        if (section.files[i].name === file.name) {
-                                            exists = true;
-                                            break;
+                                    if (section) {
+                                        // check if file name is already in the section
+                                        let exists = false;
+                                        for (let i = 0; i < section.files.length; i++) {
+                                            if (section.files[i].name === file.name) {
+                                                exists = true;
+                                                break;
+                                            }
                                         }
-                                    }
 
-                                    if (exists)
-                                        cb({status: 'exists'});
-                                    else {
-                                        let f = Course.Files({
-                                            name: file.name,
-                                            data: file.data
-                                        });
-                                        f.save();
-                                        section.files.push(f._id);
-                                        section.save();
-                                        io.in(cid).emit('addedFile', section.name, file.name);
-                                        cb({status: 'success'});
+                                        if (exists)
+                                            cb({status: 'exists'});
+                                        else {
+                                            let f = Course.Files({
+                                                name: file.name,
+                                                data: file.data
+                                            });
+                                            f.save();
+                                            section.files.push(f._id);
+                                            section.save();
+                                            io.in(cid).emit('addedFile', section.name, file.name);
+                                            cb({status: 'success'});
+                                        }
                                     }
                                 });
                         }
@@ -339,17 +343,19 @@ module.exports = function(io) {
                         Course.Section.findById(sid).populate('files').exec(function(err, section) {
                             if (err) throw err;
                         
-                            let fid;
-                            for (let i = 0; i < section.files.length; i++) {
-                                if (section.files[i].name === fileName) {
-                                    fid = section.files[i]._id;
-                                    break;
+                            if (section) {
+                                let fid;
+                                for (let i = 0; i < section.files.length; i++) {
+                                    if (section.files[i].name === fileName) {
+                                        fid = section.files[i]._id;
+                                        break;
+                                    }
                                 }
+                            
+                                Course.Files.findById(fid, function(err, file) {
+                                    cb(file);
+                                });
                             }
-                        
-                            Course.Files.findById(fid, function(err, file) {
-                                cb(file);
-                            });
                         });
                     }
                 });
