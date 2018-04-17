@@ -214,53 +214,51 @@ function course(lectureName, isProfessor) {
 
 }
 
-function downloadFile(filename, data) {
-  var tempElem = document.createElement('a');
-  tempElem.setAttribute('href', data);
-  tempElem.setAttribute('download', filename);
-  tempElem.style.display = 'none';
-  document.body.appendChild(tempElem);
-  tempElem.click();
-  document.body.removeChild(tempElem);
-}
-
 // download file
-function mahfunctiond() {
-  let sectionName = 'test';
-  let fileName = 'test123.pdf';
+function atDownload(sectionName, filename) {
+  sectionName = 'test';
+  filename = 'test123.pdf';
   // file has name and data, filename is unique
-  //socket.on('getFile', function(cid, sectionName, fileName, cb) {
-  socket.emit('getFile', courseID, sectionName, fileName, function(file) {
-    downloadFile(file.name, file.data);
+  socket.emit('getFile', courseID, sectionName, filename, function(file) {
+    var tempElem = document.createElement('a');
+    tempElem.setAttribute('href', file.data);
+    tempElem.setAttribute('download', file.name);
+    tempElem.style.display = 'none';
+    document.body.appendChild(tempElem);
+    tempElem.click();
+    document.body.removeChild(tempElem);
   });
 }
 
 // upload file
-function mahfunctioninput() {
+function atUpload(sectionName) {
+  sectionName = 'test';
+  // inputtfilee <- name and id of input
   let file = document.getElementById('inputtfilee').files[0];
   if (file) {
     if (file.size < 10000000) {
-
-      window.alert("Name: " + file.name + "\n" + "Size :" + file.size);
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        
         data = reader.result;
         let infile = {
           name: file.name,
           data: data,
           size: file.size
         };
-        let sectionName = 'test';
-        console.log('infile', infile);
         socket.emit('addFile', courseID, sectionName, infile, function(response) {
           
           if (response.status === 'success') {
+            // TODO
             window.alert("fileupload success");
           } 
           else if(response.status === 'exists') {
+            // TODO
             window.alert("fileupload EXISTS");
+          }
+          else if (response.status === 'filetoobig') {
+            // TODO
+            window.alert("fileupload too big");
           }
         });
       };
