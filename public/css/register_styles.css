@@ -32,9 +32,13 @@ img {
     border-color: #358bbe;
 }
 
+#regBox select::placeholder {
+    color: lightgray;
+}
+
 #regBox select {
     border-color: #358bbe;
-    color: lightgray;
+    color: black;
 }
 
 #regBox option {

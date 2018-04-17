@@ -322,15 +322,16 @@ $(function(){
 
                     socket.emit('getInfo', function (info) {
                         userInfo = info;
+
+                        setModalMessage('Adding the course was a success!');
+
+                        let lastCourse = userInfo.courses[userInfo.courses.length - 1];
+                        let courseName = lastCourse.name;
+                        let courseCode = lastCourse.code;
+
+                        createClassCard(courseCode, courseName, lastCourse.regcode);
+                        setupAllCourseModal(userInfo.courses);
                     });
-
-                    setModalMessage('Adding the course was a success!');
-                    
-                    let lastCourse = userInfo.courses[userInfo.courses.length - 1];
-                    let courseName = lastCourse.name;
-                    let courseCode = lastCourse.code;
-
-                    createClassCard(courseCode, courseName, lastCourse.regcode);
                 }
                 else if (response.status === 'already_enrolled'){
                     console.log('already_enrolled');
