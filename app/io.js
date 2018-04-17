@@ -259,54 +259,58 @@ module.exports = function(io) {
 
         socket.on('addFile', function(cid, sectionName, file, cb) {
 
-            Course.Course.
-                findById(cid).
-                populate('lectures').
-                exec(function(err, course) {
-                    if (err) throw err;
+            if (file.size > 10000000)
+                cb({status: 'filetoobig'});
+            else {
+                Course.Course.
+                    findById(cid).
+                    populate('lectures').
+                    exec(function(err, course) {
+                        if (err) throw err;
 
-                    let sid;
+                        let sid;
 
-                    if (course) {
-                        for (let i = 0; i < course.lectures.length; i++) {
-                            if (course.lectures[i].name === sectionName) {
-                                sid = course.lectures[i]._id;
-                                break;
+                        if (course) {
+                            for (let i = 0; i < course.lectures.length; i++) {
+                                if (course.lectures[i].name === sectionName) {
+                                    sid = course.lectures[i]._id;
+                                    break;
+                                }
                             }
-                        }
 
-                        Course.Section.
-                            findById(sid).
-                            populate('files').
-                            exec( function(err, section) {
+                            Course.Section.
+                                findById(sid).
+                                populate('files').
+                                exec( function(err, section) {
 
-                                if (err) throw err;
+                                    if (err) throw err;
 
-                                // check if file name is already in the section
-                                let exists = false;
-                                for (let i = 0; i < section.files.length; i++) {
-                                    if (section.files[i].name === file.name) {
-                                        exists = true;
-                                        break;
+                                    // check if file name is already in the section
+                                    let exists = false;
+                                    for (let i = 0; i < section.files.length; i++) {
+                                        if (section.files[i].name === file.name) {
+                                            exists = true;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (exists)
-                                    cb({status: 'exists'});
-                                else {
-                                    let f = Course.File({
-                                        name: file.name,
-                                        data: file.data
-                                    });
-                                    f.save();
-                                    section.files.push(f._id);
-                                    section.save();
-                                    io.in(cid).emit('addedFile');
-                                    cb({status: 'success'});
-                                }
-                            });
-                    }
-                });
+                                    if (exists)
+                                        cb({status: 'exists'});
+                                    else {
+                                        let f = Course.Files({
+                                            name: file.name,
+                                            data: file.data
+                                        });
+                                        f.save();
+                                        section.files.push(f._id);
+                                        section.save();
+                                        io.in(cid).emit('addedFile');
+                                        cb({status: 'success'});
+                                    }
+                                });
+                        }
+                    });
+            }
         });
 
         socket.on('getFile', function(cid, sectionName, fileName, cb) {

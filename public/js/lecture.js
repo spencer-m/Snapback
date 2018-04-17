@@ -163,33 +163,86 @@ function course(lectureName, isProfessor) {
     content.append(tabContent);
 
     //mine-spencer
-    var fileupd = document.createElement("button");
-    fileupd.className = "btn btn-secondary";
-    fileupd.setAttribute("id", "uploadFileFile");
-    fileupd.setAttribute("type", "button");
-    fileupd.setAttribute("onclick", "mahfunction()");
-    fileupd.innerHTML = "MahButton";
-    content.append(fileupd);
+
+    var filedl = document.createElement("button");
+    filedl.className = "btn btn-secondary";
+    filedl.setAttribute("id", "downloadFilefile");
+    filedl.setAttribute("type", "button");
+    filedl.setAttribute("onclick", "mahfunctiond()");
+    filedl.innerHTML = "DOWNLOAD";
+    content.append(filedl);
+
+    var fileinlabel = document.createElement("label");
+    fileinlabel.setAttribute("for", "inputtfilee");
+    fileinlabel.innerHTML = "give me a file";
+    content.append(fileinlabel);
+
+    var filein = document.createElement("input");
+    filein.setAttribute("id", "inputtfilee");
+    filein.setAttribute("name", "inputtfilee");
+    filein.setAttribute("type", "file");
+    filein.setAttribute("onchange", "mahfunctioninput()");
+    content.append(filein);
 
   }
 
 }
 
-function mahfunction() {
-  console.log('mahfunc', courseID);
-  console.log('mahfunc', sectionName);
-  let file = {
-    name: 'testfile',
-    data: 'foobar'
-  };
+function downloadFile(filename, data) {
+  var tempElem = document.createElement('a');
+  tempElem.setAttribute('href', data);
+  tempElem.setAttribute('download', filename);
+  tempElem.style.display = 'none';
+  document.body.appendChild(tempElem);
+  tempElem.click();
+  document.body.removeChild(tempElem);
+}
+
+// download file
+function mahfunctiond() {
+  let sectionName = 'test';
+  let fileName = 'test123.pdf';
   // file has name and data, filename is unique
-  socket.emit('addFile', courseID, sectionName, file, function(response) {
-    
-    
-    if (response.status === 'error') {
-      //do Something;
-    }
+  //socket.on('getFile', function(cid, sectionName, fileName, cb) {
+  socket.emit('getFile', courseID, sectionName, fileName, function(file) {
+    downloadFile(file.name, file.data);
   });
+}
+
+// upload file
+function mahfunctioninput() {
+  let file = document.getElementById('inputtfilee').files[0];
+  if (file) {
+    if (file.size < 10000000) {
+
+      window.alert("Name: " + file.name + "\n" + "Size :" + file.size);
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        
+        data = reader.result;
+        let infile = {
+          name: file.name,
+          data: data,
+          size: file.size
+        };
+        let sectionName = 'test';
+        console.log('infile', infile);
+        socket.emit('addFile', courseID, sectionName, infile, function(response) {
+          
+          if (response.status === 'success') {
+            window.alert("fileupload success");
+          } 
+          else if(response.status === 'exists') {
+            window.alert("fileupload EXISTS");
+          }
+        });
+      };
+      reader.onerror = function (error) {
+        console.log('filereader error: ', error);
+      };
+    }
+  }
 }
 
 let createSection = function(sectionName) {
@@ -290,14 +343,6 @@ $(document).ready(function() {
 
   });
 
-
-// file has name and data, filename is unique
-  socket.emit('addFile', courseID, sectionName, file, function(response) {
-    if (response.status === 'error') {
-      //do Something;
-    }
-
-  });
 
   /*
   socket.on('addedFile', )
