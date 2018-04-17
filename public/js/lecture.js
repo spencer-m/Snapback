@@ -198,8 +198,28 @@ let createSection = function(sectionName) {
     var newSection = document.createElement("div");
     newSection.className = "card";
 
+    /*
+    let newHeader = ($('<div>')
+        .addClass("card-header")
+        .prop("data-toggle", "collapse").prop("href", "#collapse-" + sectionName))
+        .append($('<a>').addClass("card-link").html(sectionName));
+
+    let modalID = "#" + sectionName + "UploadModal";
+    let buttonID = sectionName + "UpButton";
+
+    newHeader.append($('<button>')
+        .addClass('btn btn-outline-primary')
+        .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
+        .css('float', 'right')
+        .on('click', function(){
+            event.stopPropagation();
+            $(modalID).modal('show');
+        })
+        .text('Upload'));
+*/
 
     // New section content
+
     var newHeader = document.createElement("div");
     newHeader.className = "card-header";
     newHeader.setAttribute("data-toggle", "collapse");
@@ -227,13 +247,8 @@ let createSection = function(sectionName) {
 
     $('#accordion').append(newSection);
 
-    /*
+
     // New upload file button for section
-    let modalID = "#" + sectionName + "UploadModal";
-    let buttonID = sectionName + "UpButton";
-*/
-
-
 
     var newUpButton = document.createElement("button");
     var modalID = "#" + sectionName + "UploadModal";
@@ -248,20 +263,10 @@ let createSection = function(sectionName) {
     newUpButton.setAttribute("onclick", "event.stopPropagation(); $(modalID).modal('show');");
     newUpButton.innerHTML = "Upload";
 
-/*
+
     // Need a to create a modal for upload button
     //lecContent.append(lecUploadModal);
-    newHeader.append( $('<button>')
-        .addClass('btn btn-outline-primary')
-        .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
-        .css('float', 'right')
-        .on('click', function(){
-            event.stopPropagation();
-            $(modalID).modal('show');
-        })
-        .text('Upload'));
 
-        */
 
   newHeader.append(newUpButton);
 };
