@@ -371,38 +371,42 @@ function sessionsView(regcode){
     <div class="modal fade" id="add-session-modal">
         <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
 
-        <div class="modal-content">
+            <div class="modal-content">
 
-            <div class="modal-header">
-            <h3 class="modal-title">Make New Session</h3>
-            </div>
+                <div class="modal-header">
+                <h3 class="modal-title">Make New Session</h3>
+                </div>
 
-            <div class="modal-body">
-            <div>
-                <p>Please Enter Session Name</p>
-                <input class="form-control" id="session-name" placeholder="eg. Session #1">
-            </div>
-            <div>
-                <p>Make session live?</p>
-                <select class="form-control" id="session-isLive" name="semesters" form="semesterForm">
-                <option value="true">true</option>
-                <option value="false">false</option>
-                </select>
-            </div>
-            </div>
+                <div class="modal-body">
+                <div>
+                    <p>Please Enter Session Name</p>
+                    <input class="form-control" id="session-name" placeholder="eg. Session #1">
+                </div>
+                <div>
+                    <p>Make session live?</p>
+                    <select class="form-control" id="session-isLive" name="semesters" form="semesterForm">
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                    </select>
+                </div>
+                </div>
 
-            <div class="modal-footer">
-            <button type="button" id="session-submit-button" class="btn btn-blue">Submit</button>
-            <button type="button" id="session-cancel-button" class="btn btn-blue" data-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                <button type="button" id="session-submit-button" class="btn btn-blue">Submit</button>
+                <button type="button" id="session-cancel-button" class="btn btn-blue" data-dismiss="modal">Close</button>
+                </div>
             </div>
-        </div>
         </div>
     </div>`));
 
     $("#session-submit-button").click(function(){
         let newSession = new session(null,$("#session-isLive").val(),$('#session-name').val(),[]);
-        socket.emit("addSession",courseID._id,session,function(){
+        socket.emit("addSession",courseID._id,session,function(state){
+            if(state ==="succes"){
 
+            }else{
+
+            }
         });
  
     })
