@@ -78,15 +78,13 @@ let createClassCard = function(courseCode, courseName, regCode){
         (($('<div>').addClass('col-sm-4').attr('id', regCode).on('click', function(){
 
                 let regCode = $(this).attr('id');
-                console.log(regCode);
 
                 $('.main-content').empty();
 
                 $('#class-card-add-button').hide();
                 $('#class-card-allClass-button').hide();
                 $('#content-header').text(courseCode + ": " + courseName);
-                // NATHAN'S FUNCTION
-
+                    createLectureQuestionView(regCode);
                 }))
             .append(($('<div>').addClass("card card-outline-secondary mb-3"))
                 .append(($('<div>').addClass('block'))
@@ -213,6 +211,8 @@ $(function(){
     let userInfo = {};
     let currSemester = "";
 
+    $('#addSectionButton').hide();
+
     /** has all info of dude **/
     socket.on('init', function() {
         
@@ -222,6 +222,15 @@ $(function(){
             currSemester = initializeDashboard(info)
         });
 
+    });
+
+    socket.on('addedFile', function(sectionName, filename) {
+        let newFile = new file(sectionName, filename);
+        newFile.addFile();
+    });
+
+    socket.on('addedSection', function(sectionName) {
+        createSection(sectionName);
     });
 
     /**
@@ -252,11 +261,23 @@ $(function(){
         $('#class-submit-button').show();
     });
 
+    $('#addSectionButton').on('click', function(){
+        let modalBody = $('#addSectionModal .modal-body');
+        $('#addSectionInnerButton').show();
+        modalBody.empty();
+        modalBody
+            .append($('<p>').text("Please enter the section name"))
+            .append($('<input>').addClass('form-control')
+                .attr('id', "sectionInput").attr("type", "text").attr("placeholder", "Enter section name"));
+        $('#addSectionModal').modal("toggle");
+    });
+
     $('.home-button').on('click', function(){
 
         socket.emit('getInfo', function(info){
             userInfo = info;
             $('.main-content').empty();
+            $('#addSectionButton').hide();
             currSemester = initializeDashboard(userInfo);
         })
     });

@@ -249,6 +249,10 @@ a, a:hover, a:focus {
 }
 
 .card {
+    cursor: pointer;
+}
+
+.card.card-outline-secondary.mb-3 {
     transition: background .5s, color .5s;
 
     background: white;
@@ -260,10 +264,9 @@ a, a:hover, a:focus {
     color: #72d4e5;
 }
 
-.card:hover {
+.card.card-outline-secondary.mb-3:hover {
     background: rgba(114, 212, 229, 0.5);
     color: white;
-    cursor: pointer;
 }
 
 .top-buffer { margin-top:1px; margin-bottom: 1px;}
@@ -272,6 +275,10 @@ a, a:hover, a:focus {
 /* ---------------------------------------------------
     MODAL STYLE
 ----------------------------------------------------- */
+
+.modal-title {
+    color: #358bbe;
+}
 
 .modal-body {
     display: flex;
