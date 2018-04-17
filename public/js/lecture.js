@@ -189,6 +189,7 @@ function course(lectureName, isProfessor) {
     filein.setAttribute("onchange", "mahfunctioninput()");
     content.append(filein);
 
+    // creates modal for adding files
     $('#content').append(
         $('<div>').addClass("modal fade").attr("id", "addFileModal")
             .append($('<div>').addClass("modal-dialog")
@@ -204,7 +205,16 @@ function course(lectureName, isProfessor) {
                         .append($("<div>").addClass("modal-footer")
                             .append($("<button>").addClass("btn btn-secondary").attr("data-dismiss", "modal").text("Close"))
                             .append($("<button>").addClass("btn btn-primary").text("Add File!")
-                                .attr("type", "submit").attr("id", "addFileButton").attr("data-dismiss", "modal")))
+                                .attr("type", "submit").attr("id", "addFileButton").attr("data-dismiss", "modal")
+                                .on("click", function(){          // GO HERE FOR THE BUTTON FUNCTIONALITY OF ADD-FILE
+                                  console.log("hello");
+
+                                  let buttonID = $(this).attr("id");
+                                  let sectionName = buttonID.split("-")[1];
+
+                                  atUpload(sectionName);
+                                })
+                            ))
                     )
             )
     );
@@ -267,19 +277,20 @@ function atUpload(sectionName) {
   }
 }
 
+// creates individual sections
 let createSection = function(sectionName) {
     // Forms the new section
 
-    let modalID = "#" + sectionName + "UploadModal";
     let buttonID = sectionName + "UpButton";
 
+    // contains a section's parts, including the button which triggers their particular modal
     let newHeader = (($('<div>')
         .addClass("card-header")
         .attr("data-toggle", "collapse").attr("href", "#collapse-" + sectionName))
         .append($('<a>').addClass("card-link").html(sectionName)))
         .append($('<button>')
             .addClass('btn btn-outline-primary').text('Upload')
-            .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', "#addFileModal")
+            .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', "#-" + sectionName + "-addFileModal")
             .css('float', 'right'));
 
     let newCollapse = $('<div>').addClass("collapse")
