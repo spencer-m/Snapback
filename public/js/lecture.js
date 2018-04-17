@@ -50,6 +50,27 @@ function course(lectureName, isProfessor) {
   this.load = function load() {
     $('#content').empty();
 
+    $('#content').prepend(
+        $('<div>').addClass("modal hide fade d-flex h-100 align-self-center justify-content-center")
+            .attr("id", "addFileModal").attr("role", "dialog")
+            .append($('<div>').addClass("modal-dialogue").attr("role", "document")
+                .append((($('<div>').addClass("modal-content")
+                    .append($('<div>').addClass("modal-header")
+                        .append($('<h5>').addClass("modal-title").text("Upload a file!"))))
+                    .append($('<div>').addClass("modal-body")
+                        .append($("<input>").addClass("form-control")
+                            .attr("id","fileInput").attr("type", "text").attr("placeholder", "Choose file"))))
+                    .append(($("<div>").addClass("modal-footer")
+                        .append($("<button>").addClass("btn btn-secondary").text("Close")
+                            .attr("type", "button").attr("data-dismiss", "modal").attr("data-target", "#addFileModal").attr("z-index", "2")))
+                        .append($("<button>").addClass("btn btn-primary").text("Add file")
+                            .attr("type", "submit").attr("id", "addFileButton")
+                            .on("click", function(){}))
+                    )
+                )
+            )
+    );
+
     var navBar = document.createElement("nav");
     navBar.className = "navbar navbar-default";
 
@@ -197,30 +218,6 @@ function mahfunction() {
   });
 }
 
-let createFileUploadModal = function(id){
-  $('#content').prepend(
-      $('<div>').addClass("modal hide fade d-flex h-100 align-self-center justify-content-center")
-          .attr("id", "addFileModal").attr("role", "dialog")
-          .append($('<div>').addClass("modal-dialogue").attr("role", "document")
-              .append((($('<div>').addClass("modal-content")
-                  .append($('<div>').addClass("modal-header")
-                      .append($('<h5>').addClass("modal-title").text("Upload a file!"))))
-                  .append($('<div>').addClass("modal-body")
-                      .append($("<input>").addClass("form-control")
-                          .attr("id","fileInput").attr("type", "text").attr("placeholder", "Choose file"))))
-                  .append(($("<div>").addClass("modal-footer")
-                      .append($("<button>").addClass("btn btn-secondary").text("Close")
-                          .attr("type", "button").attr("data-dismiss", "modal").attr("data-target", "#addFileModal").attr("z-index", "2")))
-                      .append($("<button>").addClass("btn btn-primary").text("Add file")
-                          .attr("type", "submit").attr("id", "addFileButton")
-                          .on("click", function(){}))
-                  )
-              )
-          )
-  );
-
-};
-
 let addSectionModalMessage = function(message) {
   let modalBody = $("#addSectionModal .modal-body");
 
@@ -242,11 +239,9 @@ let createSection = function(sectionName) {
         .append($('<a>').addClass("card-link").html(sectionName)))
         .append($('<button>')
             .addClass('btn btn-outline-primary').text('Upload')
-            .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', modalID)
+            .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', "#addFileModal")
             .on('click', function(){
-                createFileUploadModal(modalID);
-                //event.stopPropagation();
-                $("#addFileModal").modal('show');
+              //  $('#addFileModal').show();
             }).css('float', 'right'));
 
     let newCollapse = $('<div>').addClass("collapse")
