@@ -98,7 +98,9 @@ function course(lectureName, isProfessor, regCode) {
     lecTabLink.setAttribute("data-toggle", "tab");
     lecTabLink.setAttribute("href", "#lecture");
     lecTabLink.addEventListener("click", function(){
+      if(client.isProfessor) {
        $('#addSectionButton').show();
+      }
     });
     lecTabLink.innerHTML = "Lecture";
     lecTab.append(lecTabLink);
@@ -217,10 +219,12 @@ let createSection = function(sectionName) {
         .addClass("card-header")
         .attr("data-toggle", "collapse").attr("href", "#collapse-" + sectionName))
         .append($('<a>').addClass("card-link").html(sectionName)))
-        .append($('<button>')
+    if (client.isProfessor) {
+        newHeader.append($('<button>')
             .addClass('btn btn-blue').text('Upload')
             .attr('id', buttonID).attr('type', 'button').attr('data-toggle', 'modal').attr('data-target', "#-" + sectionName + "-addFileModal")
             .css('float', 'right'));
+    }
 
     let newCollapse = $('<div>').addClass("collapse")
         .attr("id", "collapse-" + sectionName).attr("data-parent", "#accordion")
@@ -230,7 +234,7 @@ let createSection = function(sectionName) {
 
     $('#accordion').append($('<div>').addClass("card").append(newHeader).append(newCollapse));
 
-
+    if (client.isProfessor) {
     // Need a to create a modal for upload button
     ($('.main-content').append(
         $('<div>').addClass("modal fade").attr("id", "-" + sectionName + "-addFileModal")
@@ -259,6 +263,7 @@ let createSection = function(sectionName) {
                 )
             )
     )).fadeIn(1000);
+  }
 
 };
 
