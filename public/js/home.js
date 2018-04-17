@@ -1,3 +1,8 @@
+/**
+ *  Contains all methods used in the dashboard, headers, and sidebar
+ *
+ * **/
+
 const MONTHS = {
     "January":0,
     "February":1,

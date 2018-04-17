@@ -1,5 +1,6 @@
 // on ready()
 socket = io();
+userInfo = {};
 
 $(function(){
     let userInfo = {};
@@ -18,6 +19,9 @@ $(function(){
 
     });
 
+
+    /** LECTURE-SIDE **/
+
     socket.on('addedFile', function(sectionName, filename) {
         let newFile = new file(sectionName, filename);
         newFile.addFile();
@@ -26,6 +30,10 @@ $(function(){
     socket.on('addedSection', function(sectionName) {
         createSection(sectionName);
     });
+
+
+
+    /** QUESTION-SESSION-SIDE **/
 
     socket.on("addedQuestion",function(session_id,addQuestion){
         console.log(addQuestion._id);
@@ -110,6 +118,10 @@ $(function(){
         }
 
     });
+
+
+
+    /** CONTAINS ALL INTERACTIONS WITH PRE-EXISTING ELEMENTS IN THE HTML FILE **/
 
     /**
      *  handles sidebar expansion and collapse
