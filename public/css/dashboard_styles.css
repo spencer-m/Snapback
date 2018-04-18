@@ -269,6 +269,12 @@ a, a:hover, a:focus {
     color: white;
 }
 
+.card-session {
+    background: white;
+    font-weight: 600;
+    font-size: 24px;
+}
+
 .top-buffer { margin-top:1px; margin-bottom: 1px;}
 
 

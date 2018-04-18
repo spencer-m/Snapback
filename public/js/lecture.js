@@ -145,7 +145,7 @@ function course(lectureName, isProfessor, regCode) {
                           .append($("<h5>").addClass("modal-title").text("Upload a file!"))))
                       .append($("<div>").addClass("modal-body")
                           .append($("<label>").addClass("section-file-upload").attr("for", "fileInput")
-                              .text("Choose the files you want!").css("text-align", "center")
+                              .text("Click here to upload files you want!").css("text-align", "center")
                               .append($("<i>").addClass("fa fa-upload").css("width", "100%")))
                           .append($("<input>").addClass("form-control-file")
                               .attr("id", "fileInput").attr("type", "file").attr("name", "fileInput")))
@@ -236,7 +236,7 @@ let createSection = function(sectionName) {
 
     // contains a section's parts, including the button which triggers their particular modal
     let newHeader = (($('<div>')
-        .addClass("card-header")
+        .addClass("card-header card-session")
         .attr("data-toggle", "collapse").attr("href", "#collapse-" + sectionSmushed))
         .append($('<a>').addClass("card-link").html(sectionName)));
     if (client.isProfessor) {
