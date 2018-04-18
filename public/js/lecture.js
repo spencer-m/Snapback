@@ -17,6 +17,7 @@ function course(id) {
 */
 
 function file(section, fileName) {
+
   this.section = section;
   //this.filePath = filePath;
   this.fileName = fileName;
@@ -24,7 +25,9 @@ function file(section, fileName) {
 
   this.addFile = function () {
 
-    var content = document.getElementById("list-" + section);
+    let content = $("#list-" + section.replace(/ /g, ''));
+
+    //var content = document.getElementById("list-" + section.replace(/ /, ''));
 
     var listElement = document.createElement("li");
     listElement.className = "list-group-item";
@@ -39,6 +42,7 @@ function file(section, fileName) {
 
     content.append(listElement);
 
+    console.log(content);
   }
 
 }
@@ -292,6 +296,8 @@ function createLectureQuestionView(regCode){
 
         let view = new course(courseInfo.code, client.isProfessor, regCode);
         view.load();
+
+        console.log(section);
 
         for(let s of section) {
 
