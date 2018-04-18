@@ -232,6 +232,12 @@ let addSectionModalMessage = function(message) {
   modalBody.text(message);
 };
 
+let addFileModalMessage = function(message) {
+  let modalBody = $("#addFileModal .modal-body");
+
+  $('#add')
+};
+
 // creates individual sections
 let createSection = function(sectionName) {
     // Forms the new section
