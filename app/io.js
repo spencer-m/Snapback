@@ -79,7 +79,8 @@ module.exports = function(io) {
                     // course exists
                     if (course) {
 
-                    // check if already registered, if not then save course to student
+                        // check if already registered,
+                        // if not, check if same uni, then save course to student
                         User.findById(socket.request.user._id, function(err, user) {
 
                             if (err) throw err;
@@ -87,11 +88,20 @@ module.exports = function(io) {
                             if (isIdInArray(course._id, user.courses))
                                 cb({status: 'already_enrolled'});
                             else {
-                                course.classlist.push(user._id);
-                                course.save();
-                                user.courses.push(course._id);
-                                user.save();
-                                cb({status: 'success'});
+
+                                User.findById(course.professor, function(err, prof) {
+
+                                    if (prof.university !== user.university)
+                                        cb({status: 'invalid'});
+                                    else {
+                                        // enroll course
+                                        course.classlist.push(user._id);
+                                        course.save();
+                                        user.courses.push(course._id);
+                                        user.save();
+                                        cb({status: 'success'});
+                                    }
+                                });                                
                             }
                         });
                     }

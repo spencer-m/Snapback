@@ -113,7 +113,7 @@ let CourseSchema = new Schema({
     },
     professor: {
         type: Schema.ObjectId,
-        //required: true,
+        required: true,
         ref: 'User'
     },
     ta: {
