@@ -170,12 +170,12 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
         
             
             let rowComment = $("<div>").attr("class","row comment").attr("id",comment._id);
-            rowComment.append($("<div>").attr("class","col-md-12 col-lg-1 author").text(comment.author));
+            rowComment.append($("<div>").attr("class","col-md-12 col-lg-2 author").text(comment.author));
             if(client.email.split("@")[0] == comment.author || client.isProfessor ){
-                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message)
+                rowComment.append($("<div>").attr("class","col-md-12 col-lg-10").text(comment.message)
                 .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
             }else{
-                rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message));
+                rowComment.append($("<div>").attr("class","col-md-12 col-lg-10").text(comment.message));
             }
 
             commentList.append(rowComment);
@@ -210,7 +210,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
             rowComment.append($("<div>").attr("class","col-md-12 col-lg-10").text(comment.message)
             .append($(`<img class="deleteComment" height="30px" src="img/close.svg">`).click(this.deleteComment)));
         }else{
-            rowComment.append($("<div>").attr("class","col-md-12 col-lg-11").text(comment.message));
+            rowComment.append($("<div>").attr("class","col-md-12 col-lg-10").text(comment.message));
         }
 
         replyForm.before(rowComment);
