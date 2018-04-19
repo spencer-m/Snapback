@@ -72,7 +72,7 @@ function question(_id,question,author,date,upvotes,downvotes,comments){
     this.vote = function(user,position){
         console.log("Position",position);
         let filterFunction = function(aUser){
-            aUser != user;
+            return(aUser != user);
         };
         this.downvotes = this.downvotes.filter(filterFunction);
         this.upvotes = this.upvotes.filter(filterFunction);
