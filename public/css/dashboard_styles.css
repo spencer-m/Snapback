@@ -209,7 +209,7 @@ a, a:hover, a:focus {
     width: 95%;
 }
 
-#content-header {
+#content-header {;
     user-select: none;
     -moz-user-select: none;
 }
@@ -222,7 +222,7 @@ a, a:hover, a:focus {
 }
 
 .navbar-brand {
-    font-size: 32px;
+    font-size: 250%;
     clear: both;
     color: white;
 }
@@ -359,6 +359,9 @@ a, a:hover, a:focus {
     }
     #mobile-nav {
         display: block;
+    }
+    #content-header {
+        font-size: 150%;
     }
 }
 input[type="file"] {

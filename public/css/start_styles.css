@@ -55,7 +55,6 @@ body {
     color: black;
     display: flex;
     flex-direction: column;
-
     align-self: start;
 }
 
