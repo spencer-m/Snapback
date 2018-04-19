@@ -88,18 +88,19 @@ module.exports = function(io) {
                             if (isIdInArray(course._id, user.courses))
                                 cb({status: 'already_enrolled'});
                             else {
-
                                 User.findById(course.professor, function(err, prof) {
 
-                                    if (prof.university != user.university)
-                                        cb({status: 'invalid'});
-                                    else {
-                                        // enroll course
-                                        course.classlist.push(user._id);
-                                        course.save();
-                                        user.courses.push(course._id);
-                                        user.save();
-                                        cb({status: 'success'});
+                                    if (prof) {
+                                        if (JSON.parse(JSON.stringify(prof.university)) !== JSON.parse(JSON.stringify(user.university)))
+                                            cb({status: 'invalid'});
+                                        else {
+                                            // enroll course
+                                            course.classlist.push(user._id);
+                                            course.save();
+                                            user.courses.push(course._id);
+                                            user.save();
+                                            cb({status: 'success'});
+                                        }
                                     }
                                 });                                
                             }
