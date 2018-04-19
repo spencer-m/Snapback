@@ -91,7 +91,7 @@ module.exports = function(io) {
 
                                 User.findById(course.professor, function(err, prof) {
 
-                                    if (prof.university !== user.university)
+                                    if (prof.university != user.university)
                                         cb({status: 'invalid'});
                                     else {
                                         // enroll course
