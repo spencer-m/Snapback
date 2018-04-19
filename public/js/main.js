@@ -27,6 +27,10 @@ $(function(){
         newFile.addFile();
     });
 
+    socket.on('addedSection', function(sectionName) {
+        createSection(sectionName);
+    });
+
 
     /** CONTAINS ALL INTERACTIONS WITH PRE-EXISTING ELEMENTS IN THE HTML FILE **/
 

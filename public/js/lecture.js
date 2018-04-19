@@ -77,7 +77,7 @@ function course(lectureName, isProfessor, regCode) {
 
                       <div class="modal-body">
                         <p>Please enter the section name</p>
-                        <input type="text" class="form-control" id="sectionInput" placeholder="Enter section name">
+                        <input type="text" class="form-control" id="sectionInput" placeholder="Enter section name" pattern="^[a-zA-Z0-9][a-zA-Z0-9-_ ]+$" title="Section name can only contain letters, number, spaces, underscores and hyphens." required>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-blue" data-dismiss="modal">Close</button>
@@ -279,8 +279,11 @@ function addSection() {
       addSectionModalMessage("Section already exists!");
     }
     else if (response.status === 'success') {
-      createSection(sectionName);
+      socket.emit('addedSection', sectionName);
       addSectionModalMessage("Section added successfully!");
+    }
+    else if(response.status === 'failure') {
+      addSectionModalMessage("Section name invalid!");
     }
   });
 

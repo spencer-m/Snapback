@@ -229,8 +229,12 @@ module.exports = function(io) {
                             }
                         }
 
+                        let words = sectionName.match(/^[a-zA-Z0-9][a-zA-Z0-9-_ ]+$/g);
+
                         if (exists)
                             cb({status: 'exists'});
+                        else if (words === null)
+                            cb({status: 'failure'});
                         else {
                             let s = Course.Section({
                                 name: sectionName
